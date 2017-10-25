@@ -11,22 +11,33 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    var actionSelector : FloatActionSelector!
+    
+    var gameView : SKView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView?
+        actionSelector = FloatActionSelector(frame: CGRect(origin: .zero, size: CGSize(width: 50, height: 50)), icon: "", direction: .UP, actions: [])
+        
+        gameView =
         {
-            if let scene = SKScene(fileNamed: "GameScene") {
-                scene.scaleMode = .aspectFill
-                
-                view.presentScene(scene)
-            }
-            
+            let view = SKView(frame: self.view.frame)
             view.ignoresSiblingOrder = false
             view.showsFPS = true
             view.showsNodeCount = true
-        }
+            return view
+        }()
+        
+        view.addSubview(gameView)
+        
+        let scene = GameScene(fileNamed: "GameScene")!
+        scene.scaleMode = .aspectFill
+        scene.actionSelector = actionSelector
+        scene.actionSelector?.delegate = scene
+        gameView.presentScene(scene)
+        view.addSubview(actionSelector)
     }
 
     override var shouldAutorotate: Bool {

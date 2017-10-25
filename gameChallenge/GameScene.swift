@@ -9,76 +9,26 @@
 import SpriteKit
 import GameplayKit
 
-enum BuildingType : String
-{
-    case SIMPLE_ROOM = "simple_room"
-    case RECEPTION = "reception"
-    case STAIRS = "stairs"
-}
-
-class Floor
-{
-    private var floorReference : CGPoint!
-    private var buildingsTypes : [BuildingType] = []
-    private var buildings : [Building] = []
+class GameScene: SKScene, FloatActionSelectorDelegate {
     
-    init(floor floorReference: CGPoint, buildings: [Building]) {
-        self.floorReference = floorReference
-        self.buildings = buildings
-        place()
-    }
-    
-    func place()
-    {
-        var reference : CGPoint = floorReference
-        for build in buildings
-        {
-            build.position = reference
-            reference.x = reference.x + build.size.width
-        }
-    }
-    
-    func removeBuildings() -> Void
-    {
-        for build in buildings {
-            build.removeFromParent()
-        }
-    }
-    
-    func addBuildings(to scene: SKScene) -> Void {
-        for build in buildings {
-            scene.addChild(build)
-        }
-    }
-    
-}
-
-class Building: SKSpriteNode
-{
-    var type : BuildingType!
-    convenience init(name: String, position: CGPoint, type: BuildingType)
-    {
-        self.init(name: name, type: type)
-        self.position = position
-    }
-    
-    init(name: String, type: BuildingType) {
-        let texture = SKTexture(imageNamed: type.rawValue)
-        super.init(texture: texture, color: .white, size: texture.size())
-        self.anchorPoint = CGPoint(x: 0, y: 0)
-        self.type = type
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class GameScene: SKScene {
+    var actionSelector : FloatActionSelector?
+    var player : Player!
+    var lastPosition : CGPoint!
     
     override func didMove(to view: SKView) {
         
-        let reception = Building(name: "Recepcao", type: .RECEPTION)
+        player = GameModel.shared.players.first!
+        player.createNode()
+        player.playerNode?.addNode(to: self, position: .zero)
+        
+        GameModel.shared.hotel.buildHotel(to: self)
+        
+        
+        
+        //player.createNode()
+        //player.playerNode?.add(to: self)
+        
+        /*let reception = Building(name: "Recepcao", type: .RECEPTION)
         let stairs_0 = Building(name: "Stairs", type: .STAIRS)
         
         let floor = Floor(floor: CGPoint(x: 0, y: 0), buildings: [stairs_0, reception])
@@ -90,12 +40,33 @@ class GameScene: SKScene {
         let floor2 = Floor(floor: CGPoint(x: 0, y: 195), buildings: [build, build2, build3])
         
         floor.addBuildings(to: self)
-        floor2.addBuildings(to: self)
+        floor2.addBuildings(to: self)*/
     }
     
+    func selectAction(action: ActionTypes) {
+        print(action)
+        switch action {
+        case .WALK_TO:
+            let action = SKAction.walkTo(from: (player.playerNode?.position)!, to: lastPosition, speed: 8)
+            player.playerNode?.applyAction(action)
+        default:
+            return
+        }
+    }
     
     func touchDown(atPoint pos : CGPoint) {
-
+        //if !(actionSelector?.frame.contains(pos))!
+        //if !((actionSelector?.hitTest(pos, with: nil)) != nil)
+        if (actionSelector?.isHidden)! || pos.distance(to: lastPosition) > 100
+        {
+            lastPosition = pos
+            actionSelector?.setActions(actions: [.CLEAN_FLOOR, .WALK_TO])
+            actionSelector?.show(at: self.convertPoint(toView: pos))
+        }
+        /*else if pos.distance(to: lastPosition) > 100
+        {
+            actionSelector?.hide()
+        }*/
     }
     
     func touchMoved(toPoint pos : CGPoint) {

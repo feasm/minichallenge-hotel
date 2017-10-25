@@ -9,18 +9,6 @@
 import UIKit
 import SpriteKit
 
-
-class PlayerNode : SKSpriteNode
-{
-    override init(texture: SKTexture?, color: UIColor, size: CGSize) {
-        super.init(texture: texture, color: color, size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 //Player
 
 //PlayerData = Multipeer (x, y, state, floor)
@@ -74,7 +62,13 @@ class Player : PlayerStateMachineDelegate {
     
     func createNode()
     {
-        playerNode = PlayerNode(imageNamed: "")
+        //playerNode = PlayerNode(imageNamed: "")
+        playerNode = PlayerNode(texture: nil, color: .yellow, size: CGSize(width: 180, height: 400))
+    }
+    
+    func applyAction(action: ActionTypes)
+    {
+        //playerNode?.applyAction()
     }
     
     func updatePlayer()
@@ -82,11 +76,7 @@ class Player : PlayerStateMachineDelegate {
         print(playerData?.floor ?? "Nil")
     }
     
-    func willChangeState(from: PlayerState, to: PlayerState) {
-
-    }
-    
-    func didChangeState(to state: PlayerState) {
-        //Atualiza o estado no multipeer
+    func didChangeState(from: PlayerState, to: PlayerState) {
+        //
     }
 }

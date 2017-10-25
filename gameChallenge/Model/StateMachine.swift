@@ -14,20 +14,18 @@ enum PlayerState : String {
     case ON_THE_LINE = "ps_line"
 }
 
-protocol PlayerStateMachineDelegate {
-    func willChangeState(from: PlayerState, to: PlayerState)
-    func didChangeState(to state: PlayerState)
+protocol StateMachineDelegate {
+    func didChangeState(from: PlayerState, to: PlayerState)
 }
 
-class PlayerStateMachine {
-    var delegate : PlayerStateMachineDelegate?
+class StateMachine {
+    var delegate : StateMachineDelegate?
     var state : PlayerState!
     {
         didSet
         {
             previousState = oldValue
-            delegate?.willChangeState(from: previousState, to: state)
-            delegate?.didChangeState(to: state)
+            delegate?.didChangeState(from: previousState, to: state)
         }
     }
     

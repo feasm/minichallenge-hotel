@@ -7,11 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B1F3C6D1F9FBAC200DE1A77 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1F3C6C1F9FBAC200DE1A77 /* GameModel.swift */; };
+		1B1F3C6F1F9FBD3400DE1A77 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1F3C6E1F9FBD3400DE1A77 /* SKAction+Extensions.swift */; };
+		1B1F3C721F9FBDF000DE1A77 /* Guest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1F3C711F9FBDF000DE1A77 /* Guest.swift */; };
+		1B25D9201F9F5F4A00C19087 /* FloatActionSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D91F1F9F5F4A00C19087 /* FloatActionSelector.swift */; };
+		1B25D9221F9F5FB200C19087 /* FloatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D9211F9F5FB200C19087 /* FloatButton.swift */; };
+		1B25D9241F9F600400C19087 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D9231F9F600400C19087 /* Action.swift */; };
+		1B25D9281F9FB82E00C19087 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D9271F9FB82E00C19087 /* CGPoint+Extensions.swift */; };
+		1B25D92A1F9FB88000C19087 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B25D9291F9FB88000C19087 /* UIColor+Extensions.swift */; };
+		1B3EFA081F9FE0290084AFBE /* BaseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3EFA071F9FE0290084AFBE /* BaseNode.swift */; };
+		1B3EFA0A1F9FE0710084AFBE /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3EFA091F9FE0710084AFBE /* CommonData.swift */; };
 		1B5103901F990EE200439101 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B51038F1F990EE200439101 /* Utils.swift */; };
-		1B987BE51F9DEDAC00F20437 /* PlayerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B987BE41F9DEDAC00F20437 /* PlayerData.swift */; };
 		1B987BE71F9DEE6400F20437 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B987BE61F9DEE6400F20437 /* String+Extensions.swift */; };
-		1B987BE91F9DEEF100F20437 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B987BE81F9DEEF100F20437 /* Player.swift */; };
-		1B987BEB1F9DF28D00F20437 /* PlayerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B987BEA1F9DF28D00F20437 /* PlayerStateMachine.swift */; };
+		1B987BEB1F9DF28D00F20437 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B987BEA1F9DF28D00F20437 /* StateMachine.swift */; };
+		1B9E2CEA1FA0F4CD005CABBB /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9E2CE91FA0F4CD005CABBB /* Profile.swift */; };
+		1B9E2CEC1FA0F506005CABBB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9E2CEB1FA0F506005CABBB /* Player.swift */; };
+		1B9E2CEF1FA0FDA5005CABBB /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9E2CEE1FA0FDA5005CABBB /* Floor.swift */; };
+		1B9E2CF11FA101EA005CABBB /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9E2CF01FA101EA005CABBB /* Building.swift */; };
+		1B9E2CF31FA108B0005CABBB /* Hotel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9E2CF21FA108B0005CABBB /* Hotel.swift */; };
 		1BF875241F9815A6004CEDE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF875231F9815A6004CEDE8 /* AppDelegate.swift */; };
 		1BF875261F9815A6004CEDE8 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1BF875251F9815A6004CEDE8 /* GameScene.sks */; };
 		1BF8752A1F9815A6004CEDE8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF875291F9815A6004CEDE8 /* GameScene.swift */; };
@@ -22,11 +35,24 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B1F3C6C1F9FBAC200DE1A77 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		1B1F3C6E1F9FBD3400DE1A77 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
+		1B1F3C711F9FBDF000DE1A77 /* Guest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guest.swift; sourceTree = "<group>"; };
+		1B25D91F1F9F5F4A00C19087 /* FloatActionSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatActionSelector.swift; sourceTree = "<group>"; };
+		1B25D9211F9F5FB200C19087 /* FloatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatButton.swift; sourceTree = "<group>"; };
+		1B25D9231F9F600400C19087 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		1B25D9271F9FB82E00C19087 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		1B25D9291F9FB88000C19087 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		1B3EFA071F9FE0290084AFBE /* BaseNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNode.swift; sourceTree = "<group>"; };
+		1B3EFA091F9FE0710084AFBE /* CommonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
 		1B51038F1F990EE200439101 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = gameChallenge/Extensions/Utils.swift; sourceTree = SOURCE_ROOT; };
-		1B987BE41F9DEDAC00F20437 /* PlayerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
 		1B987BE61F9DEE6400F20437 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		1B987BE81F9DEEF100F20437 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		1B987BEA1F9DF28D00F20437 /* PlayerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStateMachine.swift; sourceTree = "<group>"; };
+		1B987BEA1F9DF28D00F20437 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
+		1B9E2CE91FA0F4CD005CABBB /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		1B9E2CEB1FA0F506005CABBB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		1B9E2CEE1FA0FDA5005CABBB /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
+		1B9E2CF01FA101EA005CABBB /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
+		1B9E2CF21FA108B0005CABBB /* Hotel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hotel.swift; sourceTree = "<group>"; };
 		1BF875201F9815A6004CEDE8 /* gameChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gameChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BF875231F9815A6004CEDE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BF875251F9815A6004CEDE8 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -49,23 +75,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B1F3C701F9FBDD600DE1A77 /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				1B3EFA091F9FE0710084AFBE /* CommonData.swift */,
+				1B1F3C711F9FBDF000DE1A77 /* Guest.swift */,
+				1B9E2CEB1FA0F506005CABBB /* Player.swift */,
+			);
+			path = Players;
+			sourceTree = "<group>";
+		};
+		1B25D91E1F9F5E7F00C19087 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				1B25D91F1F9F5F4A00C19087 /* FloatActionSelector.swift */,
+				1B25D9211F9F5FB200C19087 /* FloatButton.swift */,
+				1B25D9231F9F600400C19087 /* Action.swift */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		1B3EFA061F9FE0020084AFBE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1B3EFA071F9FE0290084AFBE /* BaseNode.swift */,
+				1B987BEA1F9DF28D00F20437 /* StateMachine.swift */,
+				1B9E2CE91FA0F4CD005CABBB /* Profile.swift */,
+				1B9E2CED1FA0FD83005CABBB /* Hotel */,
+				1B1F3C701F9FBDD600DE1A77 /* Players */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		1B51038E1F990ECB00439101 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				1B51038F1F990EE200439101 /* Utils.swift */,
 				1B987BE61F9DEE6400F20437 /* String+Extensions.swift */,
+				1B25D9271F9FB82E00C19087 /* CGPoint+Extensions.swift */,
+				1B25D9291F9FB88000C19087 /* UIColor+Extensions.swift */,
+				1B1F3C6E1F9FBD3400DE1A77 /* SKAction+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		1B987BE31F9DED9000F20437 /* Players */ = {
+		1B9E2CED1FA0FD83005CABBB /* Hotel */ = {
 			isa = PBXGroup;
 			children = (
-				1B987BE41F9DEDAC00F20437 /* PlayerData.swift */,
-				1B987BE81F9DEEF100F20437 /* Player.swift */,
-				1B987BEA1F9DF28D00F20437 /* PlayerStateMachine.swift */,
+				1B9E2CF21FA108B0005CABBB /* Hotel.swift */,
+				1B9E2CEE1FA0FDA5005CABBB /* Floor.swift */,
+				1B9E2CF01FA101EA005CABBB /* Building.swift */,
 			);
-			path = Players;
+			path = Hotel;
 			sourceTree = "<group>";
 		};
 		1BF875171F9815A6004CEDE8 = {
@@ -87,7 +148,9 @@
 		1BF875221F9815A6004CEDE8 /* gameChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				1B987BE31F9DED9000F20437 /* Players */,
+				1B1F3C6C1F9FBAC200DE1A77 /* GameModel.swift */,
+				1B3EFA061F9FE0020084AFBE /* Model */,
+				1B25D91E1F9F5E7F00C19087 /* Actions */,
 				1B51038E1F990ECB00439101 /* Extensions */,
 				1BF875231F9815A6004CEDE8 /* AppDelegate.swift */,
 				1BF875251F9815A6004CEDE8 /* GameScene.sks */,
@@ -174,13 +237,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B9E2CEA1FA0F4CD005CABBB /* Profile.swift in Sources */,
+				1B25D9221F9F5FB200C19087 /* FloatButton.swift in Sources */,
+				1B3EFA0A1F9FE0710084AFBE /* CommonData.swift in Sources */,
+				1B1F3C721F9FBDF000DE1A77 /* Guest.swift in Sources */,
+				1B3EFA081F9FE0290084AFBE /* BaseNode.swift in Sources */,
+				1B25D9241F9F600400C19087 /* Action.swift in Sources */,
+				1B9E2CF31FA108B0005CABBB /* Hotel.swift in Sources */,
+				1B25D9201F9F5F4A00C19087 /* FloatActionSelector.swift in Sources */,
+				1B9E2CF11FA101EA005CABBB /* Building.swift in Sources */,
+				1B9E2CEF1FA0FDA5005CABBB /* Floor.swift in Sources */,
+				1B25D9281F9FB82E00C19087 /* CGPoint+Extensions.swift in Sources */,
+				1B1F3C6D1F9FBAC200DE1A77 /* GameModel.swift in Sources */,
 				1BF8752A1F9815A6004CEDE8 /* GameScene.swift in Sources */,
-				1B987BE51F9DEDAC00F20437 /* PlayerData.swift in Sources */,
 				1BF8752C1F9815A6004CEDE8 /* GameViewController.swift in Sources */,
 				1BF875241F9815A6004CEDE8 /* AppDelegate.swift in Sources */,
-				1B987BE91F9DEEF100F20437 /* Player.swift in Sources */,
+				1B1F3C6F1F9FBD3400DE1A77 /* SKAction+Extensions.swift in Sources */,
 				1B987BE71F9DEE6400F20437 /* String+Extensions.swift in Sources */,
-				1B987BEB1F9DF28D00F20437 /* PlayerStateMachine.swift in Sources */,
+				1B25D92A1F9FB88000C19087 /* UIColor+Extensions.swift in Sources */,
+				1B987BEB1F9DF28D00F20437 /* StateMachine.swift in Sources */,
+				1B9E2CEC1FA0F506005CABBB /* Player.swift in Sources */,
 				1B5103901F990EE200439101 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
