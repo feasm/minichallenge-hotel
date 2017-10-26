@@ -12,6 +12,7 @@ enum PlayerState : String {
     case WALKING = "ps_walk"
     case WAITING_FOR_ACTION = "ps_waiting"
     case ON_THE_LINE = "ps_line"
+    case GO_TO_FLOOR = "ps_gotofloor"
 }
 
 protocol StateMachineDelegate {

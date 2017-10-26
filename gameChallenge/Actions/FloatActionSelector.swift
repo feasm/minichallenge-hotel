@@ -21,7 +21,7 @@ protocol FloatActionSelectorDelegate
     func selectAction(action : ActionTypes)
 }
 
-class FloatActionSelector: UIButton, FloatButtonDelegate {
+class FloawtActionSelector: UIButton, FloatButtonDelegate {
     
     var minAngle : CGFloat = -30
     var maxAngle : CGFloat = 210

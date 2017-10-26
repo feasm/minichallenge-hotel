@@ -11,12 +11,12 @@ import SpriteKit
 
 protocol BaseNodeDelegate
 {
-    func actionEnded(action: SKAction)
+    func actionEnded(action: Action)
 }
 
 class BaseNode : SKSpriteNode
 {
-    var runningAction : SKAction?
+    var runningAction : Action?
     var delegate : BaseNodeDelegate?
     let walkHeightRandom : UInt32 = 20
     var walkHeight: CGFloat!
@@ -27,6 +27,7 @@ class BaseNode : SKSpriteNode
         let r = random - Int(walkHeightRandom)
         walkHeight = 180 + CGFloat(r)
         self.anchorPoint = CGPoint(x: 0.5, y: 0)
+        self.zPosition = 15
     }
     
     func addNode(to scene: SKScene, position: CGPoint = .zero)
@@ -39,16 +40,13 @@ class BaseNode : SKSpriteNode
         self.position.y = walkHeight
     }
     
-    func applyAction(_ action: SKAction)
+    func applyAction(_ action: Action)
     {
+        print("Chegou em applyAction")
         runningAction = action
-        if let runAction = runningAction
-        {
-            self.run(runAction)
-            {
-                self.delegate?.actionEnded(action: runAction)
-                self.runningAction = nil
-            }
+        self.run(SKAction.group(action.actions)) {
+            self.delegate?.actionEnded(action: action)
+            self.runningAction = nil
         }
     }
     

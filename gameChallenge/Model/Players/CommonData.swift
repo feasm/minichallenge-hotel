@@ -17,15 +17,35 @@ class CommonData
     var floor : Int!
     var room : Int!
     var state : PlayerState!
-    var stateMachine : StateMachine?
+    var stateMachine : StateMachine!
+    var scene : GameScene!
     let separatorData : Character = "|"
+    var actions : [Action] = []
+    var target : Target!
     
     init(id: String, name : String, floor: Int, room: Int) {
         self.id = id
         self.name = name
         self.floor = floor
         self.room = room
-        self.state = PlayerState.WAITING_FOR_ACTION
+        self.stateMachine = StateMachine(initial: .WAITING_FOR_ACTION)
+        self.state = stateMachine.currentState()
+    }
+    
+    func nextAction() -> Action? {
+        
+        if actions.count > 0
+        {
+            let first = actions.first!
+            let _ = actions.remove(at: 0)
+            return first
+        }
+        return nil
+    }
+    
+    func setState(state: PlayerState)
+    {
+        stateMachine.state = state
     }
     
     /*init(data : Data) {

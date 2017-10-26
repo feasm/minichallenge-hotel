@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 enum ActionTypes : String
 {
@@ -14,4 +15,15 @@ enum ActionTypes : String
     case CLEAN_FLOOR = "a_clean_floor"
     case CLEAN_ROOM = "a_clean_room"
     case WALK_TO = "a_walk"
+    case USE_TELEPORTER = "a_teleporter"
+}
+
+class Action {
+    var type : ActionTypes!
+    var actions : [SKAction] = []
+    var current : SKAction?
+    init(type: ActionTypes, actions : [SKAction]) {
+        self.actions = actions
+        self.type = type
+    }
 }

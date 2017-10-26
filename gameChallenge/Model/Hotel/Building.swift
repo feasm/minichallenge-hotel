@@ -21,6 +21,7 @@ enum BuildingType : String
 class Building: SKSpriteNode
 {
     var type : BuildingType!
+    
     convenience init(name: String, position: CGPoint, type: BuildingType)
     {
         self.init(type: type)
@@ -31,12 +32,12 @@ class Building: SKSpriteNode
         //let texture = SKTexture(imageNamed: type.rawValue)
         //super.init(texture: texture, color: .white, size: texture.size())
         switch type {
-        case .STAIRS:
-            super.init(texture: nil, color: .green, size: CGSize(width: 600, height: Hotel.FLOOR_HEIGHT))
-        case .RECEPTION:
-            super.init(texture: nil, color: .red, size: CGSize(width: 1200, height: Hotel.FLOOR_HEIGHT))
-        default:
-            super.init(texture: nil, color: .yellow, size: CGSize(width: 600, height: Hotel.FLOOR_HEIGHT))
+            case .STAIRS:
+                super.init(texture: nil, color: .green, size: CGSize(width: 800, height: Hotel.FLOOR_HEIGHT))
+            case .RECEPTION:
+                super.init(texture: nil, color: .red, size: CGSize(width: 1600, height: Hotel.FLOOR_HEIGHT))
+            default:
+                super.init(texture: nil, color: .yellow, size: CGSize(width: 800, height: Hotel.FLOOR_HEIGHT))
         }
         
         self.anchorPoint = CGPoint(x: 0, y: 0)

@@ -14,16 +14,18 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
     var actionSelector : FloatActionSelector?
     var player : Player!
     var lastPosition : CGPoint!
+    var beganTouchPosition : CGPoint!
+    var xPos : CGFloat!
     
     override func didMove(to view: SKView) {
         
+        //GameModel.shared.hotel.buildHotel(to: self)
+        
         player = GameModel.shared.players.first!
         player.createNode()
+        
+        chooseFloor(floor: player.floor)
         player.playerNode?.addNode(to: self, position: .zero)
-        
-        GameModel.shared.hotel.buildHotel(to: self)
-        
-        
         
         //player.createNode()
         //player.playerNode?.add(to: self)
@@ -43,12 +45,21 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
         floor2.addBuildings(to: self)*/
     }
     
+    func chooseFloor(floor id: Int)
+    {
+        GameModel.shared.hotel.buildAndRemove(to: self, floorID: id)
+        self.size.width = GameModel.shared.hotel.getMaxWidth()
+    }
+    
+    
     func selectAction(action: ActionTypes) {
         print(action)
         switch action {
         case .WALK_TO:
-            let action = SKAction.walkTo(from: (player.playerNode?.position)!, to: lastPosition, speed: 8)
-            player.playerNode?.applyAction(action)
+            player.target = Target(position: lastPosition)
+            player.setState(state: .WALKING)
+        case .USE_TELEPORTER:
+            chooseFloor(floor: 1)
         default:
             return
         }
@@ -57,24 +68,41 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
     func touchDown(atPoint pos : CGPoint) {
         //if !(actionSelector?.frame.contains(pos))!
         //if !((actionSelector?.hitTest(pos, with: nil)) != nil)
-        if (actionSelector?.isHidden)! || pos.distance(to: lastPosition) > 100
-        {
-            lastPosition = pos
-            actionSelector?.setActions(actions: [.CLEAN_FLOOR, .WALK_TO])
-            actionSelector?.show(at: self.convertPoint(toView: pos))
-        }
-        /*else if pos.distance(to: lastPosition) > 100
-        {
-            actionSelector?.hide()
-        }*/
+        beganTouchPosition = pos
+        xPos = pos.x
     }
     
     func touchMoved(toPoint pos : CGPoint) {
+        if let camera = self.camera
+        {
+            var pos_cam_x = camera.position.x + (xPos - pos.x)
+            pos_cam_x = CGFloat.maximum(pos_cam_x, 1024)
+            pos_cam_x = CGFloat.minimum(pos_cam_x, self.size.width-1024)
+            camera.position = CGPoint(x: pos_cam_x, y: (self.size.height/2))
+            xPos = pos.x
+            
+        }
         
     }
-    
+
     func touchUp(atPoint pos : CGPoint) {
-        
+        if pos.distance(to: beganTouchPosition) < 100
+        {
+            if (actionSelector?.isHidden)!// || pos.distance(to: lastPosition) > 100
+            {
+                lastPosition = pos
+                actionSelector?.setActions(actions: [.USE_TELEPORTER, .WALK_TO])
+                actionSelector?.show(at: self.convertPoint(toView: pos))
+            }
+            else if pos.distance(to: lastPosition) > 100
+            {
+                actionSelector?.hide()
+            }
+        }
+        /*else
+        {
+            let speed = player.playerNode?.position.x.distance(to: pos)
+        }*/
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

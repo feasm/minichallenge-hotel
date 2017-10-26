@@ -14,6 +14,7 @@ class Floor
     private var floorReference : CGPoint!
     private var buildingsTypes : [BuildingType] = []
     private var buildings : [Building] = []
+    var floorWidth : CGFloat = 0
     
     init(floor floorReference: CGPoint, buildings: [Building]) {
         self.floorReference = floorReference
@@ -23,19 +24,36 @@ class Floor
     
     convenience init(floor: Int, buildings: [Building])
     {
-        let offset : CGFloat = (floor == 0) ? Hotel.FLOOR_OFFSET : 0
-        let floorR = CGPoint(x: 0, y: offset+(CGFloat(floor) * Hotel.FLOOR_HEIGHT))
+        //let offset : CGFloat = (floor == 0) ? Hotel.FLOOR_OFFSET : 0
+        let floorR = CGPoint(x: 0, y: Hotel.FLOOR_OFFSET+(CGFloat(floor) * Hotel.FLOOR_HEIGHT))
         self.init(floor: floorR, buildings: buildings)
+    }
+    
+    func place(at reference: CGPoint)
+    {
+        var ref : CGPoint = reference
+        floorWidth = 0
+        
+        for build in buildings
+        {
+            build.position = ref
+            ref.x = ref.x + build.size.width
+            floorWidth += build.size.width
+        }
+    }
+    
+    func getTeleporterPosition() -> CGPoint
+    {
+        for buid in buildings where buid.type == BuildingType.STAIRS
+        {
+            return buid.position + CGPoint(x: buid.size.width/2, y: 0)
+        }
+        return CGPoint(x: 0, y: 0)
     }
     
     func place()
     {
-        var reference : CGPoint = floorReference
-        for build in buildings
-        {
-            build.position = reference
-            reference.x = reference.x + build.size.width
-        }
+        self.place(at: floorReference)
     }
     
     func removeBuildings() -> Void
