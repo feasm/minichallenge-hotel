@@ -32,6 +32,8 @@
 		1BF8752F1F9815A6004CEDE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BF8752D1F9815A6004CEDE8 /* Main.storyboard */; };
 		1BF875311F9815A6004CEDE8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BF875301F9815A6004CEDE8 /* Assets.xcassets */; };
 		1BF875341F9815A6004CEDE8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BF875321F9815A6004CEDE8 /* LaunchScreen.storyboard */; };
+		BC24BE421FA3D46B008C7361 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE411FA3D46B008C7361 /* QueueManager.swift */; };
+		BCD69DDC1FA3B9010093D409 /* GuestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD69DDB1FA3B9010093D409 /* GuestManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,8 @@
 		1BF875301F9815A6004CEDE8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BF875331F9815A6004CEDE8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1BF875351F9815A6004CEDE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC24BE411FA3D46B008C7361 /* QueueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
+		BCD69DDB1FA3B9010093D409 /* GuestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 		1BF875221F9815A6004CEDE8 /* gameChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				BCD69DDA1FA3B8DC0093D409 /* Managers */,
 				1B3EFA061F9FE0020084AFBE /* Model */,
 				1B25D91E1F9F5E7F00C19087 /* FloatButton */,
 				1B51038E1F990ECB00439101 /* Extensions */,
@@ -162,6 +167,23 @@
 				1BF875351F9815A6004CEDE8 /* Info.plist */,
 			);
 			path = gameChallenge;
+			sourceTree = "<group>";
+		};
+		BC24BE401FA3D426008C7361 /* Guest */ = {
+			isa = PBXGroup;
+			children = (
+				BCD69DDB1FA3B9010093D409 /* GuestManager.swift */,
+				BC24BE411FA3D46B008C7361 /* QueueManager.swift */,
+			);
+			path = Guest;
+			sourceTree = "<group>";
+		};
+		BCD69DDA1FA3B8DC0093D409 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				BC24BE401FA3D426008C7361 /* Guest */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,9 +268,11 @@
 				1B9E2CF31FA108B0005CABBB /* Hotel.swift in Sources */,
 				1B25D9201F9F5F4A00C19087 /* FloatActionSelector.swift in Sources */,
 				1B9E2CF11FA101EA005CABBB /* Building.swift in Sources */,
+				BCD69DDC1FA3B9010093D409 /* GuestManager.swift in Sources */,
 				1B9E2CEF1FA0FDA5005CABBB /* Floor.swift in Sources */,
 				1B25D9281F9FB82E00C19087 /* CGPoint+Extensions.swift in Sources */,
 				1B1F3C6D1F9FBAC200DE1A77 /* GameModel.swift in Sources */,
+				BC24BE421FA3D46B008C7361 /* QueueManager.swift in Sources */,
 				1BF8752A1F9815A6004CEDE8 /* GameScene.swift in Sources */,
 				1BF8752C1F9815A6004CEDE8 /* GameViewController.swift in Sources */,
 				1BF875241F9815A6004CEDE8 /* AppDelegate.swift in Sources */,
@@ -395,7 +419,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X2PGUA6K9U;
+				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = gameChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.gameChallenge;
@@ -410,7 +434,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X2PGUA6K9U;
+				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = gameChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.gameChallenge;

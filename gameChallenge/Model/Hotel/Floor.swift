@@ -51,6 +51,15 @@ class Floor
         return CGPoint(x: 0, y: 0)
     }
     
+    func getReceptionPosition() -> CGPoint
+    {
+        for buid in buildings where buid.type == BuildingType.RECEPTION
+        {
+            return buid.position + CGPoint(x: buid.size.width, y: 0)
+        }
+        return CGPoint(x: 0, y: 0)
+    }
+    
     func place()
     {
         self.place(at: floorReference)
