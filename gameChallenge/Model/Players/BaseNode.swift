@@ -48,7 +48,6 @@ class BaseNode : SKSpriteNode
     
     func applyAction(_ action: Action)
     {
-        print("Chegou em applyAction")
         runningAction = action
         self.run(SKAction.group(action.actions)) {
             self.delegate?.actionEnded(action: action)

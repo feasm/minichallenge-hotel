@@ -35,6 +35,8 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
             let teleporter = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getTeleporterPosition()
             //let teleporterEnd = GameModel.shared.hotel.loadFloor(floorID: self.target.floor!)?.getTeleporterPosition()
             self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: teleporter!, speed: 8)]), Action(type: .CHANGE_FLOOR, actions: [ SKAction.run {
+            //self.playerNode?.gameScene?.teleporter.showTeleporter()
+            //pega o player jogador e seta o floor para o self.target.floor!
             self.playerNode?.gameScene?.chooseFloor(floor: self.target.floor!)
         }])]
             playerNode?.applyAction(nextAction()!)
@@ -44,7 +46,6 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
     }
     
     func actionEnded(action: Action) {
-        print("Chegou em action ended")
         if let playerNode = playerNode
         {
             if actions.count > 0
