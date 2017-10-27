@@ -16,6 +16,7 @@ protocol BaseNodeDelegate
 
 class BaseNode : SKSpriteNode
 {
+    var gameScene : GameScene?
     var runningAction : Action?
     var delegate : BaseNodeDelegate?
     let walkHeightRandom : UInt32 = 20
@@ -32,6 +33,11 @@ class BaseNode : SKSpriteNode
     
     func addNode(to scene: SKScene, position: CGPoint = .zero)
     {
+        if scene.isKind(of: GameScene.self)
+        {
+            gameScene = scene as? GameScene
+        }
+        
         scene.addChild(self)
         if position != .zero
         {

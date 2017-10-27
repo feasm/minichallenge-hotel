@@ -63,6 +63,27 @@ class Floor
         }
     }
     
+    func availableActions(at point: CGPoint) -> [ActionTypes]
+    {
+        var actions : [ActionTypes] = []
+        for build in buildings
+        {
+            if build.contains(point)
+            {
+                switch build.type as BuildingType
+                {
+                    case .STAIRS:
+                        actions.append(.USE_TELEPORTER)
+                        fallthrough
+                    default:
+                        actions.append(.WALK_TO)
+                }
+                break;
+            }
+        }
+        return actions
+    }
+    
     func addBuildings(to scene: SKScene) -> Void {
         print("Andar construido em \(floorReference) - \(buildings.count) construções")
         for build in buildings {

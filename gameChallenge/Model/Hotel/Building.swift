@@ -16,6 +16,7 @@ enum BuildingType : String
     case SIMPLE_ROOM = "simple_room"
     case RECEPTION = "reception"
     case STAIRS = "stairs"
+    case KITCHEN = "kitchen"
 }
 
 class Building: SKSpriteNode
@@ -32,6 +33,9 @@ class Building: SKSpriteNode
         //let texture = SKTexture(imageNamed: type.rawValue)
         //super.init(texture: texture, color: .white, size: texture.size())
         switch type {
+            case .SIMPLE_ROOM:
+                let texture = SKTexture(imageNamed: type.rawValue)
+                super.init(texture: texture, color: .white, size: texture.size())
             case .STAIRS:
                 super.init(texture: nil, color: .green, size: CGSize(width: 800, height: Hotel.FLOOR_HEIGHT))
             case .RECEPTION:

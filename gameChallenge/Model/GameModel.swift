@@ -14,6 +14,7 @@ class GameModel
     var players : [Player] = []
     var guests : [Guest] = []
     var hotel : Hotel!
+    
     private init()
     {
         players.append(Player())

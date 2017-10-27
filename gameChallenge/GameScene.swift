@@ -9,6 +9,18 @@
 import SpriteKit
 import GameplayKit
 
+
+class TeleporterSelector: SKSpriteNode {
+    init(position: CGPoint, currentFloor: Int)
+    {
+        super.init(texture: SKTexture(imageNamed: "elevador_frame"), color: .white, size: CGSize())
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class GameScene: SKScene, FloatActionSelectorDelegate {
     
     var actionSelector : FloatActionSelector?
@@ -47,6 +59,10 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
     
     func chooseFloor(floor id: Int)
     {
+        if let camera = self.camera
+        {
+            camera.position = CGPoint(x: 0, y: 0)
+        }
         GameModel.shared.hotel.buildAndRemove(to: self, floorID: id)
         self.size.width = GameModel.shared.hotel.getMaxWidth()
     }
@@ -59,7 +75,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
             player.target = Target(position: lastPosition)
             player.setState(state: .WALKING)
         case .USE_TELEPORTER:
-            chooseFloor(floor: 1)
+            player.target = Target(floor: 1)
+            player.setState(state: .GO_TO_FLOOR)
+            //chooseFloor(floor: 1)
         default:
             return
         }

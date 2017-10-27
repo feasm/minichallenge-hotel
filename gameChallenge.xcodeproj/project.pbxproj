@@ -81,27 +81,27 @@
 				1B3EFA071F9FE0290084AFBE /* BaseNode.swift */,
 				1B987BEA1F9DF28D00F20437 /* StateMachine.swift */,
 				1B3EFA091F9FE0710084AFBE /* CommonData.swift */,
-				1B1F3C6C1F9FBAC200DE1A77 /* GameModel.swift */,
 				1B1F3C711F9FBDF000DE1A77 /* Guest.swift */,
 				1B9E2CEB1FA0F506005CABBB /* Player.swift */,
 				1B9E2CE91FA0F4CD005CABBB /* Profile.swift */,
+				1B25D9231F9F600400C19087 /* Action.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
 		};
-		1B25D91E1F9F5E7F00C19087 /* Actions */ = {
+		1B25D91E1F9F5E7F00C19087 /* FloatButton */ = {
 			isa = PBXGroup;
 			children = (
 				1B25D91F1F9F5F4A00C19087 /* FloatActionSelector.swift */,
 				1B25D9211F9F5FB200C19087 /* FloatButton.swift */,
-				1B25D9231F9F600400C19087 /* Action.swift */,
 			);
-			path = Actions;
+			path = FloatButton;
 			sourceTree = "<group>";
 		};
 		1B3EFA061F9FE0020084AFBE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1B1F3C6C1F9FBAC200DE1A77 /* GameModel.swift */,
 				1B9E2CED1FA0FD83005CABBB /* Hotel */,
 				1B1F3C701F9FBDD600DE1A77 /* Players */,
 			);
@@ -150,7 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				1B3EFA061F9FE0020084AFBE /* Model */,
-				1B25D91E1F9F5E7F00C19087 /* Actions */,
+				1B25D91E1F9F5E7F00C19087 /* FloatButton */,
 				1B51038E1F990ECB00439101 /* Extensions */,
 				1BF875231F9815A6004CEDE8 /* AppDelegate.swift */,
 				1BF875251F9815A6004CEDE8 /* GameScene.sks */,

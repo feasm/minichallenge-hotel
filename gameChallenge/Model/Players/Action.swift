@@ -16,6 +16,7 @@ enum ActionTypes : String
     case CLEAN_ROOM = "a_clean_room"
     case WALK_TO = "a_walk"
     case USE_TELEPORTER = "a_teleporter"
+    case CHANGE_FLOOR = "a_change_floor"
 }
 
 class Action {

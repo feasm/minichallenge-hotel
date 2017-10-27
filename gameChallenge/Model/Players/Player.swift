@@ -32,7 +32,11 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
             self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: target.position!, speed: 8)])]
             playerNode?.applyAction(nextAction()!)
         case .GO_TO_FLOOR:
-            self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: target.position!, speed: 8)])]
+            let teleporter = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getTeleporterPosition()
+            //let teleporterEnd = GameModel.shared.hotel.loadFloor(floorID: self.target.floor!)?.getTeleporterPosition()
+            self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: teleporter!, speed: 8)]), Action(type: .CHANGE_FLOOR, actions: [ SKAction.run {
+            self.playerNode?.gameScene?.chooseFloor(floor: self.target.floor!)
+        }])]
             playerNode?.applyAction(nextAction()!)
         default:
             return
@@ -55,6 +59,7 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
     }
     
     init() {
+        
         super.init(id: "", name: "", floor: 0, room: -1)
         self.stateMachine.delegate = self
     }
