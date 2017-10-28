@@ -11,13 +11,6 @@ import GameplayKit
 
 class Teleporter : UIViewController
 {
-    init() {
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
 }
 
@@ -149,6 +142,8 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
         
         floor.addBuildings(to: self)
         floor2.addBuildings(to: self)*/
+        
+        GuestManager.shared.setup(gameScene: self, maxGuestsSpawn: 10)
     }
     
     func chooseFloor(floor id: Int)
@@ -274,8 +269,22 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
         
+    }
+}
+
+// MARK: GuestManagerDelegate
+extension GameScene: GuestManagerDelegate {
+    func spawnGuest() -> Guest {
+        let currentFloor = GameModel.shared.hotel.loadFloor(floorID: player.floor)!
+        let guestPosition = currentFloor.getReceptionPosition()
+        
+        let guest = Guest(profile: Profile(name: "Teste"))
+        guest.createNode()
+        
+        guest.guestNode?.addNode(to: self, position: guestPosition)
+        
+        return guest
     }
 }

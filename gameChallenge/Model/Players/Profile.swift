@@ -14,6 +14,6 @@ class Profile
     var attributes : [String : String] = [:]
     init(name: String)
     {
-        
+        self.name = name
     }
 }
