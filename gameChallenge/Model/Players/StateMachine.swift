@@ -12,22 +12,21 @@ enum PlayerState : String {
     case WALKING = "ps_walk"
     case WAITING_FOR_ACTION = "ps_waiting"
     case ON_THE_LINE = "ps_line"
+    case GO_TO_FLOOR = "ps_gotofloor"
 }
 
-protocol PlayerStateMachineDelegate {
-    func willChangeState(from: PlayerState, to: PlayerState)
-    func didChangeState(to state: PlayerState)
+protocol StateMachineDelegate {
+    func didChangeState(from: PlayerState, to: PlayerState)
 }
 
-class PlayerStateMachine {
-    var delegate : PlayerStateMachineDelegate?
+class StateMachine {
+    var delegate : StateMachineDelegate?
     var state : PlayerState!
     {
         didSet
         {
             previousState = oldValue
-            delegate?.willChangeState(from: previousState, to: state)
-            delegate?.didChangeState(to: state)
+            delegate?.didChangeState(from: previousState, to: state)
         }
     }
     
