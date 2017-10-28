@@ -72,6 +72,9 @@ extension GuestManager {
         self.maxGuestsSpawn = maxGuestsSpawn
         self.prepareNextSpawn()
         
+        // Configurado removedor de guests da fila para testes, remover após implementar o envio para o quarto
+        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
+        
         if GuestManager.DEBUG {
             print("Spawner configured")
         }
@@ -93,14 +96,12 @@ extension GuestManager {
         self.spawnTimer = Timer.scheduledTimer(timeInterval: self.nextSpawnTimer, target: self, selector: #selector(spawnGuest), userInfo: nil, repeats: false)
     }
     
-    
-    
     @objc private func spawnGuest() {
-        let guest = self.gameScene?.spawnGuest()
-        self.guests.append(guest!)
+        let newGuest = self.gameScene?.spawnGuest()
+        self.guests.append(newGuest!)
         self.currentGuestsSpawn += 1
         
-        self.queueManager.addGuest(guest: guest!)
+        self.queueManager.addGuest(guest: newGuest!)
         
         if self.currentGuestsSpawn == self.maxGuestsSpawn {
             self.stopSpawner()
@@ -110,6 +111,12 @@ extension GuestManager {
         
         if GuestManager.DEBUG {
             print("Guest spawned: \(self.nextSpawnTimer) seconds delay")
+        }
+    }
+    
+    @objc private func sendToRoom() {
+        if queueManager.guests.count > 0 {
+            queueManager.sendToRoom()
         }
     }
 }
