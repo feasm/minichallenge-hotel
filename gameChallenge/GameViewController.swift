@@ -58,7 +58,7 @@ class GameViewController: UIViewController {
     }
     
     @objc func playerAuthenticated() {
-        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 3, maxPlayers: 3, viewController: self, delegate: gameView.scene as! GameKitHelperDelegate)
+        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 2, maxPlayers: 2, viewController: self, delegate: gameView.scene as! GameKitHelperDelegate)
     }
 
     override var shouldAutorotate: Bool {

@@ -149,6 +149,8 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             GameKitHelper.shared.authenticateLocalPlayer()
             
             self.networkingEngine = MultiplayerNetworking()
+        } else {
+            GuestManager.shared.setup(gameScene: self, maxGuestsSpawn: 20)
         }
     }
     

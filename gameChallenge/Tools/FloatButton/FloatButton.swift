@@ -31,7 +31,7 @@ class FloatButton: UIButton {
     
     @objc func handleAction()
     {
-        self.delegate?.selectAction(action: action, player: nil, broadcast: true)
+        self.delegate?.selectAction(action: action, player: nil, broadcast: false)
     }
     
     func performFlatButton()
