@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-enum ActionTypes : String
+enum ActionTypes : String, Codable
 {
     case NONE = "a_none"
     case CLEAN_FLOOR = "a_clean_floor"

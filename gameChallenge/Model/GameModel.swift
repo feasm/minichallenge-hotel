@@ -11,6 +11,8 @@ import UIKit
 class GameModel
 {
     static let shared : GameModel = GameModel()
+    static let DEBUG: Bool = false
+    static let MULTIPLAYER_ON: Bool = false
     var players : [Player] = []
     var guests : [Guest] = []
     var hotel : Hotel!

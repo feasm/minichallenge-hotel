@@ -36,6 +36,12 @@
 		BC24BE421FA3D46B008C7361 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE411FA3D46B008C7361 /* QueueManager.swift */; };
 		BC24BE451FA4EAEB008C7361 /* GameKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE441FA4EAEB008C7361 /* GameKitHelper.swift */; };
 		BC24BE471FA4EB00008C7361 /* MultiplayerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE461FA4EB00008C7361 /* MultiplayerNetworking.swift */; };
+		BC24BE4A1FA6920E008C7361 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC24BE491FA6920E008C7361 /* GameKit.framework */; };
+		BC24BE4E1FA7413B008C7361 /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE4D1FA7413B008C7361 /* GameServer.swift */; };
+		BC24BE511FA754D8008C7361 /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE501FA754D7008C7361 /* GameClient.swift */; };
+		BC24BE541FA7553F008C7361 /* GameNetworkingMixin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE531FA7553F008C7361 /* GameNetworkingMixin.swift */; };
+		BC24BE561FA75F57008C7361 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE551FA75F57008C7361 /* DataTypes.swift */; };
+		BC24BE581FA79E28008C7361 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE571FA79E28008C7361 /* Array+Extensions.swift */; };
 		BCD69DDC1FA3B9010093D409 /* GuestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD69DDB1FA3B9010093D409 /* GuestManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +77,13 @@
 		BC24BE411FA3D46B008C7361 /* QueueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		BC24BE441FA4EAEB008C7361 /* GameKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameKitHelper.swift; sourceTree = "<group>"; };
 		BC24BE461FA4EB00008C7361 /* MultiplayerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerNetworking.swift; sourceTree = "<group>"; };
+		BC24BE491FA6920E008C7361 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		BC24BE4B1FA69210008C7361 /* gameChallenge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = gameChallenge.entitlements; sourceTree = "<group>"; };
+		BC24BE4D1FA7413B008C7361 /* GameServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServer.swift; sourceTree = "<group>"; };
+		BC24BE501FA754D7008C7361 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		BC24BE531FA7553F008C7361 /* GameNetworkingMixin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetworkingMixin.swift; sourceTree = "<group>"; };
+		BC24BE551FA75F57008C7361 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
+		BC24BE571FA79E28008C7361 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		BCD69DDB1FA3B9010093D409 /* GuestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC24BE4A1FA6920E008C7361 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +140,7 @@
 				1B25D9271F9FB82E00C19087 /* CGPoint+Extensions.swift */,
 				1B25D9291F9FB88000C19087 /* UIColor+Extensions.swift */,
 				1B1F3C6E1F9FBD3400DE1A77 /* SKAction+Extensions.swift */,
+				BC24BE571FA79E28008C7361 /* Array+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -145,6 +160,7 @@
 			children = (
 				1BF875221F9815A6004CEDE8 /* gameChallenge */,
 				1BF875211F9815A6004CEDE8 /* Products */,
+				BC24BE481FA6920E008C7361 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,6 +175,7 @@
 		1BF875221F9815A6004CEDE8 /* gameChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				BC24BE4B1FA69210008C7361 /* gameChallenge.entitlements */,
 				1BFA2ED31FA7A333005FEFBD /* Tools */,
 				BC24BE431FA4EADA008C7361 /* GameKit */,
 				BCD69DDA1FA3B8DC0093D409 /* Managers */,
@@ -203,9 +220,45 @@
 			path = GameKit;
 			sourceTree = "<group>";
 		};
+		BC24BE481FA6920E008C7361 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC24BE491FA6920E008C7361 /* GameKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC24BE4C1FA740FF008C7361 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				BC24BE4D1FA7413B008C7361 /* GameServer.swift */,
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
+		BC24BE4F1FA754C3008C7361 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				BC24BE501FA754D7008C7361 /* GameClient.swift */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		BC24BE521FA75515008C7361 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				BC24BE4C1FA740FF008C7361 /* Server */,
+				BC24BE4F1FA754C3008C7361 /* Client */,
+				BC24BE531FA7553F008C7361 /* GameNetworkingMixin.swift */,
+				BC24BE551FA75F57008C7361 /* DataTypes.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		BCD69DDA1FA3B8DC0093D409 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				BC24BE521FA75515008C7361 /* Networking */,
 				BC24BE401FA3D426008C7361 /* Guest */,
 			);
 			path = Managers;
@@ -244,6 +297,14 @@
 					1BF8751F1F9815A6004CEDE8 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -285,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B9E2CEA1FA0F4CD005CABBB /* Profile.swift in Sources */,
+				BC24BE581FA79E28008C7361 /* Array+Extensions.swift in Sources */,
 				1BFA2ED51FA7A341005FEFBD /* Teleporter.swift in Sources */,
 				1B25D9221F9F5FB200C19087 /* FloatButton.swift in Sources */,
 				1B3EFA0A1F9FE0710084AFBE /* CommonData.swift in Sources */,
@@ -292,6 +354,8 @@
 				1B3EFA081F9FE0290084AFBE /* BaseNode.swift in Sources */,
 				1B25D9241F9F600400C19087 /* Action.swift in Sources */,
 				1B9E2CF31FA108B0005CABBB /* Hotel.swift in Sources */,
+				BC24BE511FA754D8008C7361 /* GameClient.swift in Sources */,
+				BC24BE561FA75F57008C7361 /* DataTypes.swift in Sources */,
 				1B25D9201F9F5F4A00C19087 /* FloatActionSelector.swift in Sources */,
 				1B9E2CF11FA101EA005CABBB /* Building.swift in Sources */,
 				BCD69DDC1FA3B9010093D409 /* GuestManager.swift in Sources */,
@@ -299,6 +363,7 @@
 				1B25D9281F9FB82E00C19087 /* CGPoint+Extensions.swift in Sources */,
 				1B1F3C6D1F9FBAC200DE1A77 /* GameModel.swift in Sources */,
 				BC24BE471FA4EB00008C7361 /* MultiplayerNetworking.swift in Sources */,
+				BC24BE541FA7553F008C7361 /* GameNetworkingMixin.swift in Sources */,
 				BC24BE421FA3D46B008C7361 /* QueueManager.swift in Sources */,
 				1BF8752A1F9815A6004CEDE8 /* GameScene.swift in Sources */,
 				1BF8752C1F9815A6004CEDE8 /* GameViewController.swift in Sources */,
@@ -309,6 +374,7 @@
 				1B25D92A1F9FB88000C19087 /* UIColor+Extensions.swift in Sources */,
 				1B987BEB1F9DF28D00F20437 /* StateMachine.swift in Sources */,
 				1B9E2CEC1FA0F506005CABBB /* Player.swift in Sources */,
+				BC24BE4E1FA7413B008C7361 /* GameServer.swift in Sources */,
 				1B5103901F990EE200439101 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,12 +512,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = gameChallenge/gameChallenge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X2PGUA6K9U;
+				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = gameChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.gameChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -461,12 +529,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = gameChallenge/gameChallenge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X2PGUA6K9U;
+				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = gameChallenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.gameChallenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

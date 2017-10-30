@@ -18,7 +18,7 @@ enum FloatDirection : Int
 
 protocol FloatActionSelectorDelegate
 {
-    func selectAction(action : ActionTypes)
+    func selectAction(action : ActionTypes, player : Player?, broadcast: Bool)
 }
 
 class FloatActionSelector: UIButton, FloatButtonDelegate {
@@ -111,8 +111,8 @@ class FloatActionSelector: UIButton, FloatButtonDelegate {
         }
     }
     
-    func selectAction(action: ActionTypes) {
-        self.delegate?.selectAction(action: action)
+    func selectAction(action: ActionTypes, player: Player?, broadcast: Bool) {
+        self.delegate?.selectAction(action: action, player: nil, broadcast: broadcast)
         hide()
     }
     

@@ -13,10 +13,10 @@ protocol GuestManagerDelegate {
 }
 
 class GuestManager {
-    // MARK: Managers
+    // Managers
     private var queueManager: QueueManager!
     
-    // MARK: Constants
+    // Constants
     static let shared: GuestManager = GuestManager()
     static let MIN_SPAWN_TIMER: Double = 1
     static let MAX_SPAWN_TIMER: Double = 10
@@ -33,7 +33,7 @@ class GuestManager {
     private var gameScene: GuestManagerDelegate?
     
     private init() {
-        if GuestManager.DEBUG {
+        if GameModel.DEBUG {
             
         }
     }
@@ -59,7 +59,7 @@ class GuestManager {
 // MARK: GuestsMethods
 extension GuestManager {
     private func setupGuests() {
-        if GuestManager.DEBUG {
+        if GameModel.DEBUG {
             print("Guests configured")
         }
     }
@@ -75,7 +75,7 @@ extension GuestManager {
         // Configurado removedor de guests da fila para testes, remover após implementar o envio para o quarto
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
         
-        if GuestManager.DEBUG {
+        if GameModel.DEBUG {
             print("Spawner configured")
         }
     }
@@ -109,7 +109,7 @@ extension GuestManager {
             self.prepareNextSpawn()
         }
         
-        if GuestManager.DEBUG {
+        if GameModel.DEBUG {
             print("Guest spawned: \(self.nextSpawnTimer) seconds delay")
         }
     }

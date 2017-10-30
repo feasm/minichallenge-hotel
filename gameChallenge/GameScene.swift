@@ -105,6 +105,8 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
     var selection : Bool = true
     var yCamera : CGFloat = 0
     
+    private(set) var networkingEngine: MultiplayerNetworking!
+    
     override func didMove(to view: SKView) {
         GameModel.shared.hotel.buildHotel(to: self)
         player = GameModel.shared.players.first!
@@ -141,7 +143,15 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         floor.addBuildings(to: self)
         floor2.addBuildings(to: self)*/
         
-        GuestManager.shared.setup(gameScene: self, maxGuestsSpawn: 10)
+        if GameModel.MULTIPLAYER_ON {
+            NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
+            
+            GameKitHelper.shared.authenticateLocalPlayer()
+            
+            self.networkingEngine = MultiplayerNetworking()
+        } else {
+            GuestManager.shared.setup(gameScene: self, maxGuestsSpawn: 20)
+        }
     }
     
     func selectFloor()
@@ -160,18 +170,35 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
     }
     
     
-    func selectAction(action: ActionTypes) {
+    func selectAction(action: ActionTypes, player: Player?, broadcast: Bool = false) {
+        var currentPlayer: Player
+        if player == nil {
+            currentPlayer = self.player
+        } else {
+            currentPlayer = player!
+        }
+        
         print(action)
+        var playerState: PlayerState
+        var playerTarget: Target
+        
         switch action {
         case .WALK_TO:
-            player.target = Target(position: lastPosition)
-            player.setState(state: .WALKING)
+            playerState = .WALKING
+            playerTarget = Target(position: lastPosition)
         case .USE_TELEPORTER:
-            player.target = Target(floor: 1)
-            player.setState(state: .GO_TO_FLOOR)
-            //chooseFloor(floor: 1)
+            playerState = .GO_TO_FLOOR
+            playerTarget = Target(floor: 1)
+        //chooseFloor(floor: 1)
         default:
             return
+        }
+        
+        currentPlayer.target = playerTarget
+        currentPlayer.setState(state: playerState)
+        
+        if broadcast && GameModel.MULTIPLAYER_ON {
+            self.sendPlayerData(target: playerTarget, state: playerState)
         }
     }
     
@@ -250,7 +277,7 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
                 {
                     if actions.count == 1 && actions[0] == .WALK_TO
                     {
-                        actionSelector?.selectAction(action: .WALK_TO)
+                        actionSelector?.selectAction(action: .WALK_TO, player: nil, broadcast: true)
                     }
                     else
                     {
@@ -306,5 +333,41 @@ extension GameScene: GuestManagerDelegate {
         guest.guestNode?.addNode(to: self, position: guestPosition)
         
         return guest
+    }
+}
+
+// MARK: GameKitHelperDelegate
+extension GameScene: GameKitHelperDelegate {
+    func matchStarted() {
+        
+    }
+    
+    func matchEnded() {
+        
+    }
+    
+    @objc func playerAuthenticated() {
+        GameKitHelper.shared.gameScene = self
+    }
+    
+    func movePlayer2(point: CGPoint) {
+//        self.player2.run(SKAction.move(to: point, duration: 0.1))
+    }
+    
+    func sendPlayerData(target: Target, state: PlayerState) {
+        let gameData = GameData(name: self.player.name, target: target, state: state)
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(gameData)
+        
+        let dataStr = String(data: data, encoding: .utf8)!
+        
+        self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
+    }
+    
+    func performAction(playerName: String, state: PlayerState, target: Target) {
+        let player = GameModel.shared.players.findByName(name: playerName)
+        
+        player?.target = target
+        player?.setState(state: state)
     }
 }
