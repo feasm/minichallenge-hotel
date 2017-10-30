@@ -16,11 +16,11 @@ class QueueManager {
         self.startPosition = startPosition
     }
     
-    // MARK: Public
+    // Public
     func addGuest(guest: Guest) {
         moveToQueue(guest: guest)
         
-        if QueueManager.DEBUG {
+        if GameModel.DEBUG {
             print("Guest spawned")
         }
     }
@@ -33,12 +33,12 @@ class QueueManager {
         let moveOutQueue = SKAction.walkTo(from: guest.guestNode!.position, to: .zero, speed: 3)
         guest.guestNode?.run(moveOutQueue)
         
-        if QueueManager.DEBUG {
+        if GameModel.DEBUG {
             print("Guest sent to room!")
         }
     }
     
-    // MARK: Private
+    // Private
     private(set) var startPosition: CGPoint!
     private(set) var guests = [Guest]()
     
@@ -49,7 +49,7 @@ class QueueManager {
         let moveToQueue = SKAction.walkTo(from: guest.guestNode!.position, to: queuePosition, speed: 3)
         guest.guestNode?.run(moveToQueue)
         
-        if QueueManager.DEBUG {
+        if GameModel.DEBUG {
             print("Moving new guest to queue...")
         }
     }

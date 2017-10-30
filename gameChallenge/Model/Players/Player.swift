@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class Target
+class Target: Codable
 {
     var position : CGPoint?
     var floor : Int?
@@ -68,6 +68,12 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
     func createNode()
     {
         playerNode = PlayerNode(texture: nil, color: .blue, size: CGSize(width: 180, height: 300))
+        let playerName = SKLabelNode(fontNamed: "Arial")
+        playerName.text = self.name
+        playerName.fontColor = SKColor.white
+        playerName.fontSize = 50
+        playerName.position = CGPoint(x: 0, y: (playerNode?.frame.size.height)! + 10)
+        playerNode?.addChild(playerName)
         playerNode?.delegate = self
     }
 }

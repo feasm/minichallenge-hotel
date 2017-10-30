@@ -10,7 +10,7 @@ import UIKit
 
 protocol FloatButtonDelegate
 {
-    func selectAction(action : ActionTypes)
+    func selectAction(action : ActionTypes, player : Player?, broadcast: Bool)
 }
 
 class FloatButton: UIButton {
@@ -31,7 +31,7 @@ class FloatButton: UIButton {
     
     @objc func handleAction()
     {
-        self.delegate?.selectAction(action: action)
+        self.delegate?.selectAction(action: action, player: nil, broadcast: true)
     }
     
     func performFlatButton()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum PlayerState : String {
+enum PlayerState : String, Codable {
     case WALKING = "ps_walk"
     case WAITING_FOR_ACTION = "ps_waiting"
     case ON_THE_LINE = "ps_line"

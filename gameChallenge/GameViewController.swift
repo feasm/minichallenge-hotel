@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import GameKit
 
 class GameViewController: UIViewController {
     
@@ -18,6 +19,14 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if GameModel.MULTIPLAYER_ON {
+            NotificationCenter.default.addObserver(self, selector: #selector(showAuthenticationViewController), name: GameKitHelper.PRESENT_AUTHENTICATION, object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
+            
+            GameKitHelper.shared.authenticateLocalPlayer()
+        }
         
         actionSelector = FloatActionSelector(frame: CGRect(origin: .zero, size: CGSize(width: 50, height: 50)), icon: "", direction: .UP, actions: [])
         
@@ -39,6 +48,14 @@ class GameViewController: UIViewController {
         gameView.presentScene(scene)
         view.addSubview(actionSelector)
     }
+    
+    @objc func showAuthenticationViewController() {
+        self.present(GameKitHelper.shared.authenticationViewController!, animated: true, completion: nil)
+    }
+    
+    @objc func playerAuthenticated() {
+        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 3, maxPlayers: 3, viewController: self, delegate: gameView.scene as! GameKitHelperDelegate)
+    }
 
     override var shouldAutorotate: Bool {
         return true
@@ -59,5 +76,23 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+}
+
+extension GameViewController: GameKitHelperDelegate {
+    func performAction(playerName: String, state: PlayerState, target: Target) {
+        
+    }
+    
+    func movePlayer2(point: CGPoint) {
+        
+    }
+    
+    func matchStarted() {
+        print("Match started!")
+    }
+    
+    func matchEnded() {
+        print("Match ended!")
     }
 }
