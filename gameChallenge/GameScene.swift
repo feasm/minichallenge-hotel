@@ -9,14 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class Teleporter : UIViewController
-{
-    
-}
-
-
-
-class TeleporterButton: SKSpriteNode {
+/*class TeleporterButton: SKSpriteNode {
     var floor : Int!
     
     init(floor : Int, position: CGPoint)
@@ -96,9 +89,12 @@ class TeleporterSelector: SKSpriteNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
+}*/
 
-class GameScene: SKScene, FloatActionSelectorDelegate {
+class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
+
+    static let SCENE_WIDTH : CGFloat = 2048
+    static let SCENE_HEIGHT : CGFloat = 1152
     
     var actionSelector : FloatActionSelector?
     var player : Player!
@@ -106,27 +102,29 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
     var beganTouchPosition : CGPoint!
     var xPos : CGFloat!
     var currentFloor : Int!
-    var teleporter : TeleporterSelector!
     var selection : Bool = true
+    var yCamera : CGFloat = 0
     
     private(set) var networkingEngine: MultiplayerNetworking!
     
     override func didMove(to view: SKView) {
-        
-        //GameModel.shared.hotel.buildHotel(to: self)
-        
+        GameModel.shared.hotel.buildHotel(to: self)
         player = GameModel.shared.players.first!
         player.createNode()
         
-        chooseFloor(floor: player.floor)
         player.playerNode?.addNode(to: self, position: .zero)
         
         currentFloor = player.floor
+        //choseFloor(floor: currentFloor)
         
         targetCamera(target: (player.playerNode?.position)!)
         
-        teleporter = TeleporterSelector(position: camera!.position + CGPoint(x: 100, y: 0), currentFloor: currentFloor)
-        addChild(teleporter)
+        GameModel.shared.teleporter.delegate = self
+        
+        self.size.width = GameModel.shared.hotel.getMaxWidth()
+        
+        //teleporter = TeleporterSelector(position: camera!.position + CGPoint(x: 100, y: 0), currentFloor: currentFloor)
+        //addChild(teleporter)
         
         //player.createNode()
         //player.playerNode?.add(to: self)
@@ -154,12 +152,19 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
         }
     }
     
-    func chooseFloor(floor id: Int)
+    func selectFloor()
     {
-        currentFloor = id
+        GameModel.shared.teleporter.showTeleporter()
+    }
+    
+    func choseFloor(floor: Int) {
+        currentFloor = floor
+        player.setFloor(floor: floor)
+        updateYCamera(floor: floor)
         targetCamera(target: (player.playerNode?.position)!)
-        GameModel.shared.hotel.buildAndRemove(to: self, floorID: id)
-        self.size.width = GameModel.shared.hotel.getMaxWidth()
+        //GameModel.shared.hotel.buildAndRemove(to: self, floorID: floor)
+        //self.size.width = GameModel.shared.hotel.getMaxWidth()
+        
     }
     
     
@@ -195,14 +200,28 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
         }
     }
     
+    func updateYCamera(floor floorID: Int)
+    {
+        if let floor = GameModel.shared.hotel.loadFloor(floorID: floorID)
+        {
+            self.yCamera = floor.getTeleporterPosition().y + (GameScene.SCENE_HEIGHT/2)
+            print(yCamera)
+        }
+    }
+    
     func targetCamera(target : CGPoint)
     {
         if let camera = self.camera
         {
-            var pos_cam_x = target.x
-            pos_cam_x = CGFloat.maximum(pos_cam_x, 1024)
-            pos_cam_x = CGFloat.minimum(pos_cam_x, self.size.width-1024)
-            camera.position = CGPoint(x: pos_cam_x, y: (self.size.height/2))
+            var xCamera = target.x
+            xCamera = CGFloat.maximum(xCamera, 1024)
+            xCamera = CGFloat.minimum(xCamera, self.size.width-1024)
+            //camera.position = CGPoint(x: pos_cam_x, y: (self.size.height/2))
+            if yCamera == 0
+            {
+                updateYCamera(floor: player.floor)
+            }
+            camera.position = CGPoint(x: xCamera, y: yCamera)// + (size/2))
         }
     }
     
@@ -229,7 +248,8 @@ class GameScene: SKScene, FloatActionSelectorDelegate {
             var pos_cam_x = camera.position.x + (xPos - pos.x)
             pos_cam_x = CGFloat.maximum(pos_cam_x, 1024)
             pos_cam_x = CGFloat.minimum(pos_cam_x, self.size.width-1024)
-            camera.position = CGPoint(x: pos_cam_x, y: (self.size.height/2))
+            camera.position = CGPoint(x: pos_cam_x, y: yCamera)
+            //targetCamera(target: CGPoint(x: pos_cam_x, y: camera.position.y))
             xPos = pos.x
         }
     }

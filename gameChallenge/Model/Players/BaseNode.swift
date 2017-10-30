@@ -31,6 +31,26 @@ class BaseNode : SKSpriteNode
         self.zPosition = 15
     }
     
+    func setPositionByFloor(_ position: CGPoint?, floor floorID: Int)
+    {
+        if position == nil
+        {
+            if let floor = GameModel.shared.hotel.loadFloor(floorID: floorID)
+            {
+                let teleporter = floor.getTeleporterPosition()
+                self.position = CGPoint(x: teleporter.x, y: teleporter.y + walkHeight)
+            }
+        }
+        else
+        {
+            if let floor = GameModel.shared.hotel.loadFloor(floorID: floorID)
+            {
+                let teleporter = floor.getTeleporterPosition()
+                self.position = CGPoint(x: (position?.x)!, y: teleporter.y + walkHeight)
+            }
+        }
+    }
+    
     func addNode(to scene: SKScene, position: CGPoint = .zero)
     {
         if scene.isKind(of: GameScene.self)

@@ -35,9 +35,10 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
             let teleporter = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getTeleporterPosition()
             //let teleporterEnd = GameModel.shared.hotel.loadFloor(floorID: self.target.floor!)?.getTeleporterPosition()
             self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: teleporter!, speed: 8)]), Action(type: .CHANGE_FLOOR, actions: [ SKAction.run {
-            //self.playerNode?.gameScene?.teleporter.showTeleporter()
+        
+            self.playerNode?.gameScene?.selectFloor()
             //pega o player jogador e seta o floor para o self.target.floor!
-            self.playerNode?.gameScene?.chooseFloor(floor: self.target.floor!)
+            //self.playerNode?.gameScene?.chooseFloor(floor: self.target.floor!)
         }])]
             playerNode?.applyAction(nextAction()!)
         default:
@@ -75,6 +76,12 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
         playerName.position = CGPoint(x: 0, y: (playerNode?.frame.size.height)! + 10)
         playerNode?.addChild(playerName)
         playerNode?.delegate = self
+    }
+    
+    func setFloor(floor floorID: Int)
+    {
+        self.floor = floorID
+        self.playerNode?.setPositionByFloor(nil, floor: floorID)
     }
 }
 

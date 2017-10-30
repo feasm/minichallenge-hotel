@@ -16,6 +16,7 @@ class GameModel
     var players : [Player] = []
     var guests : [Guest] = []
     var hotel : Hotel!
+    let teleporter : Teleporter = Teleporter()
     
     private init()
     {
@@ -31,6 +32,6 @@ class GameModel
         buildings = [Building(type: .STAIRS), Building(type: .SIMPLE_ROOM), Building(type: .SIMPLE_ROOM)]
         hotel.addFloor(floor: Floor(floor: 1, buildings: buildings), floorID: 1)
         buildings = [Building(type: .STAIRS), Building(type: .SIMPLE_ROOM), Building(type: .SIMPLE_ROOM)]
-        hotel.addFloor(floor: Floor(floor: 1, buildings: buildings), floorID: 2)
+        hotel.addFloor(floor: Floor(floor: 2, buildings: buildings), floorID: 2)
     }
 }
