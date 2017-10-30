@@ -38,6 +38,10 @@ class GameViewController: UIViewController {
         scene.actionSelector?.delegate = scene
         gameView.presentScene(scene)
         view.addSubview(actionSelector)
+        
+        let teleporter = GameModel.shared.teleporter
+        teleporter.frame = self.view.frame
+        view.addSubview(teleporter)
     }
 
     override var shouldAutorotate: Bool {
