@@ -17,6 +17,7 @@ class GameModel
     var guests : [Guest] = []
     var hotel : Hotel!
     let teleporter : Teleporter = Teleporter()
+    var isHost: Bool = false
     
     private init()
     {

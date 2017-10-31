@@ -10,6 +10,7 @@ import SpriteKit
 
 protocol GuestManagerDelegate {
     func spawnGuest() -> Guest
+    func sendActionData(messageType: MessageType)
 }
 
 class GuestManager {
@@ -23,7 +24,7 @@ class GuestManager {
     static let DEBUG: Bool = true
     
     // MARK: GuestsProperties
-    private var guests = [Guest]()
+    var guests = [Guest]()
     private var maxGuestsSpawn = 0
     private var currentGuestsSpawn = 0
     
@@ -45,10 +46,16 @@ class GuestManager {
         self.queueManager = QueueManager(startPosition: receptionPosition)
     }
     
-    func setup(gameScene: GuestManagerDelegate, maxGuestsSpawn: Int = 5) {
+    func setupAsHost(gameScene: GuestManagerDelegate, maxGuestsSpawn: Int = 5) {
+        self.gameScene = gameScene
         initQueueManager()
         setupGuests()
-        setupSpawner(gameScene: gameScene, maxGuestsSpawn: maxGuestsSpawn)
+        setupSpawner(maxGuestsSpawn: maxGuestsSpawn)
+    }
+    
+    func setupAsClient(gameScene: GuestManagerDelegate) {
+        self.gameScene = gameScene
+        initQueueManager()
     }
     
     func update() {
@@ -67,8 +74,7 @@ extension GuestManager {
 
 // MARK: SpawnerMethods
 extension GuestManager {
-    private func setupSpawner(gameScene: GuestManagerDelegate, maxGuestsSpawn: Int) {
-        self.gameScene = gameScene
+    private func setupSpawner(maxGuestsSpawn: Int) {
         self.maxGuestsSpawn = maxGuestsSpawn
         self.prepareNextSpawn()
         
@@ -96,17 +102,21 @@ extension GuestManager {
         self.spawnTimer = Timer.scheduledTimer(timeInterval: self.nextSpawnTimer, target: self, selector: #selector(spawnGuest), userInfo: nil, repeats: false)
     }
     
-    @objc private func spawnGuest() {
+    @objc func spawnGuest() {
         let newGuest = self.gameScene?.spawnGuest()
+        newGuest?.index = self.guests.count
         self.guests.append(newGuest!)
         self.currentGuestsSpawn += 1
         
         self.queueManager.addGuest(guest: newGuest!)
         
-        if self.currentGuestsSpawn == self.maxGuestsSpawn {
-            self.stopSpawner()
-        } else {
-            self.prepareNextSpawn()
+        if GameModel.shared.isHost {
+            if self.currentGuestsSpawn == self.maxGuestsSpawn {
+                self.stopSpawner()
+            } else {
+                self.prepareNextSpawn()
+                self.gameScene?.sendActionData(messageType: .SPAWN_GUEST)
+            }
         }
         
         if GameModel.DEBUG {
@@ -118,5 +128,12 @@ extension GuestManager {
         if queueManager.guests.count > 0 {
             queueManager.sendToRoom()
         }
+    }
+    
+    func updateGuest(guestIndex: Int, state: PlayerState, target: Target) {
+        let guest = self.guests[guestIndex]
+        
+        guest.target = Target(position: nil, floor: 1, room: 2)
+        guest.setState(state: .GO_TO_FLOOR)
     }
 }

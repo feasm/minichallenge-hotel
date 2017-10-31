@@ -37,6 +37,7 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
                 let position = build.position + build.centerPoint
                 self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: position, speed: Player.MIN_PLAYER_SPEED)]), Action(type: .CLEAN_FLOOR, actions: [SKAction.wait(forDuration: 3)]), Action(type: .NONE, actions: [SKAction.run {
                         build.removeAttribute(.DIRTY_FLOOR)
+                        
                     }])]
                 playerNode?.applyAction(nextAction()!)
             }

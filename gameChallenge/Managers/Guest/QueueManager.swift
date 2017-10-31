@@ -32,6 +32,8 @@ class QueueManager {
         guest.target = Target(position: nil, floor: 1, room: 2)
         guest.setState(state: .GO_TO_FLOOR)
         
+        GameServer.shared.sendGuestData(target: guest.target, state: .GO_TO_FLOOR, guestIndex: guest.index!)
+        
         /*// Este é um código de teste para testar a fila, deve ser substituído pelo código de enviar para o quarto.
         let moveOutQueue = SKAction.walkTo(from: guest.guestNode!.position, to: .zero, speed: 3)
         guest.guestNode?.run(moveOutQueue)*/

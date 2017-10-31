@@ -9,6 +9,8 @@
 import GameKit
 
 class GameNetworkingMixin {
+    let networkingEngine: MultiplayerNetworking = MultiplayerNetworking()
+    
     func createPlayers() {
         GKPlayer.loadPlayers(forIdentifiers: (GameKitHelper.shared.match?.playerIDs)!) { (player, error) in
             guard error == nil else {
@@ -38,5 +40,11 @@ class GameNetworkingMixin {
             newPlayer.createNode()
             newPlayer.playerNode?.addNode(to: GameKitHelper.shared.gameScene as! SKScene, position: .zero)
         }
+    }
+    
+    private func encodeData(gameData: GameData) -> String {
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(gameData)
+        return String(data: data, encoding: .utf8)!
     }
 }
