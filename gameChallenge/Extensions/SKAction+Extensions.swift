@@ -15,6 +15,15 @@ extension SKAction
     {
         let duration = TimeInterval(abs(from.x - to.x)/(speed*100))
         let goTo = CGPoint(x: to.x, y: from.y)
-        return SKAction.move(to: goTo, duration: duration)
+        
+        var xscale : CGFloat = 1
+        
+        if from.x > to.x
+        {
+            xscale = -1
+        }
+        
+        
+        return SKAction.group([SKAction.move(to: goTo, duration: duration), SKAction.scaleX(to: xscale, y: 1, duration: 0.01)])
     }
 }

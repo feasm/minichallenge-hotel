@@ -73,6 +73,7 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
             }
             else
             {
+                self.playerNode?.stopAnimation()
                 self.setState(state: .WAITING_FOR_ACTION)
             }
         }
@@ -86,7 +87,8 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
    
     func createNode()
     {
-        playerNode = PlayerNode(texture: nil, color: .blue, size: CGSize(width: 180, height: 300))
+        let texture = SKTexture(imageNamed: "walk_1")
+        playerNode = PlayerNode(texture: texture, color: .blue, size: texture.size())//CGSize(width: 225, height: 400))
         let playerName = SKLabelNode(fontNamed: "Arial")
         playerName.text = self.name
         playerName.fontColor = SKColor.white
@@ -104,5 +106,17 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
 }
 
 class PlayerNode: BaseNode {
-    
+    override func applyAction(_ action: Action) {
+        super.applyAction(action)
+        var textures : [SKTexture] = []
+        for i in 1...4
+        {
+            textures.append(SKTexture(imageNamed: "walk_\(i)"))
+        }
+        
+        if (action.type == .WALK_TO)
+        {
+            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.3)), withKey: "animation")
+        }
+    }
 }

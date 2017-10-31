@@ -29,6 +29,24 @@ class Floor
         self.init(floor: floorR, buildings: buildings)
     }
     
+    func availableRooms() -> [Int]
+    {
+        var i = 1
+        var rooms : [Int] = []
+        for build in buildings
+        {
+            if build.type == .SIMPLE_ROOM
+            {
+                if !build.getAttribute(.OCCUPIED)
+                {
+                    rooms.append(i)
+                }
+                i += 1
+            }
+        }
+        return rooms
+    }
+    
     func place(at reference: CGPoint)
     {
         var ref : CGPoint = reference
@@ -65,14 +83,17 @@ class Floor
     
     func getRoomPosition(room: Int) -> CGPoint
     {
-        var i : Int = 0
+        var i : Int = 1
         for build in buildings
         {
-            if i == room
+            if build.type == .SIMPLE_ROOM
             {
-                return (build.position + CGPoint(x: build.size.width/2, y: 0))
+                if i == room
+                {
+                    return (build.position + CGPoint(x: build.size.width/2, y: 0))
+                }
+                i += 1
             }
-            i += 1
         }
         return CGPoint(x: 0, y: 0)
     }

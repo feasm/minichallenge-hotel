@@ -25,6 +25,20 @@ class Hotel {
         floors[floorID] = floor
     }
     
+    func availableRoomsAtHotel() -> [Int : [Int]]
+    {
+        var rooms : [Int : [Int]] = [:]
+        for (key, floor) in floors
+        {
+            if floor.availableRooms().count > 0
+            {
+                rooms[key] = floor.availableRooms()
+            }
+        }
+        return rooms
+    }
+    
+    
     
     func buildHotel(to scene: SKScene) {
         print("Andares adicionados: \(floors.count)")

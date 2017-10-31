@@ -18,8 +18,9 @@ class BaseNode : SKSpriteNode
 {
     var gameScene : GameScene?
     var runningAction : Action?
+    var animation : SKAction?
     var delegate : BaseNodeDelegate?
-    let walkHeightRandom : UInt32 = 20
+    let walkHeightRandom : UInt32 = 40
     var walkHeight: CGFloat!
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
@@ -76,6 +77,12 @@ class BaseNode : SKSpriteNode
             self.position = position
         }
         self.position.y = walkHeight
+    }
+    
+    func stopAnimation()
+    {
+        self.removeAction(forKey: "animation")
+        self.texture = SKTexture(imageNamed: "walk_2")
     }
     
     func applyAction(_ action: Action)

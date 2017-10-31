@@ -122,6 +122,8 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         GameModel.shared.teleporter.delegate = self
         self.size.width = GameModel.shared.hotel.getMaxWidth()
         
+        print(GameModel.shared.hotel.availableRoomsAtHotel())
+        
         self.physicsWorld.contactDelegate = self
         
         //teleporter = TeleporterSelector(position: camera!.position + CGPoint(x: 100, y: 0), currentFloor: currentFloor)
@@ -370,7 +372,10 @@ extension GameScene: GameKitHelperDelegate {
         
         let dataStr = String(data: data, encoding: .utf8)!
         
-        self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
+        if GameModel.MULTIPLAYER_ON
+        {
+            self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
+        }
     }
     
     func performAction(playerName: String, state: PlayerState, target: Target) {

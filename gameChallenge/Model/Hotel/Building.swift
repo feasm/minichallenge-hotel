@@ -23,6 +23,7 @@ enum BuildingAttributes : String
 {
     case DIRTY_FLOOR = "ba_dirtyfloor"
     case DIRTY = "ba_dirty"
+    case OCCUPIED = "ba_occupied"
 }
 
 class Building: SKSpriteNode
@@ -40,10 +41,10 @@ class Building: SKSpriteNode
     }
     
     init(type: BuildingType) {
-        //let texture = SKTexture(imageNamed: type.rawValue)
-        //super.init(texture: texture, color: .white, size: texture.size())
-        switch type {
-            case .SIMPLE_ROOM:
+        let texture = SKTexture(imageNamed: type.rawValue)
+        super.init(texture: texture, color: .white, size: texture.size())
+        /*switch type {
+            case .SIMPLE_ROOM, :
                 let texture = SKTexture(imageNamed: type.rawValue)
                 super.init(texture: texture, color: .white, size: texture.size())
             case .STAIRS:
@@ -52,7 +53,7 @@ class Building: SKSpriteNode
                 super.init(texture: nil, color: .red, size: CGSize(width: 1600, height: Hotel.FLOOR_HEIGHT))
             default:
                 super.init(texture: nil, color: .yellow, size: CGSize(width: 800, height: Hotel.FLOOR_HEIGHT))
-        }
+        }*/
         
         self.anchorPoint = CGPoint(x: 0, y: 0)
         self.type = type
@@ -71,6 +72,11 @@ class Building: SKSpriteNode
         self.physicsBody?.contactTestBitMask = 3
         
         setActions()
+    }
+    
+    func getAttribute(_ attribute: BuildingAttributes) -> Bool
+    {
+        return attributes.contains(attribute)
     }
     
     func setActions()
