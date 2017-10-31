@@ -12,7 +12,6 @@ import GameKit
 protocol GameKitHelperDelegate {
     func matchStarted()
     func matchEnded()
-    func movePlayer2(point: CGPoint)
     func performAction(playerName: String, state: PlayerState, target: Target)
 }
 
@@ -165,8 +164,6 @@ extension GameKitHelper {
         guard self.match == match else {
             return
         }
-        
-        print("Chegou aqui!")
         
         if let jsonString = String(data: data, encoding: .utf8) {
             let jsonData = jsonString.data(using: .utf8)!
