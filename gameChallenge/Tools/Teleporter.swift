@@ -93,14 +93,17 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         collectionView.backgroundColor = UIColor.red
         collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         collectionView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalToConstant: 165).isActive = true
+        collectionView.widthAnchor.constraint(equalToConstant: 175).isActive = true
         collectionView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8).isActive = true
     }
     
     func showTeleporter()
     {
         self.bringSubview(toFront: self)
-        print("Showing teleporter")
+        if GameModel.DEBUG
+        {
+            print("Showing teleporter")
+        }
         self.alpha = 0
         UIView.animate(withDuration: 1) {
             self.alpha = 1
@@ -127,6 +130,14 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         return CGSize(width: 50, height: 50)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TeleporterCell
         let value = Array(floors.keys)[indexPath.item]
@@ -140,7 +151,6 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         let cell = collectionView.cellForItem(at: indexPath) as! TeleporterCell
         if cell.floorID != nil
         {
-            print(cell.floorID!)
             self.delegate?.choseFloor(floor: cell.floorID!)
         }
         self.hideTeleporter()

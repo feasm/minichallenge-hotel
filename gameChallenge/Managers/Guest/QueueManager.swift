@@ -29,9 +29,12 @@ class QueueManager {
         let guest = self.removeFromQueue()
         self.readjustQueue()
         
-        // Este é um código de teste para testar a fila, deve ser substituído pelo código de enviar para o quarto.
+        guest.target = Target(position: nil, floor: 1, room: 1)
+        guest.setState(state: .GO_TO_FLOOR)
+        
+        /*// Este é um código de teste para testar a fila, deve ser substituído pelo código de enviar para o quarto.
         let moveOutQueue = SKAction.walkTo(from: guest.guestNode!.position, to: .zero, speed: 3)
-        guest.guestNode?.run(moveOutQueue)
+        guest.guestNode?.run(moveOutQueue)*/
         
         if GameModel.DEBUG {
             print("Guest sent to room!")

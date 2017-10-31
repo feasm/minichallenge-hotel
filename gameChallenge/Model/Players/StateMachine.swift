@@ -13,6 +13,7 @@ enum PlayerState : String, Codable {
     case WAITING_FOR_ACTION = "ps_waiting"
     case ON_THE_LINE = "ps_line"
     case GO_TO_FLOOR = "ps_gotofloor"
+    case GO_TO_ROOM = "ps_gotoroom"
 }
 
 protocol StateMachineDelegate {

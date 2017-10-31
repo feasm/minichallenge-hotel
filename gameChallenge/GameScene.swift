@@ -109,9 +109,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
     
     override func didMove(to view: SKView) {
         GameModel.shared.hotel.buildHotel(to: self)
+        
         player = GameModel.shared.players.first!
         player.createNode()
-        
         player.playerNode?.addNode(to: self, position: .zero)
         
         currentFloor = player.floor
@@ -120,8 +120,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         targetCamera(target: (player.playerNode?.position)!)
         
         GameModel.shared.teleporter.delegate = self
-        
         self.size.width = GameModel.shared.hotel.getMaxWidth()
+        
+        self.physicsWorld.contactDelegate = self
         
         //teleporter = TeleporterSelector(position: camera!.position + CGPoint(x: 100, y: 0), currentFloor: currentFloor)
         //addChild(teleporter)
@@ -178,7 +179,6 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             currentPlayer = player!
         }
         
-        print(action)
         var playerState: PlayerState
         var playerTarget: Target
         
@@ -207,7 +207,6 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         if let floor = GameModel.shared.hotel.loadFloor(floorID: floorID)
         {
             self.yCamera = floor.getTeleporterPosition().y + (GameScene.SCENE_HEIGHT/2)
-            print(yCamera)
         }
     }
     
@@ -316,7 +315,7 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    override func update(_ currentTime: TimeInterval) {
+    override func update(_ currentTime: TimeInterval){
         
     }
 }
@@ -369,5 +368,15 @@ extension GameScene: GameKitHelperDelegate {
         
         player?.target = target
         player?.setState(state: state)
+    }
+}
+
+// MARK: SKPhysicsContactDelegate
+extension GameScene : SKPhysicsContactDelegate
+{
+    func didBegin(_ contact: SKPhysicsContact) {
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        print(collision)
+        print("Colidiu")
     }
 }

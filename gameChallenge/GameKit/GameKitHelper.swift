@@ -104,6 +104,7 @@ extension GameKitHelper {
     }
     
     func lookupPlayers() {
+        //let playerIDs = self.match?.players.map{$0.playerID} as! [String]
         GKPlayer.loadPlayers(forIdentifiers: (self.match?.playerIDs)!) { (player, error) in
             guard error == nil else {
                 print("Error retrieving player info: \(error?.localizedDescription)")

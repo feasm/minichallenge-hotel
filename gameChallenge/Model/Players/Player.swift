@@ -78,9 +78,9 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
         playerNode?.delegate = self
     }
     
-    func setFloor(floor floorID: Int)
+    override func setFloor(floor floorID: Int)
     {
-        self.floor = floorID
+        super.setFloor(floor: floorID)
         self.playerNode?.setPositionByFloor(nil, floor: floorID)
     }
 }

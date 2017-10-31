@@ -48,6 +48,11 @@ class CommonData
         stateMachine.state = state
     }
     
+    func setFloor(floor floorID: Int)
+    {
+        self.floor = floorID
+    }
+    
     /*init(data : Data) {
         let content = String(data: data, encoding: .utf8)!
         let pieces = content.split(separator: separatorData)

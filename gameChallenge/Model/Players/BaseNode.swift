@@ -29,6 +29,16 @@ class BaseNode : SKSpriteNode
         walkHeight = 180 + CGFloat(r)
         self.anchorPoint = CGPoint(x: 0.5, y: 0)
         self.zPosition = 15
+        setupPhysicsBody(size : size)
+    }
+    
+    func setupPhysicsBody(size : CGSize)
+    {
+        let center = CGPoint(x: 0, y: size.height/2)
+        self.physicsBody = SKPhysicsBody(rectangleOf: size, center: center)
+        self.physicsBody?.categoryBitMask = 1
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.affectedByGravity = false
     }
     
     func setPositionByFloor(_ position: CGPoint?, floor floorID: Int)

@@ -19,9 +19,16 @@ enum BuildingType : String
     case KITCHEN = "kitchen"
 }
 
+enum BuildingAttributes : String
+{
+    case FLOOR_DIRTY = "ba_floordirty"
+    case DIRTY = "ba_dirty"
+}
+
 class Building: SKSpriteNode
 {
     var type : BuildingType!
+    var attributes : [BuildingAttributes] = []
     
     convenience init(name: String, position: CGPoint, type: BuildingType)
     {
@@ -46,7 +53,16 @@ class Building: SKSpriteNode
         
         self.anchorPoint = CGPoint(x: 0, y: 0)
         self.type = type
+        let center = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        self.physicsBody = SKPhysicsBody(rectangleOf: self.size, center: center)
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.categoryBitMask = 2
+        self.physicsBody?.collisionBitMask = 2
+        self.physicsBody?.contactTestBitMask = 2
+        self.physicsBody?.fieldBitMask = 1
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -44,9 +44,23 @@ class Floor
     
     func getTeleporterPosition() -> CGPoint
     {
-        for buid in buildings where buid.type == BuildingType.STAIRS
+        for build in buildings where build.type == BuildingType.STAIRS
         {
-            return buid.position + CGPoint(x: buid.size.width/2, y: 0)
+            return build.position + CGPoint(x: build.size.width/2, y: 0)
+        }
+        return CGPoint(x: 0, y: 0)
+    }
+    
+    func getRoomPosition(room: Int) -> CGPoint
+    {
+        var i : Int = 0
+        for build in buildings
+        {
+            if i == room
+            {
+                return (build.position + CGPoint(x: build.size.width/2, y: 0))
+            }
+            i += 1
         }
         return CGPoint(x: 0, y: 0)
     }
