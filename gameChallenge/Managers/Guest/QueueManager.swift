@@ -29,7 +29,7 @@ class QueueManager {
         let guest = self.removeFromQueue()
         self.readjustQueue()
         
-        guest.target = Target(position: nil, floor: 1, room: 1)
+        guest.target = Target(position: nil, floor: 1, room: 2)
         guest.setState(state: .GO_TO_FLOOR)
         
         /*// Este é um código de teste para testar a fila, deve ser substituído pelo código de enviar para o quarto.

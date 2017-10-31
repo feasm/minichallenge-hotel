@@ -42,6 +42,18 @@ class Floor
         }
     }
     
+    func getBuilding(at position: CGPoint) -> Building?
+    {
+        for build in buildings
+        {
+            if build.contains(position)
+            {
+                return build
+            }
+        }
+        return nil
+    }
+    
     func getTeleporterPosition() -> CGPoint
     {
         for build in buildings where build.type == BuildingType.STAIRS
@@ -93,6 +105,11 @@ class Floor
         {
             if build.contains(point)
             {
+                for action in build.getActions()
+                {
+                    actions.append(action)
+                }
+                
                 switch build.type as BuildingType
                 {
                     case .STAIRS:

@@ -36,9 +36,11 @@ class BaseNode : SKSpriteNode
     {
         let center = CGPoint(x: 0, y: size.height/2)
         self.physicsBody = SKPhysicsBody(rectangleOf: size, center: center)
-        self.physicsBody?.categoryBitMask = 1
-        self.physicsBody?.isDynamic = true
+        
+        self.physicsBody?.allowsRotation = false
+        self.physicsBody?.friction = 0
         self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.isDynamic = false
     }
     
     func setPositionByFloor(_ position: CGPoint?, floor floorID: Int)

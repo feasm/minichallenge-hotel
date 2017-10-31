@@ -34,4 +34,16 @@ class GameModel
         buildings = [Building(type: .STAIRS), Building(type: .SIMPLE_ROOM), Building(type: .SIMPLE_ROOM)]
         hotel.addFloor(floor: Floor(floor: 2, buildings: buildings), floorID: 2)
     }
+    
+    func lookForGuest(node : GuestNode) -> Guest?
+    {
+        for guest in guests
+        {
+            if guest.guestNode == node
+            {
+                return guest
+            }
+        }
+        return nil
+    }
 }

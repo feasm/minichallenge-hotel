@@ -25,9 +25,11 @@ class FloatButton: UIButton {
         self.position = position
         self.action = action
         self.addTarget(self, action: #selector(handleAction), for: .touchUpInside)
+        self.setImage(UIImage(named: action.rawValue), for: .normal)
         /*let tap = UITapGestureRecognizer(target: self, action: #selector(handleAction))
         self.addGestureRecognizer(tap)*/
     }
+    
     
     @objc func handleAction()
     {

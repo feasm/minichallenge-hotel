@@ -68,9 +68,7 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
     func createNode()
     {
         guestNode = GuestNode(texture: nil, color: .yellow, size: CGSize(width: 180, height: 300))
-        guestNode?.physicsBody?.fieldBitMask = 2
-        guestNode?.physicsBody?.collisionBitMask = 2
-        guestNode?.physicsBody?.contactTestBitMask = 2
+        guestNode?.name = "guest"
         guestNode?.delegate = self
     }
 
@@ -78,6 +76,12 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
 
 class GuestNode : BaseNode
 {
-    
+    override func setupPhysicsBody(size: CGSize) {
+        super.setupPhysicsBody(size: size)
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.categoryBitMask = 3
+        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.contactTestBitMask = 2
+    }
 }
 

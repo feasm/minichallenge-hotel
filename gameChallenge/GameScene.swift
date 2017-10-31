@@ -183,6 +183,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         var playerTarget: Target
         
         switch action {
+        case .CLEAN_FLOOR:
+            playerState = .CLEANING_FLOOR
+            playerTarget = Target(position: lastPosition)
         case .WALK_TO:
             playerState = .WALKING
             playerTarget = Target(position: lastPosition)
@@ -244,6 +247,11 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             return
         }
         
+        if pos.distance(to: beganTouchPosition) > 100
+        {
+            actionSelector?.hide()
+        }
+        
         if let camera = self.camera
         {
             var pos_cam_x = camera.position.x + (xPos - pos.x)
@@ -289,6 +297,10 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             {
                 actionSelector?.hide()
             }
+        }
+        else
+        {
+            actionSelector?.hide()
         }
         /*else
         {
@@ -376,7 +388,44 @@ extension GameScene : SKPhysicsContactDelegate
 {
     func didBegin(_ contact: SKPhysicsContact) {
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
-        print(collision)
-        print("Colidiu")
+        if collision == 3 | 2
+        {
+//            print(contact.bodyA.categoryBitMask)
+//            print(contact.bodyB.categoryBitMask)
+            //print("Guest colidiu com quarto")
+            var guestNode : GuestNode?
+            var building : Building?
+            
+            if contact.bodyA.node?.name == "guest"
+            {
+                guestNode = contact.bodyA.node as? GuestNode
+            }
+            else
+            {
+                guestNode = contact.bodyB.node as? GuestNode
+            }
+            
+            if contact.bodyA.node?.name == "building"
+            {
+                building = contact.bodyA.node as? Building
+            }
+            else
+            {
+                building = contact.bodyB.node as? Building
+            }
+            
+            if building != nil
+            {
+                building?.setAttribute(.DIRTY_FLOOR)
+            }
+            /*if let guest = GameModel.shared.lookForGuest(node: guestNode)
+            {
+                print(guest)
+            }*/
+        }
+    }
+    
+    func didEnd(_ contact: SKPhysicsContact) {
+        //
     }
 }
