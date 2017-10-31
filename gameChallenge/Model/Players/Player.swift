@@ -61,6 +61,7 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
         default:
             return
         }
+        
     }
     
     func actionEnded(action: Action) {

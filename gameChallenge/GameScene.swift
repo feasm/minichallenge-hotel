@@ -162,9 +162,11 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
     
     func choseFloor(floor: Int) {
         currentFloor = floor
-        player.setFloor(floor: floor)
         updateYCamera(floor: floor)
+        player.setFloor(floor: floor)
         targetCamera(target: (player.playerNode?.position)!)
+        
+        self.sendPlayerData(target: Target(floor: floor), state: .GO_TO_FLOOR)
         //GameModel.shared.hotel.buildAndRemove(to: self, floorID: floor)
         //self.size.width = GameModel.shared.hotel.getMaxWidth()
         
@@ -361,10 +363,6 @@ extension GameScene: GameKitHelperDelegate {
         GameKitHelper.shared.gameScene = self
     }
     
-    func movePlayer2(point: CGPoint) {
-//        self.player2.run(SKAction.move(to: point, duration: 0.1))
-    }
-    
     func sendPlayerData(target: Target, state: PlayerState) {
         let gameData = GameData(name: self.player.name, target: target, state: state)
         let encoder = JSONEncoder()
@@ -378,8 +376,13 @@ extension GameScene: GameKitHelperDelegate {
     func performAction(playerName: String, state: PlayerState, target: Target) {
         let player = GameModel.shared.players.findByName(name: playerName)
         
-        player?.target = target
-        player?.setState(state: state)
+        switch state {
+        case .GO_TO_FLOOR:
+            player?.setFloor(floor: target.floor!)
+        default:
+            player?.target = target
+            player?.setState(state: state)
+        }
     }
 }
 
