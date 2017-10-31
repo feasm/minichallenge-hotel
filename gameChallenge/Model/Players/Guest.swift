@@ -11,6 +11,7 @@ import SpriteKit
 
 class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
     var guestNode : GuestNode?
+    var index : Int?
     private var profile : Profile!
     
     static let MIN_GUEST_SPEED : CGFloat = 2

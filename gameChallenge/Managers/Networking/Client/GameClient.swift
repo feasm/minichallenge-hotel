@@ -16,7 +16,8 @@ class GameClient: GameNetworkingMixin {
         super.init()
     }
     
-    func setup() {
+    func setup(gameScene: GuestManagerDelegate) {
+        GuestManager.shared.setupAsClient(gameScene: gameScene)
         self.createPlayers()
     }
 }

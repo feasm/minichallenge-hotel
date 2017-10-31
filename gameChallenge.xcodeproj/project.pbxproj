@@ -43,6 +43,7 @@
 		BC24BE541FA7553F008C7361 /* GameNetworkingMixin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE531FA7553F008C7361 /* GameNetworkingMixin.swift */; };
 		BC24BE561FA75F57008C7361 /* DataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE551FA75F57008C7361 /* DataTypes.swift */; };
 		BC24BE581FA79E28008C7361 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC24BE571FA79E28008C7361 /* Array+Extensions.swift */; };
+		BC5897471FA906D800EE75AE /* BuildManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5897461FA906D800EE75AE /* BuildManager.swift */; };
 		BCD69DDC1FA3B9010093D409 /* GuestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD69DDB1FA3B9010093D409 /* GuestManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,7 @@
 		BC24BE531FA7553F008C7361 /* GameNetworkingMixin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetworkingMixin.swift; sourceTree = "<group>"; };
 		BC24BE551FA75F57008C7361 /* DataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypes.swift; sourceTree = "<group>"; };
 		BC24BE571FA79E28008C7361 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		BC5897461FA906D800EE75AE /* BuildManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildManager.swift; sourceTree = "<group>"; };
 		BCD69DDB1FA3B9010093D409 /* GuestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -263,6 +265,7 @@
 			children = (
 				BC24BE521FA75515008C7361 /* Networking */,
 				BC24BE401FA3D426008C7361 /* Guest */,
+				BC5897461FA906D800EE75AE /* BuildManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B9E2CEA1FA0F4CD005CABBB /* Profile.swift in Sources */,
+				BC5897471FA906D800EE75AE /* BuildManager.swift in Sources */,
 				BC24BE581FA79E28008C7361 /* Array+Extensions.swift in Sources */,
 				1BFA2ED51FA7A341005FEFBD /* Teleporter.swift in Sources */,
 				1B25D9221F9F5FB200C19087 /* FloatButton.swift in Sources */,

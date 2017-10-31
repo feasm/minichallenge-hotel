@@ -151,7 +151,7 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             
             self.networkingEngine = MultiplayerNetworking()
         } else {
-            GuestManager.shared.setup(gameScene: self, maxGuestsSpawn: 20)
+            GuestManager.shared.setupAsHost(gameScene: self, maxGuestsSpawn: 20)
         }
     }
     
@@ -166,7 +166,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         player.setFloor(floor: floor)
         targetCamera(target: (player.playerNode?.position)!)
         
-        self.sendPlayerData(target: Target(floor: floor), state: .GO_TO_FLOOR)
+        if GameModel.MULTIPLAYER_ON {
+            self.sendPlayerData(target: Target(floor: floor), state: .GO_TO_FLOOR)
+        }
         //GameModel.shared.hotel.buildAndRemove(to: self, floorID: floor)
         //self.size.width = GameModel.shared.hotel.getMaxWidth()
         
@@ -363,12 +365,22 @@ extension GameScene: GameKitHelperDelegate {
         GameKitHelper.shared.gameScene = self
     }
     
-    func sendPlayerData(target: Target, state: PlayerState) {
-        let gameData = GameData(name: self.player.name, target: target, state: state)
+    private func encodeData(gameData: GameData) -> String {
         let encoder = JSONEncoder()
         let data = try! encoder.encode(gameData)
+        return String(data: data, encoding: .utf8)!
+    }
+    
+    func sendPlayerData(target: Target, state: PlayerState) {
+        let gameData = GameData(messageType: .PLAYER_MESSAGE, name: self.player.name, target: target, state: state, guestIndex: nil)
+        let dataStr = self.encodeData(gameData: gameData)
         
-        let dataStr = String(data: data, encoding: .utf8)!
+        self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
+    }
+    
+    func sendActionData(messageType: MessageType) {
+        let gameData = GameData(messageType: messageType, name: nil, target: nil, state: nil, guestIndex: nil)
+        let dataStr = self.encodeData(gameData: gameData)
         
         self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
     }

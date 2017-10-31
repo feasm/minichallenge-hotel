@@ -148,7 +148,7 @@ extension GameKitHelper {
             if player?.alias == GKLocalPlayer.localPlayer().alias {
                 GameServer.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
             } else {
-                GameClient.shared.setup()
+                GameClient.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
             }
         })
         
@@ -171,7 +171,14 @@ extension GameKitHelper {
             let decoder = JSONDecoder()
             let gameData = try! decoder.decode(GameData.self, from: jsonData)
             
-            self.gameScene?.performAction(playerName: gameData.name, state: gameData.state, target: gameData.target)
+            switch gameData.messageType {
+            case .PLAYER_MESSAGE:
+                self.gameScene?.performAction(playerName: gameData.name!, state: gameData.state!, target: gameData.target!)
+            case .GUEST_MESSAGE:
+                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)
+            case .SPAWN_GUEST:
+                GuestManager.shared.spawnGuest()
+            }
         } else {
             print("not a valid UTF-8 sequence")
         }

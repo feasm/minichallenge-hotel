@@ -17,8 +17,19 @@ class GameServer: GameNetworkingMixin {
     }
     
     func setup(gameScene: GuestManagerDelegate) {
-        GuestManager.shared.setup(gameScene: gameScene, maxGuestsSpawn: 10)
+        GuestManager.shared.setupAsHost(gameScene: gameScene, maxGuestsSpawn: 10)
+        GameModel.shared.isHost = true
         
         self.createPlayers()
+    }
+}
+
+// MARK: GuestMethods
+extension GameServer {
+    func sendGuestData(target: Target, state: PlayerState, guestIndex: Int) {
+        let gameData = GameData(messageType: .GUEST_MESSAGE, name: nil, target: target, state: state, guestIndex: guestIndex)
+        let dataStr = self.encodeData(gameData: gameData)
+        
+        self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
     }
 }
