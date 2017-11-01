@@ -136,6 +136,11 @@ class Floor
                     case .STAIRS:
                         actions.append(.USE_TELEPORTER)
                         fallthrough
+                    case .RECEPTION:
+                        if !GameModel.shared.receptionTaken {
+                            actions.append(.ENTER_RECEPTION)
+                        }
+                        fallthrough
                     default:
                         actions.append(.WALK_TO)
                 }
@@ -152,4 +157,15 @@ class Floor
         }
     }
     
+}
+
+// MARK: BuildManager
+extension Floor {
+    func tryRemoveDirty(centerPoint: CGPoint) {
+        for build in self.buildings {
+            if build.position == centerPoint {
+                build.removeAttribute(.DIRTY_FLOOR)
+            }
+        }
+    }
 }

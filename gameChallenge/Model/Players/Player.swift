@@ -25,19 +25,26 @@ class Target: Codable
 class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
 {
     var playerNode : PlayerNode?
-    
+    let networkingEngine: MultiplayerNetworking = MultiplayerNetworking()
     static let MIN_PLAYER_SPEED : CGFloat = 8
     
     func didChangeState(from: PlayerState, to state: PlayerState) {
+        if from == .ON_RECEPTION {
+            self.playerNode?.alpha = 1.0
+        }
+        
         self.state = state
         switch self.state as PlayerState {
+        case .ON_RECEPTION:
+            self.playerNode?.alpha = 0.5
+            GameModel.shared.receptionTaken = true
         case .CLEANING_FLOOR:
             if let build = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getBuilding(at: target.position!)
             {
                 let position = build.position + build.centerPoint
                 self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: position, speed: Player.MIN_PLAYER_SPEED)]), Action(type: .CLEAN_FLOOR, actions: [SKAction.wait(forDuration: 3)]), Action(type: .NONE, actions: [SKAction.run {
                         build.removeAttribute(.DIRTY_FLOOR)
-                        
+                        BuildManager.shared.sendBuildData(messageType: .REMOVE_DIRTY, centerPoint: build.position)
                     }])]
                 playerNode?.applyAction(nextAction()!)
             }
@@ -63,6 +70,11 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
             return
         }
         
+        if GameModel.MULTIPLAYER_ON && self.name == GameModel.shared.players.first!.name {
+            print(self.target)
+            print(self.state)
+            self.sendPlayerData(target: self.target, state: self.state)
+        }
     }
     
     func actionEnded(action: Action) {
@@ -119,5 +131,21 @@ class PlayerNode: BaseNode {
         {
             self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.3)), withKey: "animation")
         }
+    }
+}
+
+// MARK: Player NetworkingEngine
+extension Player {
+    private func encodeData(gameData: GameData) -> String {
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(gameData)
+        return String(data: data, encoding: .utf8)!
+    }
+    
+    func sendPlayerData(target: Target, state: PlayerState) {
+        let gameData = GameData(messageType: .PLAYER_MESSAGE, name: self.name, target: target, state: state, guestIndex: nil, centerPoint: nil)
+        let dataStr = self.encodeData(gameData: gameData)
+        
+        self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
     }
 }

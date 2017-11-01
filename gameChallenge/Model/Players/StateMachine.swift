@@ -16,6 +16,7 @@ enum PlayerState : String, Codable {
     case GO_TO_ROOM = "ps_gotoroom"
     case CLEANING_ROOM = "ps_cleaningroom"
     case CLEANING_FLOOR = "ps_cleaningfloor"
+    case ON_RECEPTION = "ps_onreception"
 }
 
 protocol StateMachineDelegate {

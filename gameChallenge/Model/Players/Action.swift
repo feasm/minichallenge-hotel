@@ -17,6 +17,7 @@ enum ActionTypes : String, Codable
     case WALK_TO = "a_walk"
     case USE_TELEPORTER = "a_teleporter"
     case CHANGE_FLOOR = "a_change_floor"
+    case ENTER_RECEPTION = "a_enter_reception"
 }
 
 class Action {

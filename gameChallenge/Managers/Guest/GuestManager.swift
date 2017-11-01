@@ -110,12 +110,14 @@ extension GuestManager {
         
         self.queueManager.addGuest(guest: newGuest!)
         
-        if GameModel.shared.isHost {
+        if GameModel.shared.isHost || !GameModel.MULTIPLAYER_ON {
             if self.currentGuestsSpawn == self.maxGuestsSpawn {
                 self.stopSpawner()
             } else {
                 self.prepareNextSpawn()
-                self.gameScene?.sendActionData(messageType: .SPAWN_GUEST)
+                if GameModel.MULTIPLAYER_ON {
+                    self.gameScene?.sendActionData(messageType: .SPAWN_GUEST)
+                }
             }
         }
         

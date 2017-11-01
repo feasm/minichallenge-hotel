@@ -178,6 +178,10 @@ extension GameKitHelper {
                 GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)
             case .SPAWN_GUEST:
                 GuestManager.shared.spawnGuest()
+            case .REMOVE_DIRTY:
+                BuildManager.shared.removeDirty(centerPoint: gameData.centerPoint!)
+            default:
+                return
             }
         } else {
             print("not a valid UTF-8 sequence")

@@ -68,7 +68,8 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
     
     func createNode()
     {
-        guestNode = GuestNode(texture: nil, color: .yellow, size: CGSize(width: 180, height: 300))
+        let texture = SKTexture(imageNamed: "alien_walk1")
+        guestNode = GuestNode(texture: texture, color: .yellow, size: texture.size())
         guestNode?.name = "guest"
         guestNode?.delegate = self
     }
@@ -84,5 +85,18 @@ class GuestNode : BaseNode
         self.physicsBody?.collisionBitMask = 0
         self.physicsBody?.contactTestBitMask = 2
     }
+    
+    override func applyAction(_ action: Action) {
+        super.applyAction(action)
+        var textures : [SKTexture] = []
+        for i in 1...4
+        {
+            textures.append(SKTexture(imageNamed: "alien_walk\(i)"))
+        }
+        
+        if (action.type == .WALK_TO)
+        {
+            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.3)), withKey: "animation")
+        }
+    }
 }
-

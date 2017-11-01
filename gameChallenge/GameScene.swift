@@ -189,25 +189,20 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         var playerTarget: Target
         
         switch action {
+        case .ENTER_RECEPTION:
+            currentPlayer.setState(state: .ON_RECEPTION)
         case .CLEAN_FLOOR:
-            playerState = .CLEANING_FLOOR
-            playerTarget = Target(position: lastPosition)
+            currentPlayer.target = Target(position: lastPosition)
+            currentPlayer.setState(state: .CLEANING_FLOOR)
         case .WALK_TO:
-            playerState = .WALKING
-            playerTarget = Target(position: lastPosition)
+            currentPlayer.target = Target(position: lastPosition)
+            currentPlayer.setState(state: .WALKING)
         case .USE_TELEPORTER:
-            playerState = .GO_TO_FLOOR
-            playerTarget = Target(floor: 1)
+            currentPlayer.target = Target(floor: 1)
+            currentPlayer.setState(state: .GO_TO_FLOOR)
         //chooseFloor(floor: 1)
         default:
             return
-        }
-        
-        currentPlayer.target = playerTarget
-        currentPlayer.setState(state: playerState)
-        
-        if broadcast && GameModel.MULTIPLAYER_ON {
-            self.sendPlayerData(target: playerTarget, state: playerState)
         }
     }
     
@@ -374,14 +369,14 @@ extension GameScene: GameKitHelperDelegate {
     }
     
     func sendPlayerData(target: Target, state: PlayerState) {
-        let gameData = GameData(messageType: .PLAYER_MESSAGE, name: self.player.name, target: target, state: state, guestIndex: nil)
+        let gameData = GameData(messageType: .PLAYER_MESSAGE, name: self.player.name, target: target, state: state, guestIndex: nil, centerPoint: nil)
         let dataStr = self.encodeData(gameData: gameData)
         
         self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
     }
     
     func sendActionData(messageType: MessageType) {
-        let gameData = GameData(messageType: messageType, name: nil, target: nil, state: nil, guestIndex: nil)
+        let gameData = GameData(messageType: messageType, name: nil, target: nil, state: nil, guestIndex: nil, centerPoint: nil)
         let dataStr = self.encodeData(gameData: gameData)
         
         if GameModel.MULTIPLAYER_ON
@@ -396,6 +391,9 @@ extension GameScene: GameKitHelperDelegate {
         switch state {
         case .GO_TO_FLOOR:
             player?.setFloor(floor: target.floor!)
+        case .ON_RECEPTION:
+            GameModel.shared.receptionTaken = true
+            player?.setState(state: state)
         default:
             player?.target = target
             player?.setState(state: state)

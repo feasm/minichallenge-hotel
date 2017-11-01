@@ -23,4 +23,5 @@ struct GameData: Codable {
     let target: Target?
     let state: PlayerState?
     let guestIndex: Int?
+    let centerPoint: CGPoint?
 }

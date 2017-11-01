@@ -27,7 +27,7 @@ class GameServer: GameNetworkingMixin {
 // MARK: GuestMethods
 extension GameServer {
     func sendGuestData(target: Target, state: PlayerState, guestIndex: Int) {
-        let gameData = GameData(messageType: .GUEST_MESSAGE, name: nil, target: target, state: state, guestIndex: guestIndex)
+        let gameData = GameData(messageType: .GUEST_MESSAGE, name: nil, target: target, state: state, guestIndex: guestIndex, centerPoint: nil)
         let dataStr = self.encodeData(gameData: gameData)
         
         self.networkingEngine.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
