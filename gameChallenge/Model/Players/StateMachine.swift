@@ -14,9 +14,11 @@ enum PlayerState : String, Codable {
     case ON_THE_LINE = "ps_line"
     case GO_TO_FLOOR = "ps_gotofloor"
     case GO_TO_ROOM = "ps_gotoroom"
+    case ENTER_ROOM = "ps_enterroom"
     case CLEANING_ROOM = "ps_cleaningroom"
     case CLEANING_FLOOR = "ps_cleaningfloor"
-    case ON_RECEPTION = "ps_onreception"
+    case GO_TO_RECEPTION = "ps_onreception"
+    case LEAVE_HOTEL = "ps_leavehotel"
 }
 
 protocol StateMachineDelegate {

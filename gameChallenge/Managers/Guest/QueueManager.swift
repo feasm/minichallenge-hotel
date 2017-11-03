@@ -25,11 +25,11 @@ class QueueManager {
         }
     }
     
-    func sendToRoom() {
+    func sendToRoom(floor: Int, room: Int) {
         let guest = self.removeFromQueue()
         self.readjustQueue()
         
-        guest.target = Target(position: nil, floor: 1, room: 2)
+        guest.target = Target(position: nil, floor: floor, room: room)
         guest.setState(state: .GO_TO_FLOOR)
         
         GameServer.shared.sendGuestData(target: guest.target, state: .GO_TO_FLOOR, guestIndex: guest.index!)
@@ -72,7 +72,7 @@ class QueueManager {
         return self.guests.removeFirst()
     }
     
-    private func getLastQueuePosition() -> CGPoint {
+    func getLastQueuePosition() -> CGPoint {
         let positionOffset = CGPoint(x: QueueManager.POSITION_OFFSET * self.guests.count, y: 0)
         
         return self.startPosition + positionOffset

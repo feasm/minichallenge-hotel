@@ -104,11 +104,19 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
     var currentFloor : Int!
     var selection : Bool = true
     var yCamera : CGFloat = 0
+    var HPBar : SKSpriteNode!
+    var GameOver : SKLabelNode!
+    var Score : SKLabelNode!
     
     private(set) var networkingEngine: MultiplayerNetworking!
     
     override func didMove(to view: SKView) {
         GameModel.shared.hotel.buildHotel(to: self)
+        
+        HPBar = self.camera?.childNode(withName: "HPBar") as! SKSpriteNode
+        GameOver = self.camera?.childNode(withName: "GameOver") as! SKLabelNode
+        Score = self.camera?.childNode(withName: "Score") as! SKLabelNode
+        GameOver.alpha = 0
         
         player = GameModel.shared.players.first!
         player.createNode()
@@ -120,6 +128,7 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
         targetCamera(target: (player.playerNode?.position)!)
         
         GameModel.shared.teleporter.delegate = self
+        GameModel.shared.reception.delegate = self
         self.size.width = GameModel.shared.hotel.getMaxWidth()
         
         print(GameModel.shared.hotel.availableRoomsAtHotel())
@@ -185,12 +194,9 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
             currentPlayer = player!
         }
         
-        var playerState: PlayerState
-        var playerTarget: Target
-        
         switch action {
         case .ENTER_RECEPTION:
-            currentPlayer.setState(state: .ON_RECEPTION)
+            currentPlayer.setState(state: .GO_TO_RECEPTION)
         case .CLEAN_FLOOR:
             currentPlayer.target = Target(position: lastPosition)
             currentPlayer.setState(state: .CLEANING_FLOOR)
@@ -336,7 +342,7 @@ class GameScene: SKScene, FloatActionSelectorDelegate, TeleporterDelegate {
 // MARK: GuestManagerDelegate
 extension GameScene: GuestManagerDelegate {
     func spawnGuest() -> Guest {
-        let currentFloor = GameModel.shared.hotel.loadFloor(floorID: player.floor)!
+        let currentFloor = GameModel.shared.hotel.loadFloor(floorID: 0)!
         let guestPosition = currentFloor.getReceptionPosition()
         
         let guest = Guest(profile: Profile(name: "Teste"))
@@ -391,9 +397,8 @@ extension GameScene: GameKitHelperDelegate {
         switch state {
         case .GO_TO_FLOOR:
             player?.setFloor(floor: target.floor!)
-        case .ON_RECEPTION:
-            GameModel.shared.receptionTaken = true
-            player?.setState(state: state)
+        case .GO_TO_RECEPTION:
+            player?.enterReception()
         default:
             player?.target = target
             player?.setState(state: state)
@@ -408,8 +413,8 @@ extension GameScene : SKPhysicsContactDelegate
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         if collision == 3 | 2
         {
-//            print(contact.bodyA.categoryBitMask)
-//            print(contact.bodyB.categoryBitMask)
+            //            print(contact.bodyA.categoryBitMask)
+            //            print(contact.bodyB.categoryBitMask)
             //print("Guest colidiu com quarto")
             var guestNode : GuestNode?
             var building : Building?
@@ -434,16 +439,101 @@ extension GameScene : SKPhysicsContactDelegate
             
             if building != nil
             {
-                building?.setAttribute(.DIRTY_FLOOR)
+                if (building?.getAttribute(.DIRTY_FLOOR))! {
+                    self.changeHP(value: 10)
+                }
             }
             /*if let guest = GameModel.shared.lookForGuest(node: guestNode)
-            {
-                print(guest)
-            }*/
+             {
+             print(guest)
+             }*/
         }
     }
     
     func didEnd(_ contact: SKPhysicsContact) {
-        //
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        if collision == 3 | 2
+        {
+            //            print(contact.bodyA.categoryBitMask)
+            //            print(contact.bodyB.categoryBitMask)
+            //print("Guest colidiu com quarto")
+            var guestNode : GuestNode?
+            var building : Building?
+            
+            if contact.bodyA.node?.name == "guest"
+            {
+                guestNode = contact.bodyA.node as? GuestNode
+            }
+            else
+            {
+                guestNode = contact.bodyB.node as? GuestNode
+            }
+            
+            if contact.bodyA.node?.name == "building"
+            {
+                building = contact.bodyA.node as? Building
+            }
+            else
+            {
+                building = contact.bodyB.node as? Building
+            }
+            
+            if building != nil && building?.type == .SIMPLE_ROOM
+            {
+                building?.setAttribute(.DIRTY_FLOOR)
+            }
+            /*if let guest = GameModel.shared.lookForGuest(node: guestNode)
+             {
+             print(guest)
+             }*/
+        }
+    }
+}
+
+extension GameScene: ReceptionDelegate {
+    func sendToRoom(floor: Int, room: Int) {
+        GuestManager.shared.queueManager.sendToRoom(floor: floor, room: room)
+        
+        if GameModel.shared.HP > 0 {
+            let newScore = Int(Score.text!)! + 100
+            Score.text = "\(newScore)"
+        }
+    }
+}
+
+extension GameScene {
+    func changeHP(value: Float) {
+        if GameModel.shared.HP > 0 {
+            GameModel.shared.HP -= value
+            let SHAKE_OFFSET: CGFloat = 20
+            
+            let shakeUp = SKAction.moveBy(x: 0, y: SHAKE_OFFSET, duration: 0.1)
+            let shakeDown = SKAction.moveBy(x: 0, y: -SHAKE_OFFSET, duration: 0.1)
+            let shake = SKAction.group([
+                    shakeUp,
+                    shakeDown
+                ])
+            let shakeRepeat = SKAction.repeat(shake, count: 4)
+            
+            let resizeBar = SKAction.resize(byWidth: CGFloat(-value), height: 0, duration: 1)
+            let moveBar = SKAction.moveBy(x: CGFloat(-value * 3), y: 0, duration: 1)
+            let checkGameOver = SKAction.run({
+                if GameModel.shared.HP <= 0 {
+                    GameModel.shared.teleporter.hideTeleporter()
+                    GameModel.shared.reception.hideReception()
+                    self.GameOver.run(SKAction.fadeIn(withDuration: 1))
+                    self.HPBar.run(SKAction.resize(toWidth: 0, duration: 0))
+                }
+            })
+            
+            HPBar.run(SKAction.group(
+                [
+                    resizeBar,
+                    moveBar,
+                    shakeRepeat,
+                    checkGameOver
+                ]
+            ))
+        }
     }
 }

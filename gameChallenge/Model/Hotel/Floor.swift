@@ -133,13 +133,13 @@ class Floor
                 
                 switch build.type as BuildingType
                 {
-                    case .STAIRS:
-                        actions.append(.USE_TELEPORTER)
-                        fallthrough
                     case .RECEPTION:
                         if !GameModel.shared.receptionTaken {
                             actions.append(.ENTER_RECEPTION)
+                            actions.append(.WALK_TO)
                         }
+                    case .STAIRS:
+                        actions.append(.USE_TELEPORTER)
                         fallthrough
                     default:
                         actions.append(.WALK_TO)

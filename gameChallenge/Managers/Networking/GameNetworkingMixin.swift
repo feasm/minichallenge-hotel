@@ -14,7 +14,7 @@ class GameNetworkingMixin {
     func createPlayers() {
         GKPlayer.loadPlayers(forIdentifiers: (GameKitHelper.shared.match?.playerIDs)!) { (player, error) in
             guard error == nil else {
-                print("Error retrieving player info: \(error?.localizedDescription)")
+                print("Error retrieving player info: \(String(describing: error?.localizedDescription))")
                 return
             }
             self.setLocalPlayer()

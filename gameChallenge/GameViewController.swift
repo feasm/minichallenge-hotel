@@ -52,6 +52,10 @@ class GameViewController: UIViewController {
         let teleporter = GameModel.shared.teleporter
         teleporter.frame = self.view.frame
         view.addSubview(teleporter)
+        
+        let reception = GameModel.shared.reception
+        reception.frame = self.view.frame
+        view.addSubview(reception)
     }
     
     @objc func showAuthenticationViewController() {
@@ -59,7 +63,7 @@ class GameViewController: UIViewController {
     }
     
     @objc func playerAuthenticated() {
-        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 2, maxPlayers: 2, viewController: self, delegate: gameView.scene as! GameKitHelperDelegate)
+        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 3, maxPlayers: 4, viewController: self, delegate: gameView.scene as! GameKitHelperDelegate)
     }
 
     override var shouldAutorotate: Bool {

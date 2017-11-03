@@ -73,7 +73,7 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     override init(frame: CGRect) {
         super.init(frame: frame)
         alpha = 0
-        backgroundColor = .blue
+        backgroundColor = .black
         setupViews()
         
         floors["0"] = 0
@@ -92,6 +92,7 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         collectionView.delegate = self
         collectionView.register(TeleporterCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.backgroundColor = UIColor.red
+        
         collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         collectionView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         collectionView.widthAnchor.constraint(equalToConstant: 175).isActive = true
@@ -107,13 +108,13 @@ class Teleporter : UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         }
         self.alpha = 0
         UIView.animate(withDuration: 1) {
-            self.alpha = 1
+            self.alpha = 0.5
         }
     }
     
     func hideTeleporter()
     {
-        self.alpha = 1
+        self.alpha = 0.5
         UIView.animate(withDuration: 1) {
             self.alpha = 0
         }

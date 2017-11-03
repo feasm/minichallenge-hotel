@@ -106,7 +106,7 @@ extension GameKitHelper {
         //let playerIDs = self.match?.players.map{$0.playerID} as! [String]
         GKPlayer.loadPlayers(forIdentifiers: (self.match?.playerIDs)!) { (player, error) in
             guard error == nil else {
-                print("Error retrieving player info: \(error?.localizedDescription)")
+                print("Error retrieving player info: \(String(describing: error?.localizedDescription))")
                 self._matchStarted = false
                 self.gameScene?.matchEnded()
                 return
@@ -180,8 +180,6 @@ extension GameKitHelper {
                 GuestManager.shared.spawnGuest()
             case .REMOVE_DIRTY:
                 BuildManager.shared.removeDirty(centerPoint: gameData.centerPoint!)
-            default:
-                return
             }
         } else {
             print("not a valid UTF-8 sequence")

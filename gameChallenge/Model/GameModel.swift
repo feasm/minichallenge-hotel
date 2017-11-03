@@ -17,8 +17,11 @@ class GameModel
     var guests : [Guest] = []
     var hotel : Hotel!
     let teleporter : Teleporter = Teleporter()
+    let reception : Reception = Reception()
     var isHost: Bool = false
     var receptionTaken: Bool = false
+    
+    var HP: Float = 104
     
     private init()
     {

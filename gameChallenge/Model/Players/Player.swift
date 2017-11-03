@@ -29,23 +29,39 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
     static let MIN_PLAYER_SPEED : CGFloat = 8
     
     func didChangeState(from: PlayerState, to state: PlayerState) {
-        if from == .ON_RECEPTION {
+        if state != .WAITING_FOR_ACTION {
             self.playerNode?.alpha = 1.0
+            GameModel.shared.receptionTaken = false
         }
         
         self.state = state
         switch self.state as PlayerState {
-        case .ON_RECEPTION:
-            self.playerNode?.alpha = 0.5
-            GameModel.shared.receptionTaken = true
+        case .GO_TO_RECEPTION:
+            let reception = GuestManager.shared.queueManager.startPosition - CGPoint(x: 200, y: 0)
+            
+            self.actions = [
+                Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: reception, speed: Player.MIN_PLAYER_SPEED)]),
+                Action(type: .ON_RECEPTION, actions: [
+                        SKAction.run {
+                            self.enterReception()
+                            GameModel.shared.reception.showReception()
+                        }
+                    ]
+                )
+            ]
+            playerNode?.applyAction(nextAction()!)
         case .CLEANING_FLOOR:
+            self.playerNode?.TIME_PER_FRAME = 0.02
+            
             if let build = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getBuilding(at: target.position!)
             {
                 let position = build.position + build.centerPoint
-                self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: position, speed: Player.MIN_PLAYER_SPEED)]), Action(type: .CLEAN_FLOOR, actions: [SKAction.wait(forDuration: 3)]), Action(type: .NONE, actions: [SKAction.run {
-                        build.removeAttribute(.DIRTY_FLOOR)
-                        BuildManager.shared.sendBuildData(messageType: .REMOVE_DIRTY, centerPoint: build.position)
-                    }])]
+                self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (playerNode?.position)!, to: position, speed: Player.MIN_PLAYER_SPEED)]),
+                        Action(type: .CLEAN_FLOOR, actions: [SKAction.wait(forDuration: 3)]), Action(type: .NONE, actions: [SKAction.run {
+                                self.playerNode?.TIME_PER_FRAME = 0.2
+                                build.removeAttribute(.DIRTY_FLOOR)
+                                BuildManager.shared.sendBuildData(messageType: .REMOVE_DIRTY, centerPoint: build.position)
+                            }])]
                 playerNode?.applyAction(nextAction()!)
             }
             else
@@ -71,8 +87,6 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
         }
         
         if GameModel.MULTIPLAYER_ON && self.name == GameModel.shared.players.first!.name {
-            print(self.target)
-            print(self.state)
             self.sendPlayerData(target: self.target, state: self.state)
         }
     }
@@ -116,11 +130,19 @@ class Player : CommonData, StateMachineDelegate, BaseNodeDelegate
         super.setFloor(floor: floorID)
         self.playerNode?.setPositionByFloor(nil, floor: floorID)
     }
+    
+    func enterReception() {
+        self.playerNode?.alpha = 0.5
+        GameModel.shared.receptionTaken = true
+    }
 }
 
 class PlayerNode: BaseNode {
+    var TIME_PER_FRAME = 0.2
+    
     override func applyAction(_ action: Action) {
         super.applyAction(action)
+        
         var textures : [SKTexture] = []
         for i in 1...4
         {
@@ -129,7 +151,7 @@ class PlayerNode: BaseNode {
         
         if (action.type == .WALK_TO)
         {
-            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.3)), withKey: "animation")
+            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: TIME_PER_FRAME)), withKey: "animation")
         }
     }
 }

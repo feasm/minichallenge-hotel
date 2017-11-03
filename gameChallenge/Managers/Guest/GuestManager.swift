@@ -15,12 +15,12 @@ protocol GuestManagerDelegate {
 
 class GuestManager {
     // Managers
-    private var queueManager: QueueManager!
+    var queueManager: QueueManager!
     
     // Constants
     static let shared: GuestManager = GuestManager()
-    static let MIN_SPAWN_TIMER: Double = 1
-    static let MAX_SPAWN_TIMER: Double = 10
+    static let MIN_SPAWN_TIMER: Double = 5
+    static let MAX_SPAWN_TIMER: Double = 15
     static let DEBUG: Bool = true
     
     // MARK: GuestsProperties
@@ -40,7 +40,7 @@ class GuestManager {
     }
     
     func initQueueManager() {
-        let currentFloor = GameModel.shared.hotel.loadFloor(floorID: GameModel.shared.players.first!.floor)!
+        let currentFloor = GameModel.shared.hotel.loadFloor(floorID: 0)!
         let receptionPosition = currentFloor.getReceptionPosition() - CGPoint(x: 1200, y: 0)
         
         self.queueManager = QueueManager(startPosition: receptionPosition)
@@ -79,7 +79,7 @@ extension GuestManager {
         self.prepareNextSpawn()
         
         // Configurado removedor de guests da fila para testes, remover após implementar o envio para o quarto
-        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
+//        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
         
         if GameModel.DEBUG {
             print("Spawner configured")
@@ -128,14 +128,20 @@ extension GuestManager {
     
     @objc private func sendToRoom() {
         if queueManager.guests.count > 0 {
-            queueManager.sendToRoom()
+            queueManager.sendToRoom(floor: 1, room: 2)
         }
     }
     
     func updateGuest(guestIndex: Int, state: PlayerState, target: Target) {
         let guest = self.guests[guestIndex]
         
-        guest.target = Target(position: nil, floor: 1, room: 2)
-        guest.setState(state: .GO_TO_FLOOR)
+        guest.target = target
+        guest.setState(state: state)
+        
+        if GameModel.shared.HP > 0 {
+            let scene = gameScene as! GameScene
+            let newScore = Int(scene.Score.text!)! + 100
+            scene.Score.text = "\(newScore)"
+        }
     }
 }

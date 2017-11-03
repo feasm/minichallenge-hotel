@@ -19,6 +19,24 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
     func didChangeState(from: PlayerState, to: PlayerState) {
         state = to
         switch self.state as PlayerState {
+        case .LEAVE_HOTEL:
+            let teleporter = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getTeleporterPosition()
+            
+            let teleporter_first = GameModel.shared.hotel.loadFloor(floorID: 0)?.getTeleporterPosition()
+            let hotel_exit = teleporter_first! + CGPoint(x: 2200, y: 0)
+            
+            self.actions = [
+                Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (guestNode?.position)!, to: teleporter!, speed: Guest.MIN_GUEST_SPEED)]),
+                Action(type: .CHANGE_FLOOR, actions: [SKAction.wait(forDuration: 2), SKAction.run {
+                        self.guestNode?.alpha = 0
+                        self.setFloor(floor: 0)
+                }]),
+                Action(type: .WALK_TO, actions: [SKAction.run {
+                    self.guestNode?.alpha = 1
+                    }]),
+                Action(type: .WALK_TO, actions: [SKAction.walkTo(from: teleporter_first!, to: hotel_exit, speed: Guest.MIN_GUEST_SPEED)])
+            ]
+            guestNode?.applyAction(nextAction()!)
         case .GO_TO_FLOOR:
             let teleporter = GameModel.shared.hotel.loadFloor(floorID: self.floor)?.getTeleporterPosition()
             //let teleporterEnd = GameModel.shared.hotel.loadFloor(floorID: self.target.floor!)?.getTeleporterPosition()
@@ -32,7 +50,19 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
              guestNode?.applyAction(nextAction()!)
         case .GO_TO_ROOM:
             let roomPos = GameModel.shared.hotel.loadFloor(floorID: self.target.floor!)?.getRoomPosition(room: target.room!)
-            self.actions = [Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (guestNode?.position)!, to: roomPos!, speed: Guest.MIN_GUEST_SPEED)])]
+            self.actions = [
+                Action(type: .WALK_TO, actions: [SKAction.walkTo(from: (guestNode?.position)!, to: roomPos!, speed: Guest.MIN_GUEST_SPEED)]),
+                Action(type: .WALK_TO, actions: [SKAction.run {
+                        self.setState(state: .ENTER_ROOM)
+                    }])
+            ]
+            guestNode?.applyAction(nextAction()!)
+        case .ENTER_ROOM:
+            self.actions = [
+                Action(type: .NONE, actions: [SKAction.run {
+                    self.enterRoom()
+                }])
+            ]
             guestNode?.applyAction(nextAction()!)
         default:
             return
@@ -57,6 +87,25 @@ class Guest: CommonData, StateMachineDelegate, BaseNodeDelegate {
     {
         super.setFloor(floor: floorID)
         self.guestNode?.setPositionByFloor(nil, floor: floorID)
+    }
+    
+    func enterRoom() {
+//        let fadeOut = SKAction.fadeOut(withDuration: 1)
+//        let moveUp = SKAction.moveBy(x: 0, y: 100, duration: 1)
+//        let enterRoom = SKAction.group([
+//                fadeOut,
+//                moveUp
+//        ])
+//        self.guestNode?.run(enterRoom)
+        
+        Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(leaveHotel), userInfo: nil, repeats: false)
+    }
+    
+    @objc func leaveHotel() {
+        self.target = Target(position: GuestManager.shared.queueManager.startPosition + CGPoint(x: 1500, y: 0), floor: 0)
+        self.setState(state: .LEAVE_HOTEL)
+        
+        GameServer.shared.sendGuestData(target: self.target, state: .LEAVE_HOTEL, guestIndex: self.index!)
     }
     
     init(profile: Profile)
@@ -96,7 +145,7 @@ class GuestNode : BaseNode
         
         if (action.type == .WALK_TO)
         {
-            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.3)), withKey: "animation")
+            self.run(SKAction.repeatForever(SKAction.animate(with: textures, timePerFrame: 0.2)), withKey: "animation")
         }
     }
 }

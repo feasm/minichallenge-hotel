@@ -17,7 +17,7 @@ class GameServer: GameNetworkingMixin {
     }
     
     func setup(gameScene: GuestManagerDelegate) {
-        GuestManager.shared.setupAsHost(gameScene: gameScene, maxGuestsSpawn: 10)
+        GuestManager.shared.setupAsHost(gameScene: gameScene, maxGuestsSpawn: 50)
         GameModel.shared.isHost = true
         
         self.createPlayers()
