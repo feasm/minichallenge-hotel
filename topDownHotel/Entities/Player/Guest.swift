@@ -17,7 +17,7 @@ class Guest: BaseEntity {
     init(position: CGPoint) {
         super.init()
         
-        let vc = VisualComponent(position: position, color: .yellow)
+        let vc = VisualComponent(position: position, color: .yellow, physics: true)
         vc.sprite.zPosition = 10
         self.addComponent(vc)
         

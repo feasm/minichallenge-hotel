@@ -6,7 +6,7 @@
 //  Copyright © 2017 Adonay Puszczynski. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum MessageType: String, Codable {
     case PLAYER_MESSAGE = "player_message"
@@ -36,8 +36,16 @@ class CommonData: GameData {
 
 
 class PlayerData: CommonData {
-    override init(messageType: MessageType) {
+    var name: String!
+    var target: Target!
+    var position: CGPoint!
+    
+    init(name: String, target: Target, position: CGPoint) {
         super.init(messageType: .PLAYER_MESSAGE)
+        
+        self.name = name
+        self.target = target
+        self.position = position
     }
     
     required init(from decoder: Decoder) throws {

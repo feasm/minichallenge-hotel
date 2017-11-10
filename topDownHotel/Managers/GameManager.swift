@@ -18,27 +18,41 @@ class GameManager {
     
     // MARK: - Private
     private weak var scene: SKScene?
+    {
+        didSet {
+            if let gameScene = scene as? GameScene {
+                self.gameScene = gameScene
+            }
+            else {
+                self.gameScene = nil
+            }
+        }
+    }
+    
+    private(set) weak var gameScene : GameScene?
+    
     private(set) var player : Player!
     private(set) var tileMap : SKTileMapNode?
     private(set) var guests : [Guest] = []
+    private(set) var buildings : [Building] = []
+    private(set) var rooms : [Room] = []
     
-    
-    
-    private init()
-    {
-        
+    private init() {
+        BuildManager.shared.delegate = self
     }
     
     // MARK: - Public
     var players = [Player]()
 
-    func configureFor(scene: SKScene)
-    {
+    func configureFor(scene: SKScene) {
         self.scene = scene
         player = Player(position: .zero)
         addEntity(entity: player)
         
         directionalPad.showPad()
+        
+        //Building
+        BuildManager.shared.buildRooms()
         
         if let scene = scene as? GameScene
         {
@@ -56,6 +70,8 @@ class GameManager {
         switch entity {
             case is Player: player = entity as! Player
             case is Guest: guests.append(entity as! Guest)
+            case is Building : buildings.append(entity as! Building)
+            case is Room : rooms.append(entity as! Room)
             default: break
         }
         
@@ -72,6 +88,14 @@ class GameManager {
     }
 }
 
+//MARK -> Entities Delegates
+
+extension GameManager : BuildManagerDelegate
+{
+    func addBuild(_ build: Building) {
+        addEntity(entity: build)
+    }
+}
 
 //MARK -> Guests methods
 
@@ -96,7 +120,7 @@ extension GameManager
     func movementPositionByTile(from position: CGPoint, tile: CGPoint) -> CGPoint {
         if let scene = scene as? GameScene
         {
-            let currentTile = scene.tilePosition(position: position)
+            let currentTile = BuildManager.tilePosition(position: position, tileMap: scene.backgroundTileMap)
             let finalTile = currentTile + tile
             return scene.validPosition(position: finalTile)
         }
