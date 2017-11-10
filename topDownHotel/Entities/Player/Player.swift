@@ -24,7 +24,7 @@ class Player : BaseEntity
     init(position: CGPoint) {
         super.init()
         
-        let vc = VisualComponent(position: position, color: .red)
+        let vc = VisualComponent(position: position, color: .red, physics: true)
         vc.sprite.zPosition = 10
         self.addComponent(vc)
 
@@ -64,11 +64,9 @@ class Player : BaseEntity
        
         }
         
-        /*guard let vc = component(ofType: VisualComponent.self) else {
-            return
-        }*/
         target = Target(tile: CGPoint(x: dx, y: dy))
         stateMachine?.enter(WalkState.self)
+        
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
     }
     

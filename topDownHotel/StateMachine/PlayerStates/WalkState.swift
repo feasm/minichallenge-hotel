@@ -38,7 +38,10 @@ class WalkState: BaseState
                 }
                 
                 let targetPos = GameManager.sharedInstance.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
-                vc.sprite.run(SKAction.move(to: targetPos, duration: 0.3))
+                
+                //let collision = vc.sprite.physicsBody?.allContactedBodies().map { $0.node?.name }
+                
+                vc.sprite.run(SKAction.move(to: targetPos, duration: 0.1))
                 {
                     if let player = self.entity as? Player
                     {

@@ -13,6 +13,8 @@ class GameScene: SKScene {
     
     var backgroundTileMap: SKTileMapNode!
     var obstaclesTileMap: SKTileMapNode!
+    var foregroundTileMap : SKTileMapNode!
+    
     var cameraTarget : SKSpriteNode?
     {
         didSet
@@ -31,19 +33,15 @@ class GameScene: SKScene {
         
         backgroundTileMap = childNode(withName: "background") as! SKTileMapNode
         obstaclesTileMap = childNode(withName: "obstacles") as! SKTileMapNode
+        foregroundTileMap = childNode(withName: "foreground") as! SKTileMapNode
         
         GameManager.sharedInstance.configureFor(scene: self)
         
         GameManager.sharedInstance.spawnGuest(at: .zero)
         
         setupGridCollision()
-    }
-    
-    func tilePosition(position: CGPoint) -> CGPoint
-    {
-        let col = backgroundTileMap.tileColumnIndex(fromPosition: position)
-        let row = backgroundTileMap.tileRowIndex(fromPosition: position)
-        return CGPoint(x: col, y: row)
+        
+        
     }
     
     func validPosition(position: CGPoint) -> CGPoint
