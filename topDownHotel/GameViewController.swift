@@ -14,6 +14,14 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if GameManager.MULTIPLAYER_ON {
+            NotificationCenter.default.addObserver(self, selector: #selector(showAuthenticationViewController), name: GameKitHelper.PRESENT_AUTHENTICATION, object: nil)
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
+            
+            GameKitHelper.shared.authenticateLocalPlayer()
+        }
+        
         if let scene = GKScene(fileNamed: "GameScene") {
             
             if let sceneNode = scene.rootNode as! GameScene? {
@@ -29,7 +37,7 @@ class GameViewController: UIViewController {
             }
         }
         
-        let pad = GameManager.sharedInstance.directionalPad
+        let pad = GameManager.shared.directionalPad
         view.addSubview(pad)
         pad.widthAnchor.constraint(equalToConstant: 150).isActive = true
         pad.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -48,5 +56,16 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+}
+
+// MARK : Selectors
+extension GameViewController {
+    @objc func showAuthenticationViewController() {
+        self.present(GameKitHelper.shared.authenticationViewController!, animated: true, completion: nil)
+    }
+    
+    @objc func playerAuthenticated() {
+//        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 3, maxPlayers: 4, viewController: self, delegate: self as! GameKitHelperDelegate)
     }
 }

@@ -34,7 +34,7 @@ class PathState : BaseState
                     vc.sprite.color = UIColor.blue
                 }
                 
-                let targetPos = GameManager.sharedInstance.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
+                let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
                 vc.sprite.run(SKAction.move(to: targetPos, duration: 0.3))
                 {
                     if let player = self.entity as? Player

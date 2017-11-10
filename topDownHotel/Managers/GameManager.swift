@@ -11,8 +11,9 @@ import GameplayKit
 
 class GameManager {
     // MARK: - Constants
-    static let sharedInstance = GameManager()
+    static let shared = GameManager()
     static let DEBUG : Bool = false
+    static let MULTIPLAYER_ON : Bool = false
     let directionalPad : DPad = DPad()
     
     // MARK: - Private
@@ -29,6 +30,7 @@ class GameManager {
     }
     
     // MARK: - Public
+    var players = [Player]()
 
     func configureFor(scene: SKScene)
     {
