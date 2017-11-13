@@ -22,33 +22,38 @@ class VisualComponent : GKComponent
         self.sprite.position = position
     }
     
+    init(position: CGPoint, texture: SKTexture)
+    {
+        super.init()
+        self.sprite = SKSpriteNode(texture: texture, color: .clear, size: texture.size())
+        self.sprite.position = position
+    }
+    
     convenience init(tile: CGPoint, direction: String) {
         let tilePosition = BuildManager.tilePosition(tile: tile)
         var position = CGPoint()
-        var size = CGSize()
+        let texture : SKTexture = SKTexture(imageNamed: BuildingType.SIMPLE_ROOM.rawValue)
+        
         switch direction {
         case "rugBottom":
-            position = tilePosition + CGPoint(x: 0, y: -1.5*BuildManager.TILE_SIZE)
-            size = CGSize(width: 5*BuildManager.TILE_SIZE, height: 2*BuildManager.TILE_SIZE)
+            position = tilePosition + CGPoint(x: 0, y: -(texture.size().height/2.0))
         case "rugTop":
-            position = tilePosition + CGPoint(x: 0, y: 1.5*BuildManager.TILE_SIZE)
-            size = CGSize(width: 5*BuildManager.TILE_SIZE, height: 2*BuildManager.TILE_SIZE)
+            position = tilePosition + CGPoint(x: 0, y: (texture.size().height/2.0)+(BuildManager.TILE_SIZE/2))
         case "rugLeft":
             position = tilePosition + CGPoint(x: -1.5*BuildManager.TILE_SIZE, y: 0)
-            size = CGSize(width: 2*BuildManager.TILE_SIZE, height: 5*BuildManager.TILE_SIZE)
         case "rugRight":
             position = tilePosition + CGPoint(x: 1.5*BuildManager.TILE_SIZE, y: 0)
-            size = CGSize(width: 2*BuildManager.TILE_SIZE, height: 5*BuildManager.TILE_SIZE)
         default:
             position = tilePosition + CGPoint(x: 0, y: -1.5*BuildManager.TILE_SIZE)
-            size = CGSize(width: 5*BuildManager.TILE_SIZE, height: 2*BuildManager.TILE_SIZE)
         }
-        self.init(position: position, color: .yellow, size: size)
+        
+        self.init(position: position, texture: texture)
+        
         self.sprite.zPosition = tile.y
-        let collisionSprite = SKSpriteNode(color: .white, size: size)
+        let collisionSprite = SKSpriteNode(color: .white, size: CGSize(width: texture.size().width, height: texture.size().height*0.8))
         collisionSprite.name = "collisionMask"
         collisionSprite.alpha = 0
-        collisionSprite.physicsBody = SKPhysicsBody(rectangleOf: collisionSprite.size, center: .zero)
+        collisionSprite.physicsBody = SKPhysicsBody(rectangleOf: collisionSprite.size, center: CGPoint(x: 0, y: -texture.size().height*0.1))
         collisionSprite.physicsBody?.affectedByGravity = false
         collisionSprite.physicsBody?.allowsRotation = false
         collisionSprite.physicsBody?.friction = 0
