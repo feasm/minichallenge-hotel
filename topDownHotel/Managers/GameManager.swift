@@ -154,7 +154,7 @@ extension GameManager
             for node in path
             {
                 let center = tileMap.centerOfTile(atColumn: Int(node.gridPosition.x), row: Int(node.gridPosition.y))
-                let action = SKAction.move(to: center, duration: TimeInterval(speed/10.0))
+                let action = SKAction.move(to: center, duration: TimeInterval(1/speed+1))
                 actions.append(action)
             }
             return actions
@@ -182,6 +182,13 @@ extension GameManager
         
         let path = graph?.findPath(from: fromNode, to: toNode) as! [GKGridGraphNode]
         return path
+    }
+
+    private func sendToRoom(guest : Guest, to: Int)
+    {
+        let room = rooms[to]
+        guest.target = Target(tile: room.entranceTile, room: to)
+        guest.stateMachine?.enter(PathState.self)
     }
     
     /*func movementPosition(position: CGPoint, tile: CGPoint) -> CGPoint {

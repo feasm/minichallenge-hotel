@@ -67,8 +67,7 @@ class BuildManager {
     
     static func tilePosition(tile : CGPoint, tileMap : SKTileMapNode? = nil) -> CGPoint
     {
-        if tileMap != nil
-        {
+        if tileMap != nil {
             return (tileMap?.centerOfTile(atColumn: Int(tile.x), row: Int(tile.y)))!
         }
         else
@@ -83,8 +82,7 @@ class BuildManager {
     
     static func tilePosition(position: CGPoint, tileMap : SKTileMapNode? = nil) -> CGPoint
     {
-        if tileMap != nil
-        {
+        if tileMap != nil {
             let col = (tileMap?.tileColumnIndex(fromPosition: position))!
             let row = (tileMap?.tileRowIndex(fromPosition: position))!
             return CGPoint(x: col, y: row)

@@ -23,6 +23,10 @@ class Guest: BaseEntity {
         
         stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
         stateMachine?.enter(WaitingPlayerActionState.self)
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
+            self.target = Target(position: CGPoint(x: 200, y: -500))
+            self.stateMachine?.enter(PathState.self)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
