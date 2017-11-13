@@ -20,6 +20,8 @@ enum MovementDirection : String
 class Player : BaseEntity
 {
     private(set) var direction : MovementDirection = .NONE
+    var id: String?
+    var name: String?
     
     init(position: CGPoint) {
         super.init()

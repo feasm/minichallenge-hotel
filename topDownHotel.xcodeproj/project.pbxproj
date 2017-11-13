@@ -44,7 +44,7 @@
 		BC6BC7131FB619C500EBEC78 /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC7121FB619C500EBEC78 /* GameServer.swift */; };
 		BC6BC7161FB619FB00EBEC78 /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6BC7151FB619FB00EBEC78 /* GameClient.swift */; };
 		BCEB23E91FB4D9DD00023E62 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEB23E81FB4D9DD00023E62 /* GameData.swift */; };
-		BCFABCCF1FB62AAA007B94FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFABCCE1FB62AAA007B94FF /* GameKit.framework */; };
+		BCFABCD31FB64185007B94FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFABCD21FB64185007B94FF /* GameKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,7 +88,7 @@
 		BC6BC7151FB619FB00EBEC78 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
 		BCEB23E81FB4D9DD00023E62 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		BCFABCCC1FB62AA7007B94FF /* topDownHotel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = topDownHotel.entitlements; sourceTree = "<group>"; };
-		BCFABCCE1FB62AAA007B94FF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		BCFABCD21FB64185007B94FF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCFABCCF1FB62AAA007B94FF /* GameKit.framework in Frameworks */,
+				BCFABCD31FB64185007B94FF /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +289,7 @@
 		BCFABCCD1FB62AAA007B94FF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BCFABCCE1FB62AAA007B94FF /* GameKit.framework */,
+				BCFABCD21FB64185007B94FF /* GameKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -549,6 +549,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = topDownHotel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.topDownHotel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -567,6 +568,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = topDownHotel/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.topDownHotel;
 				PRODUCT_NAME = "$(TARGET_NAME)";

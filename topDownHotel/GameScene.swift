@@ -40,8 +40,6 @@ class GameScene: SKScene {
         GameManager.shared.spawnGuest(at: .zero)
         
         setupGridCollision()
-        
-        
     }
     
     func validPosition(position: CGPoint) -> CGPoint
@@ -169,5 +167,25 @@ class GameScene: SKScene {
         let dt = currentTime - self.lastUpdateTime
         self.lastUpdateTime = currentTime
         GameManager.shared.updateWithDeltaTime(seconds: dt)
+    }
+}
+
+extension GameScene: GameKitHelperDelegate {
+    func matchStarted() {
+        
+    }
+    
+    func matchEnded() {
+        
+    }
+}
+
+extension GameScene: GuestManagerDelegate {
+    func spawnGuest() -> Guest {
+        return Guest(position: .zero)
+    }
+    
+    func sendActionData(messageType: MessageType) {
+        
     }
 }

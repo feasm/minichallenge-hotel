@@ -23,21 +23,18 @@ class GameNetworkingMixin {
     
     private func setLocalPlayer() {
         let localPlayer = GKLocalPlayer.localPlayer()
-        let firstPlayer = GameManager.shared.players.first!
+        let firstPlayer = GameManager.shared.player!
         
-//        firstPlayer.id = localPlayer.playerID
-//        firstPlayer.name = localPlayer.alias
+        firstPlayer.id = localPlayer.playerID
+        firstPlayer.name = localPlayer.alias
     }
     
     private func setOtherPlayers() {
         for player in (GameKitHelper.shared.match?.players)! {
-//            let newPlayer = Player()
-//            newPlayer.id = player.playerID
-//            newPlayer.name = player.alias
-//            GameManager.shared.players.append(newPlayer)
-//            
-//            newPlayer.createNode()
-//            newPlayer.playerNode?.addNode(to: GameKitHelper.shared.gameScene as! SKScene, position: .zero)
+            let newPlayer = Player(position: .zero)
+            newPlayer.id = player.playerID
+            newPlayer.name = player.alias
+            GameManager.shared.addPlayer(player: newPlayer)
         }
     }
     
