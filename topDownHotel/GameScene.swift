@@ -35,13 +35,11 @@ class GameScene: SKScene {
         obstaclesTileMap = childNode(withName: "obstacles") as! SKTileMapNode
         foregroundTileMap = childNode(withName: "foreground") as! SKTileMapNode
         
-        GameManager.sharedInstance.configureFor(scene: self)
+        GameManager.shared.configureFor(scene: self)
         
-        GameManager.sharedInstance.spawnGuest(at: .zero)
+        GameManager.shared.spawnGuest(at: .zero)
         
         setupGridCollision()
-        
-        
     }
     
     func validPosition(position: CGPoint) -> CGPoint
@@ -99,7 +97,7 @@ class GameScene: SKScene {
     
     func touchDown(atPoint pos : CGPoint) {
         //print(pos)
-        /*if GameManager.sharedInstance.player.direction != .NONE
+        /*if GameManager.shared.player.direction != .NONE
         {
             return
         }
@@ -108,12 +106,12 @@ class GameScene: SKScene {
         {
             if pos.y > (camera?.position.y)!
             {
-                GameManager.sharedInstance.updateDirection(direction: .DOWN)
+                GameManager.shared.updateDirection(direction: .DOWN)
                 //print(MovementDirection.DOWN.rawValue)
             }
             else
             {
-                GameManager.sharedInstance.updateDirection(direction: .RIGHT)
+                GameManager.shared.updateDirection(direction: .RIGHT)
                 //print(MovementDirection.RIGHT.rawValue)
             }
         }
@@ -121,12 +119,12 @@ class GameScene: SKScene {
         {
             if pos.y > (camera?.position.y)!
             {
-                GameManager.sharedInstance.updateDirection(direction: .UP)
+                GameManager.shared.updateDirection(direction: .UP)
                 //print(MovementDirection.UP.rawValue)
             }
             else
             {
-                GameManager.sharedInstance.updateDirection(direction: .LEFT)
+                GameManager.shared.updateDirection(direction: .LEFT)
                 //print(MovementDirection.LEFT.rawValue)
             }
         }*/
@@ -150,12 +148,12 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        GameManager.sharedInstance.updateDirection(direction: .NONE)
+        GameManager.shared.updateDirection(direction: .NONE)
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        GameManager.sharedInstance.updateDirection(direction: .NONE)
+        GameManager.shared.updateDirection(direction: .NONE)
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
@@ -168,6 +166,26 @@ class GameScene: SKScene {
         
         let dt = currentTime - self.lastUpdateTime
         self.lastUpdateTime = currentTime
-        GameManager.sharedInstance.updateWithDeltaTime(seconds: dt)
+        GameManager.shared.updateWithDeltaTime(seconds: dt)
+    }
+}
+
+extension GameScene: GameKitHelperDelegate {
+    func matchStarted() {
+        
+    }
+    
+    func matchEnded() {
+        
+    }
+}
+
+extension GameScene: GuestManagerDelegate {
+    func spawnGuest() -> Guest {
+        return Guest(position: .zero)
+    }
+    
+    func sendActionData(messageType: MessageType) {
+        
     }
 }

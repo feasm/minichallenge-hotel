@@ -20,6 +20,8 @@ enum MovementDirection : String
 class Player : BaseEntity
 {
     private(set) var direction : MovementDirection = .NONE
+    var id: String?
+    var name: String?
     
     init(position: CGPoint) {
         super.init()
@@ -65,8 +67,8 @@ class Player : BaseEntity
         }
         
         target = Target(tile: CGPoint(x: dx, y: dy))
-        stateMachine?.enter(WalkState.self)
         
+        stateMachine?.enter(WalkState.self)
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
     }
     

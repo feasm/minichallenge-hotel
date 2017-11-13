@@ -116,23 +116,23 @@ class DPad: UIView {
     
     @objc func releasePad(_ sender: Any)
     {
-        GameManager.sharedInstance.updateDirection(direction: .NONE)
+        GameManager.shared.updateDirection(direction: .NONE)
     }
     
     //MARK: Actions
     @objc func moveUp(_ sender: Any) {
-        GameManager.sharedInstance.updateDirection(direction: .UP)
+        GameManager.shared.updateDirection(direction: .UP)
     }
     
     @objc func moveLeft(_ sender: Any){
-       GameManager.sharedInstance.updateDirection(direction: .LEFT)
+       GameManager.shared.updateDirection(direction: .LEFT)
     }
     
     @objc func moveDown(_ sender: Any){
-        GameManager.sharedInstance.updateDirection(direction: .DOWN)
+        GameManager.shared.updateDirection(direction: .DOWN)
     }
     
     @objc func moveRight(_ sender: Any){
-        GameManager.sharedInstance.updateDirection(direction: .RIGHT)
+        GameManager.shared.updateDirection(direction: .RIGHT)
     }
 }

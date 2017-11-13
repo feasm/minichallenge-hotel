@@ -11,9 +11,11 @@ import GameplayKit
 
 class GameManager {
     // MARK: - Constants
-    static let sharedInstance = GameManager()
+    static let shared = GameManager()
     static let DEBUG : Bool = false
+    static let MULTIPLAYER_ON : Bool = true
     let directionalPad : DPad = DPad()
+    let isHost: Bool = false
     
     // MARK: - Private
     private weak var scene: SKScene?
@@ -37,10 +39,11 @@ class GameManager {
     private(set) var rooms : [Room] = []
     
     private init() {
-        BuildManager.sharedInstance.delegate = self
+        BuildManager.shared.delegate = self
     }
     
     // MARK: - Public
+    var players = [Player]()
 
     func configureFor(scene: SKScene) {
         self.scene = scene
@@ -50,7 +53,7 @@ class GameManager {
         directionalPad.showPad()
         
         //Building
-        BuildManager.sharedInstance.buildRooms()
+        BuildManager.shared.buildRooms()
         
         if let scene = scene as? GameScene
         {
@@ -66,7 +69,13 @@ class GameManager {
     
     private func addEntity(entity: GKEntity) {
         switch entity {
-            case is Player: player = entity as! Player
+            case is Player:
+                if player == nil {
+                    player = entity as! Player
+                } else {
+                    players.append(entity as! Player)
+                }
+            
             case is Guest: guests.append(entity as! Guest)
             case is Building : buildings.append(entity as! Building)
             case is Room : rooms.append(entity as! Room)
@@ -79,7 +88,9 @@ class GameManager {
             {
                 if let scene = scene as? GameScene
                 {
-                    scene.cameraTarget = vc.sprite
+                    if entity as? Player == player {
+                        scene.cameraTarget = vc.sprite
+                    }
                 }
             }
         }
@@ -92,6 +103,13 @@ extension GameManager : BuildManagerDelegate
 {
     func addBuild(_ build: Building) {
         addEntity(entity: build)
+    }
+}
+
+//MARK -> Players methods
+extension GameManager {
+    func addPlayer(player: Player) {
+        addEntity(entity: player)
     }
 }
 

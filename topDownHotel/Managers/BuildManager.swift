@@ -18,7 +18,7 @@ protocol BuildManagerDelegate {
 class BuildManager {
     // MARK: - Constants
     static let TILE_SIZE : CGFloat = 96
-    static let sharedInstance = BuildManager()
+    static let shared = BuildManager()
     
     // MARK: - Public
     var delegate : BuildManagerDelegate?
@@ -30,7 +30,7 @@ class BuildManager {
     // MARK: - Public
     
     func buildRooms() {
-        if let scene = GameManager.sharedInstance.gameScene
+        if let scene = GameManager.shared.gameScene
         {
             let directions : [String] = ["rugBottom", "rugTop", "rugRight", "rugLeft"]
             for direction in directions
@@ -70,8 +70,10 @@ class BuildManager {
         if tileMap != nil {
             return (tileMap?.centerOfTile(atColumn: Int(tile.x), row: Int(tile.y)))!
         }
-        else {
-            if let scene = GameManager.sharedInstance.gameScene {
+        else
+        {
+            if let scene = GameManager.shared.gameScene
+            {
                 return scene.backgroundTileMap.centerOfTile(atColumn: Int(tile.x), row: Int(tile.y))
             }
         }
@@ -85,8 +87,9 @@ class BuildManager {
             let row = (tileMap?.tileRowIndex(fromPosition: position))!
             return CGPoint(x: col, y: row)
         }
-        else {
-            if let scene = GameManager.sharedInstance.gameScene
+        else
+        {
+            if let scene = GameManager.shared.gameScene
             {
                 let col = scene.backgroundTileMap.tileColumnIndex(fromPosition: position)
                 let row = scene.backgroundTileMap.tileRowIndex(fromPosition: position)

@@ -34,7 +34,7 @@ class WalkState: BaseState
                     vc.sprite.color = UIColor.blue
                 }
                 
-                let targetPos = GameManager.sharedInstance.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
+                let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
                 
                 //let collision = vc.sprite.physicsBody?.allContactedBodies().map { $0.node?.name }
                 
