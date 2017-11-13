@@ -45,7 +45,7 @@ class Player : BaseEntity
         }
     }
     
-    func moveToDirection(direction : MovementDirection)
+    func moveToDirection(direction : MovementDirection, broadcast: Bool = true)
     {
         self.direction = direction
         
@@ -70,10 +70,14 @@ class Player : BaseEntity
         
         stateMachine?.enter(WalkState.self)
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
+        
+        if GameManager.MULTIPLAYER_ON && broadcast {
+            MultiplayerNetworking.shared.sendPlayerData(player: self)
+        }
     }
     
-    
+    func moveToTarget(target: Target) {
+        self.target = target
+        stateMachine?.enter(WalkState.self)
+    }
 }
-
-
-

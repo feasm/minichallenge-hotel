@@ -35,7 +35,7 @@ class CommonData: GameData {
 
 
 
-class PlayerData: CommonData {
+class PlayerData: GameData {
     var name: String!
     var target: Target!
     var position: CGPoint!
@@ -49,7 +49,7 @@ class PlayerData: CommonData {
     }
     
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        try super.init(from: decoder)
     }
 }
 

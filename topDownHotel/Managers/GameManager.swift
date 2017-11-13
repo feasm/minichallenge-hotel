@@ -111,6 +111,16 @@ extension GameManager {
     func addPlayer(player: Player) {
         addEntity(entity: player)
     }
+    
+    func findPlayer(name: String) -> Player? {
+        for player in players {
+            if player.name == name {
+                return player
+            }
+        }
+        
+        return nil
+    }
 }
 
 //MARK -> Guests methods
@@ -199,4 +209,13 @@ extension GameManager
      }
      return CGPoint.zero
      }*/
+}
+
+// MARK: Multiplayer
+extension GameManager {
+    func movePlayer(name: String, target: Target, position: CGPoint) {
+        if let player = self.findPlayer(name: name) {
+            player.moveToTarget(target: target)
+        }
+    }
 }
