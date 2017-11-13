@@ -10,6 +10,9 @@
 		1B37C5B31FB4C8E600B0A058 /* PathState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B37C5B21FB4C8E600B0A058 /* PathState.swift */; };
 		1B37C5B51FB4C9AE00B0A058 /* WaitingPlayerActionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B37C5B41FB4C9AE00B0A058 /* WaitingPlayerActionState.swift */; };
 		1B37C5B81FB4CDB700B0A058 /* DPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B37C5B71FB4CDB700B0A058 /* DPad.swift */; };
+		1B6244F41FB5BA70007FD53E /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6244F31FB5BA70007FD53E /* Building.swift */; };
+		1B6244F61FB5BC94007FD53E /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6244F51FB5BC94007FD53E /* Room.swift */; };
+		1B6244F81FB5BDE2007FD53E /* BuildManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6244F71FB5BDE2007FD53E /* BuildManager.swift */; };
 		1B701CBD1FB22424001C00DB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B701CBC1FB22424001C00DB /* Player.swift */; };
 		1B886C9B1FB38BC60043F79E /* BaseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B886C9A1FB38BC60043F79E /* BaseEntity.swift */; };
 		1B886C9D1FB38BF70043F79E /* Guest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B886C9C1FB38BF70043F79E /* Guest.swift */; };
@@ -41,6 +44,9 @@
 		1B37C5B21FB4C8E600B0A058 /* PathState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathState.swift; sourceTree = "<group>"; };
 		1B37C5B41FB4C9AE00B0A058 /* WaitingPlayerActionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPlayerActionState.swift; sourceTree = "<group>"; };
 		1B37C5B71FB4CDB700B0A058 /* DPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DPad.swift; sourceTree = "<group>"; };
+		1B6244F31FB5BA70007FD53E /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
+		1B6244F51FB5BC94007FD53E /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		1B6244F71FB5BDE2007FD53E /* BuildManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildManager.swift; sourceTree = "<group>"; };
 		1B701CBC1FB22424001C00DB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		1B886C9A1FB38BC60043F79E /* BaseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseEntity.swift; sourceTree = "<group>"; };
 		1B886C9C1FB38BF70043F79E /* Guest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guest.swift; sourceTree = "<group>"; };
@@ -89,10 +95,20 @@
 			path = Tools;
 			sourceTree = "<group>";
 		};
+		1B6244F21FB5BA4E007FD53E /* Building */ = {
+			isa = PBXGroup;
+			children = (
+				1B6244F31FB5BA70007FD53E /* Building.swift */,
+				1B6244F51FB5BC94007FD53E /* Room.swift */,
+			);
+			path = Building;
+			sourceTree = "<group>";
+		};
 		1B886C9E1FB38CB20043F79E /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				1BB464971FB22F6900AB06F1 /* GameManager.swift */,
+				1B6244F71FB5BDE2007FD53E /* BuildManager.swift */,
 				1B886C9F1FB38CCD0043F79E /* Guest */,
 			);
 			path = Managers;
@@ -145,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				1B886C9A1FB38BC60043F79E /* BaseEntity.swift */,
+				1B6244F21FB5BA4E007FD53E /* Building */,
 				1BB464931FB22E6900AB06F1 /* Player */,
 			);
 			path = Entities;
@@ -294,10 +311,12 @@
 				1B37C5B51FB4C9AE00B0A058 /* WaitingPlayerActionState.swift in Sources */,
 				1BED83C11FB1DCC900195AC1 /* GameScene.swift in Sources */,
 				1B886CA31FB38CCD0043F79E /* QueueManager.swift in Sources */,
+				1B6244F41FB5BA70007FD53E /* Building.swift in Sources */,
 				1B9BA4021FB23EF700E70ADA /* Array+Extensions.swift in Sources */,
 				1B9BA4011FB23EF700E70ADA /* UIColor+Extensions.swift in Sources */,
 				1BB4648F1FB22A1A00AB06F1 /* IdleState.swift in Sources */,
 				1BAAE68A1FB320BB00B0BAB2 /* BaseState.swift in Sources */,
+				1B6244F81FB5BDE2007FD53E /* BuildManager.swift in Sources */,
 				1B9BA4031FB23EF700E70ADA /* SKAction+Extensions.swift in Sources */,
 				1B9BA4001FB23EF700E70ADA /* String+Extensions.swift in Sources */,
 				1BED83C31FB1DCC900195AC1 /* GameViewController.swift in Sources */,
@@ -310,6 +329,7 @@
 				1BED83BB1FB1DCC900195AC1 /* AppDelegate.swift in Sources */,
 				1BB464961FB22EC600AB06F1 /* VisualComponent.swift in Sources */,
 				1B37C5B31FB4C8E600B0A058 /* PathState.swift in Sources */,
+				1B6244F61FB5BC94007FD53E /* Room.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

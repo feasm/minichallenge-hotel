@@ -33,16 +33,16 @@ class GameViewController: UIViewController {
         view.addSubview(pad)
         pad.widthAnchor.constraint(equalToConstant: 150).isActive = true
         pad.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        pad.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        pad.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        pad.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        pad.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
         
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .landscape
+            return .landscapeRight
         } else {
-            return .landscape
+            return .landscapeLeft
         }
     }
 

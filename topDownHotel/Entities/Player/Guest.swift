@@ -17,12 +17,16 @@ class Guest: BaseEntity {
     init(position: CGPoint) {
         super.init()
         
-        let vc = VisualComponent(position: position, color: .yellow)
+        let vc = VisualComponent(position: position, color: .yellow, physics: true)
         vc.sprite.zPosition = 10
         self.addComponent(vc)
         
         stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
         stateMachine?.enter(WaitingPlayerActionState.self)
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
+            self.target = Target(position: CGPoint(x: 200, y: -500))
+            self.stateMachine?.enter(PathState.self)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
