@@ -29,6 +29,7 @@ class DPad: UIView {
     
     func setupView(){
         translatesAutoresizingMaskIntoConstraints = false
+        isUserInteractionEnabled = true
     }
     
     func setupButtons(){
@@ -71,8 +72,8 @@ class DPad: UIView {
         middleView.translatesAutoresizingMaskIntoConstraints = false
         middleView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         middleView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        middleView.widthAnchor.constraint(equalTo: upButton.widthAnchor).isActive = true
-        middleView.heightAnchor.constraint(equalTo: upButton.heightAnchor).isActive = true
+        middleView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: (1/3.325)).isActive = true
+        middleView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: (1/3.325)).isActive = true
         
         upButton.setImage(UIImage(named: "dpad_arrow"), for: .normal)
         leftButton.setImage(UIImage(named: "dpad_arrow"), for: .normal)
@@ -83,21 +84,12 @@ class DPad: UIView {
         upButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         leftButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         downButton.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-        
-        upButton.addTarget(self, action: #selector(moveUp(_:)), for: .touchDown)
-        leftButton.addTarget(self, action: #selector(moveLeft(_:)), for: .touchDown)
-        downButton.addTarget(self, action: #selector(moveDown(_:)), for: .touchDown)
-        rightButton.addTarget(self, action: #selector(moveRight(_:)), for: .touchDown)
-        
-        upButton.addTarget(self, action: #selector(releasePad(_:)), for: .touchUpInside)
-        leftButton.addTarget(self, action: #selector(releasePad(_:)), for: .touchUpInside)
-        downButton.addTarget(self, action: #selector(releasePad(_:)), for: .touchUpInside)
-        rightButton.addTarget(self, action: #selector(releasePad(_:)), for: .touchUpInside)
        
-        upButton.isUserInteractionEnabled = true
-        downButton.isUserInteractionEnabled = true
-        leftButton.isUserInteractionEnabled = true
-        rightButton.isUserInteractionEnabled = true
+        upButton.isUserInteractionEnabled = false
+        downButton.isUserInteractionEnabled = false
+        leftButton.isUserInteractionEnabled = false
+        rightButton.isUserInteractionEnabled = false
+    
     }
     
     func showPad() -> Void {
@@ -114,25 +106,33 @@ class DPad: UIView {
         }
     }
     
-    @objc func releasePad(_ sender: Any)
-    {
+    //MARK: Touches
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            if upButton.layer.contains(touch.location(in: upButton)){
+                GameManager.sharedInstance.updateDirection(direction: .UP)
+                upButton.isHighlighted = true
+            } else if leftButton.layer.contains(touch.location(in: leftButton)) {
+                GameManager.sharedInstance.updateDirection(direction: .LEFT)
+                leftButton.isHighlighted = true
+            } else if downButton.layer.contains(touch.location(in: downButton)) {
+                GameManager.sharedInstance.updateDirection(direction: .DOWN)
+                downButton.isHighlighted = true
+            } else if rightButton.layer.contains(touch.location(in: rightButton)) {
+                GameManager.sharedInstance.updateDirection(direction: .RIGHT)
+                rightButton.isHighlighted = true
+            }
+        }
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         GameManager.sharedInstance.updateDirection(direction: .NONE)
+        upButton.isHighlighted = false
+        leftButton.isHighlighted = false
+        downButton.isHighlighted = false
+        rightButton.isHighlighted = false
     }
     
-    //MARK: Actions
-    @objc func moveUp(_ sender: Any) {
-        GameManager.sharedInstance.updateDirection(direction: .UP)
-    }
-    
-    @objc func moveLeft(_ sender: Any){
-       GameManager.sharedInstance.updateDirection(direction: .LEFT)
-    }
-    
-    @objc func moveDown(_ sender: Any){
-        GameManager.sharedInstance.updateDirection(direction: .DOWN)
-    }
-    
-    @objc func moveRight(_ sender: Any){
-        GameManager.sharedInstance.updateDirection(direction: .RIGHT)
-    }
 }

@@ -34,20 +34,29 @@ class PathState : BaseState
                     vc.sprite.color = UIColor.blue
                 }
                 
-                let path = GameManager.sharedInstance.path(from: vc.sprite.position, to: (self.target?.position)!, speed: 2)
+                let path = GameManager.sharedInstance.path(from: vc.sprite.position, to: (self.target?.position)!, speed: 7)
                 vc.sprite.run(SKAction.sequence(path))
                 {
-                    if let player = self.entity as? Player
-                    {
-                        player.stateMachine?.enter(IdleState.self)
-                    }
-                    
-                    if let guest = self.entity as? Guest
-                    {
-                        guest.stateMachine?.enter(WaitingPlayerActionState.self)
-                    }
+                    self.goToNext()
                 }
             }
+        }
+        else
+        {
+            goToNext()
+        }
+    }
+    
+    func goToNext() -> Void
+    {
+        if let player = self.entity as? Player
+        {
+            player.stateMachine?.enter(IdleState.self)
+        }
+        
+        if let guest = self.entity as? Guest
+        {
+            guest.stateMachine?.enter(WaitingPlayerActionState.self)
         }
     }
     

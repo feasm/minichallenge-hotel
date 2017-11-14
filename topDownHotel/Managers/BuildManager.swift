@@ -22,6 +22,7 @@ class BuildManager {
     
     // MARK: - Public
     var delegate : BuildManagerDelegate?
+    var roomSize : CGSize = CGSize.zero
 
     private init() {
         
@@ -32,7 +33,7 @@ class BuildManager {
     func buildRooms() {
         if let scene = GameManager.sharedInstance.gameScene
         {
-            let directions : [String] = ["rugBottom", "rugTop", "rugRight", "rugLeft"]
+            let directions : [String] = ["rug_Bottom", "rug_Top", "rug_Right", "rug_Left"]
             for direction in directions
             {
                 for tile in getTilesBy(name: direction, scene.foregroundTileMap)
@@ -94,6 +95,18 @@ class BuildManager {
             }
         }
         return CGPoint.zero
+    }
+    
+    func getRoomSize() -> CGSize
+    {
+        if roomSize == .zero
+        {
+            if let scene = GameManager.sharedInstance.gameScene
+            {
+                roomSize = scene.backgroundTileMap.mapSize
+            }
+        }
+        return roomSize
     }
 }
 
