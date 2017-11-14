@@ -35,13 +35,13 @@ class VisualComponent : GKComponent
         let texture : SKTexture = SKTexture(imageNamed: BuildingType.SIMPLE_ROOM.rawValue)
         
         switch direction {
-        case "rugBottom":
+        case "rug_Bottom":
             position = tilePosition + CGPoint(x: 0, y: -(texture.size().height/2.0))
-        case "rugTop":
+        case "rug_Top":
             position = tilePosition + CGPoint(x: 0, y: (texture.size().height/2.0)+(BuildManager.TILE_SIZE/2))
-        case "rugLeft":
+        case "rug_Left":
             position = tilePosition + CGPoint(x: -1.5*BuildManager.TILE_SIZE, y: 0)
-        case "rugRight":
+        case "rug_Right":
             position = tilePosition + CGPoint(x: 1.5*BuildManager.TILE_SIZE, y: 0)
         default:
             position = tilePosition + CGPoint(x: 0, y: -1.5*BuildManager.TILE_SIZE)
@@ -49,7 +49,7 @@ class VisualComponent : GKComponent
         
         self.init(position: position, texture: texture)
         
-        self.sprite.zPosition = tile.y
+        self.sprite.zPosition = 50-(tile.y+1)
         let collisionSprite = SKSpriteNode(color: .white, size: CGSize(width: texture.size().width, height: texture.size().height*0.8))
         collisionSprite.name = "collisionMask"
         collisionSprite.alpha = 0
@@ -61,17 +61,47 @@ class VisualComponent : GKComponent
         sprite.addChild(collisionSprite)
     }
     
+    convenience init(position: CGPoint, image : String)
+    {
+        let texture = SKTexture(imageNamed: image)
+        self.init(position: position, texture: texture)
+    }
+    
     convenience init(position: CGPoint, color: SKColor, physics: Bool) {
         let size = CGSize(width: 96, height: 96)
         self.init(position: position, color: color, size: size)
+        setPhysics(physics)
+    }
+    
+    func setPhysics(_ physics: Bool = false, size: CGSize? = nil)
+    {
         if physics
         {
-            sprite.physicsBody = SKPhysicsBody(rectangleOf: sprite.size, center: .zero)
+            let sizeP = (size == nil ? sprite.size : size)!
+            
+            //sprite.physicsBody = SKPhysicsBody(rectangleOf: sizeP, center: CGPoint(x: 0, y: -centerY))
+            sprite.physicsBody = SKPhysicsBody(rectangleOf: sizeP, center: .zero)
             sprite.physicsBody?.affectedByGravity = false
             sprite.physicsBody?.allowsRotation = false
             sprite.physicsBody?.friction = 0
             sprite.physicsBody?.usesPreciseCollisionDetection = true
         }
+    }
+    
+    func getAnchorPoint() -> CGPoint
+    {
+        let height : Int = Int(sprite.size.height) / Int(BuildManager.TILE_SIZE)
+        var centerY : CGFloat!
+        if (height % 2) != 0
+        {
+            centerY = CGFloat(Int(height/2))*BuildManager.TILE_SIZE
+        }
+        else
+        {
+            centerY = (CGFloat(Int(height/2)) - 0.5)*BuildManager.TILE_SIZE
+        }
+        
+        return CGPoint(x: 0.5, y: (centerY/sprite.size.height))
     }
     
     func runActions(actions: [SKAction])

@@ -63,6 +63,11 @@ class GameManager {
     
     func updateWithDeltaTime(seconds: CFTimeInterval) {
         player.update(deltaTime: seconds)
+        
+        for guest in guests
+        {
+            guest.update(deltaTime: seconds)
+        }
     }
     
     // MARK: - Private
@@ -77,7 +82,7 @@ class GameManager {
                 }
             
             case is Guest: guests.append(entity as! Guest)
-            case is Building : buildings.append(entity as! Building)
+            //case is Building : buildings.append(entity as! Building)
             case is Room : rooms.append(entity as! Room)
             default: break
         }
@@ -176,7 +181,7 @@ extension GameManager
     {
         guard let tileMap = tileMap, let scene = self.scene as? GameScene else { return [] }
 
-        let graph = scene.graph
+        let graph = scene.walkGraph
         
         let fromColumn = tileMap.tileColumnIndex(fromPosition: from)
         let fromRow = tileMap.tileRowIndex(fromPosition: from)
@@ -194,10 +199,11 @@ extension GameManager
         return path
     }
 
-    private func sendToRoom(guest : Guest, to: Int)
+    func sendToRoom(guest : Guest, to: Int)
     {
         let room = rooms[to]
-        guest.target = Target(tile: room.entranceTile, room: to)
+        let position = BuildManager.tilePosition(tile: room.entranceTile)
+        guest.target = Target(position: position, room: to)
         guest.stateMachine?.enter(PathState.self)
     }
     

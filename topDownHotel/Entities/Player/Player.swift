@@ -26,8 +26,9 @@ class Player : BaseEntity
     init(position: CGPoint) {
         super.init()
         
-        let vc = VisualComponent(position: position, color: .red, physics: true)
-        vc.sprite.zPosition = 10
+        let vc = VisualComponent(position: position, image: "main_char")
+        vc.sprite.anchorPoint = vc.getAnchorPoint()
+        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
 
         stateMachine = GKStateMachine(states: [IdleState(entity: self), WalkState(entity: self)])
@@ -39,13 +40,36 @@ class Player : BaseEntity
     }
     
     override func update(deltaTime seconds: TimeInterval) {
+        updateZPosition()
         if direction != .NONE
         {
             moveToDirection(direction: self.direction)
         }
     }
     
-    func moveToDirection(direction : MovementDirection, broadcast: Bool = true)
+    func updateZPosition()
+    {
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            let zPosition = (-vc.sprite.position.y + (BuildManager.shared.getRoomSize().height/2)) / BuildManager.TILE_SIZE
+            vc.sprite.zPosition = zPosition
+        }
+    }
+    
+    func updateDirection()
+    {
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            switch self.direction
+            {
+                case .LEFT: vc.sprite.xScale = -abs(vc.sprite.xScale)
+                case .RIGHT: vc.sprite.xScale = abs(vc.sprite.xScale)
+                default: return
+            }
+        }
+    }
+    
+    func moveToDirection(direction : MovementDirection)
     {
         self.direction = direction
         
@@ -66,9 +90,12 @@ class Player : BaseEntity
        
         }
         
+        updateDirection()
+        
         target = Target(tile: CGPoint(x: dx, y: dy))
         
         stateMachine?.enter(WalkState.self)
+
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
         
         if GameManager.MULTIPLAYER_ON && broadcast {
