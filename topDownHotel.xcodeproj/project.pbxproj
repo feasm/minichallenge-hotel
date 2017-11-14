@@ -14,6 +14,10 @@
 		1B6244F61FB5BC94007FD53E /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6244F51FB5BC94007FD53E /* Room.swift */; };
 		1B6244F81FB5BDE2007FD53E /* BuildManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6244F71FB5BDE2007FD53E /* BuildManager.swift */; };
 		1B701CBD1FB22424001C00DB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B701CBC1FB22424001C00DB /* Player.swift */; };
+		1B84FB591FBB64B8003688C5 /* WorldInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B84FB581FBB64B8003688C5 /* WorldInteraction.swift */; };
+		1B84FB5C1FBB6D4A003688C5 /* WIDirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B84FB5B1FBB6D4A003688C5 /* WIDirty.swift */; };
+		1B84FB5F1FBB6D78003688C5 /* WITypeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B84FB5E1FBB6D78003688C5 /* WITypeComponent.swift */; };
+		1B86837D1FBA146E00DF1A1F /* ActionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B86837C1FBA146E00DF1A1F /* ActionButtons.swift */; };
 		1B886C9B1FB38BC60043F79E /* BaseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B886C9A1FB38BC60043F79E /* BaseEntity.swift */; };
 		1B886C9D1FB38BF70043F79E /* Guest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B886C9C1FB38BF70043F79E /* Guest.swift */; };
 		1B886CA21FB38CCD0043F79E /* GuestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B886CA01FB38CCD0043F79E /* GuestManager.swift */; };
@@ -55,6 +59,10 @@
 		1B6244F51FB5BC94007FD53E /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		1B6244F71FB5BDE2007FD53E /* BuildManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildManager.swift; sourceTree = "<group>"; };
 		1B701CBC1FB22424001C00DB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		1B84FB581FBB64B8003688C5 /* WorldInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldInteraction.swift; sourceTree = "<group>"; };
+		1B84FB5B1FBB6D4A003688C5 /* WIDirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WIDirty.swift; sourceTree = "<group>"; };
+		1B84FB5E1FBB6D78003688C5 /* WITypeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WITypeComponent.swift; sourceTree = "<group>"; };
+		1B86837C1FBA146E00DF1A1F /* ActionButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButtons.swift; sourceTree = "<group>"; };
 		1B886C9A1FB38BC60043F79E /* BaseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseEntity.swift; sourceTree = "<group>"; };
 		1B886C9C1FB38BF70043F79E /* Guest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Guest.swift; sourceTree = "<group>"; };
 		1B886CA01FB38CCD0043F79E /* GuestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestManager.swift; sourceTree = "<group>"; };
@@ -106,6 +114,7 @@
 		1B37C5B61FB4CDA000B0A058 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				1B86837C1FBA146E00DF1A1F /* ActionButtons.swift */,
 				1B37C5B71FB4CDB700B0A058 /* DPad.swift */,
 			);
 			path = Tools;
@@ -118,6 +127,24 @@
 				1B6244F51FB5BC94007FD53E /* Room.swift */,
 			);
 			path = Building;
+			sourceTree = "<group>";
+		};
+		1B84FB571FBB63A2003688C5 /* GuestStates */ = {
+			isa = PBXGroup;
+			children = (
+				1B37C5B21FB4C8E600B0A058 /* PathState.swift */,
+				1B37C5B41FB4C9AE00B0A058 /* WaitingPlayerActionState.swift */,
+			);
+			path = GuestStates;
+			sourceTree = "<group>";
+		};
+		1B84FB5A1FBB6D19003688C5 /* WITypeComponent */ = {
+			isa = PBXGroup;
+			children = (
+				1B84FB5E1FBB6D78003688C5 /* WITypeComponent.swift */,
+				1B84FB5B1FBB6D4A003688C5 /* WIDirty.swift */,
+			);
+			path = WITypeComponent;
 			sourceTree = "<group>";
 		};
 		1B886C9E1FB38CB20043F79E /* Managers */ = {
@@ -158,8 +185,6 @@
 			children = (
 				1BB4648C1FB22A1A00AB06F1 /* IdleState.swift */,
 				1BB4648E1FB22A1A00AB06F1 /* WalkState.swift */,
-				1B37C5B21FB4C8E600B0A058 /* PathState.swift */,
-				1B37C5B41FB4C9AE00B0A058 /* WaitingPlayerActionState.swift */,
 			);
 			path = PlayerStates;
 			sourceTree = "<group>";
@@ -168,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				1BAAE6891FB320BB00B0BAB2 /* BaseState.swift */,
+				1B84FB571FBB63A2003688C5 /* GuestStates */,
 				1BAC97AB1FB46AAA00A4357C /* PlayerStates */,
 				1BB4648D1FB22A1A00AB06F1 /* StateMachine.swift */,
 			);
@@ -198,6 +224,8 @@
 			isa = PBXGroup;
 			children = (
 				1BB464951FB22EC600AB06F1 /* VisualComponent.swift */,
+				1B84FB581FBB64B8003688C5 /* WorldInteraction.swift */,
+				1B84FB5A1FBB6D19003688C5 /* WITypeComponent */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -381,13 +409,16 @@
 				BC6BC7101FB6193C00EBEC78 /* GameNetworkingMixin.swift in Sources */,
 				1B886C9B1FB38BC60043F79E /* BaseEntity.swift in Sources */,
 				BC6BC7131FB619C500EBEC78 /* GameServer.swift in Sources */,
+				1B86837D1FBA146E00DF1A1F /* ActionButtons.swift in Sources */,
 				1B886C9D1FB38BF70043F79E /* Guest.swift in Sources */,
 				1BB464981FB22F6900AB06F1 /* GameManager.swift in Sources */,
+				1B84FB591FBB64B8003688C5 /* WorldInteraction.swift in Sources */,
 				1B37C5B51FB4C9AE00B0A058 /* WaitingPlayerActionState.swift in Sources */,
 				1BED83C11FB1DCC900195AC1 /* GameScene.swift in Sources */,
 				1B886CA31FB38CCD0043F79E /* QueueManager.swift in Sources */,
 				1B6244F41FB5BA70007FD53E /* Building.swift in Sources */,
 				1B9BA4021FB23EF700E70ADA /* Array+Extensions.swift in Sources */,
+				1B84FB5F1FBB6D78003688C5 /* WITypeComponent.swift in Sources */,
 				1B9BA4011FB23EF700E70ADA /* UIColor+Extensions.swift in Sources */,
 				1BB4648F1FB22A1A00AB06F1 /* IdleState.swift in Sources */,
 				1BAAE68A1FB320BB00B0BAB2 /* BaseState.swift in Sources */,
@@ -395,6 +426,7 @@
 				1B9BA4031FB23EF700E70ADA /* SKAction+Extensions.swift in Sources */,
 				1B9BA4001FB23EF700E70ADA /* String+Extensions.swift in Sources */,
 				BCEB23E91FB4D9DD00023E62 /* GameData.swift in Sources */,
+				1B84FB5C1FBB6D4A003688C5 /* WIDirty.swift in Sources */,
 				1BED83C31FB1DCC900195AC1 /* GameViewController.swift in Sources */,
 				1B37C5B81FB4CDB700B0A058 /* DPad.swift in Sources */,
 				1B9BA3FE1FB23EF700E70ADA /* Utils.swift in Sources */,

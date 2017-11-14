@@ -39,16 +39,22 @@ class WalkState: BaseState
                 //let collision = vc.sprite.physicsBody?.allContactedBodies().map { $0.node?.name }
                 
                 vc.sprite.run(SKAction.move(to: targetPos, duration: 0.1)) {
-                    if let player = self.entity as? Player {
+                    self.entity.target = nil
+                    self.stateMachine?.enter(IdleState.self)
+                    /*if let player = self.entity as? Player {
                         if player.direction == .NONE {
                             self.stateMachine?.enter(IdleState.self)
                         }
                         else {
                             self.stateMachine?.enter(WalkState.self)
                         }
-                    }
+                    }*/
                 }
             }
+        }
+        else
+        {
+            self.stateMachine?.enter(IdleState.self)
         }
     }
 }

@@ -172,8 +172,7 @@ extension GameKitHelper {
             
             switch gameData.messageType {
             case .PLAYER_MESSAGE:
-                print("player message")
-//                self.gameScene?.performAction(playerName: gameData.name!, state: gameData.state!, target: gameData.target!)
+                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target!, position: gameData.position!)
             case .GUEST_MESSAGE:
                 print("guest message")
 //                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)

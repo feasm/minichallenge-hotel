@@ -10,22 +10,43 @@ import GameplayKit
 import SpriteKit
 
 class Guest: BaseEntity {
-    override init() {
-        super.init()
-    }
     
     init(position: CGPoint) {
         super.init()
         
-        let vc = VisualComponent(position: position, color: .yellow, physics: true)
-        vc.sprite.zPosition = 10
+        let sprites = ["atmosphere", "birdalien", "bocudo", "gaseous", "narigudalien", "orelhar", "sujeiroso"]
+        let sprite = sprites.chooseOne
+        let vc = VisualComponent(position: position, image: sprite)
+        vc.sprite.anchorPoint = vc.getAnchorPoint()
+        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
+        
+        let wi = WorldInteraction()
+        self.addComponent(wi)
+        
+        wi.addByType(.DIRTY_FLOOR)
         
         stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
         stateMachine?.enter(WaitingPlayerActionState.self)
         Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
-            self.target = Target(position: CGPoint(x: 200, y: -500))
-            self.stateMachine?.enter(PathState.self)
+            GameManager.shared.sendToRoom(guest: self, to: 1)
+        }
+    }
+    
+    override func update(deltaTime seconds: TimeInterval) {
+        updateZPosition()
+        if let wi = component(ofType: WorldInteraction.self)
+        {
+            wi.performInteraction()
+        }
+    }
+    
+    func updateZPosition()
+    {
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            let zPosition = (-vc.sprite.position.y + (BuildManager.shared.getRoomSize().height/2)) / BuildManager.TILE_SIZE
+            vc.sprite.zPosition = zPosition
         }
     }
     

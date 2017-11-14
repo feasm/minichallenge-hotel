@@ -14,6 +14,7 @@ class GameScene: SKScene {
     var backgroundTileMap: SKTileMapNode!
     var obstaclesTileMap: SKTileMapNode!
     var foregroundTileMap : SKTileMapNode!
+    var worldInteractionTileMap : SKTileMapNode!
     
     var cameraTarget : SKSpriteNode?
     {
@@ -25,7 +26,8 @@ class GameScene: SKScene {
     
     private var lastUpdateTime : TimeInterval = 0
     
-    var graph: GKGridGraph<GKGridGraphNode>!
+    var graph : GKGridGraph<GKGridGraphNode>!
+    var walkGraph : GKGridGraph<GKGridGraphNode>!
     
     override func sceneDidLoad() {
         
@@ -34,12 +36,15 @@ class GameScene: SKScene {
         backgroundTileMap = childNode(withName: "background") as! SKTileMapNode
         obstaclesTileMap = childNode(withName: "obstacles") as! SKTileMapNode
         foregroundTileMap = childNode(withName: "foreground") as! SKTileMapNode
+        worldInteractionTileMap = childNode(withName: "worldInteraction") as! SKTileMapNode
         
         GameManager.shared.configureFor(scene: self)
         
         GameManager.shared.spawnGuest(at: .zero)
         
         setupGridCollision()
+        
+        setupWalkGraph()
     }
     
     func validPosition(position: CGPoint) -> CGPoint
@@ -48,6 +53,71 @@ class GameScene: SKScene {
         let rows = Int(position.y).clamped(to: 0...backgroundTileMap.numberOfRows)
         let pos = backgroundTileMap.centerOfTile(atColumn: col, row: rows)
         return pos
+    }
+    
+    func setupWalkGraph()
+    {
+        guard let background = backgroundTileMap, let foreground = foregroundTileMap else{
+            return
+        }
+        
+        walkGraph = GKGridGraph(fromGridStartingAt: vector2(0, 0), width: Int32(background.numberOfColumns), height: Int32(background.numberOfRows), diagonalsAllowed: true)
+        
+        //let tiles = ["corridors"]
+        let allowTiles = ["corridors_Center"]
+        let additionalTiles = ["rug"]
+        
+        for row in 0..<background.numberOfRows
+        {
+            for column in 0..<background.numberOfColumns
+            {
+                guard let tile = background.tileDefinition(atColumn: column, row: row)
+                else {
+                    let obstacle = walkGraph.node(atGridPosition: vector2(Int32(column), Int32(row)))!
+                    walkGraph.remove([obstacle])
+                    continue
+                }
+                //let pieces = tile.name?.components(separatedBy: "_")
+                //let prefix = pieces![0]
+                if !allowTiles.contains(tile.name!)
+                {
+                    if let ftile = foreground.tileDefinition(atColumn: column, row: row)
+                    {
+                        let pieces = ftile.name?.components(separatedBy: "_")
+                        let prefix = pieces![0]
+                        if !additionalTiles.contains(prefix)
+                        {
+                            let obstacle = walkGraph.node(atGridPosition: vector2(Int32(column), Int32(row)))!
+                            walkGraph.remove([obstacle])
+                        }
+                    }
+                    else
+                    {
+                        let obstacle = walkGraph.node(atGridPosition: vector2(Int32(column), Int32(row)))!
+                        walkGraph.remove([obstacle])
+                    }
+                }
+            }
+        }
+        
+        
+        
+        /*for row in 0..<foreground.numberOfRows
+        {
+            for column in 0..<foreground.numberOfColumns
+            {
+                guard
+                else { continue }
+                
+                let pieces = tile.name?.components(separatedBy: "_")
+                let prefix = pieces![0]
+                if additionalTiles.contains(prefix)
+                {
+                    print(tile.name)
+                    walkGraph.add([GKGridGraphNode(gridPosition: vector2(Int32(column), Int32(row)))])
+                }
+            }
+        }*/
     }
     
     func setupGridCollision() {
