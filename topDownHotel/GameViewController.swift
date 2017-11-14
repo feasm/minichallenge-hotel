@@ -69,6 +69,6 @@ extension GameViewController {
     }
     
     @objc func playerAuthenticated() {
-        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 2, maxPlayers: 2, viewController: self, delegate: self.gameView.scene as! GameKitHelperDelegate)
+        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 2, maxPlayers: 4, viewController: self, delegate: self.gameView.scene as! GameKitHelperDelegate)
     }
 }

@@ -50,7 +50,7 @@ extension MultiplayerNetworking {
     
     func sendPlayerData(player: Player) {
         if let vc = player.component(ofType: VisualComponent.self) {
-            let gameData = PlayerData(name: player.name!, target: player.target!, position: vc.sprite.position)
+            let gameData = GameData(messageType: .PLAYER_MESSAGE, name: player.name!, target: player.target!, position: vc.sprite.position)
             let dataStr = self.encodeData(gameData: gameData)
             
             self.sendData(data: Data(base64Encoded: dataStr.toBase64())!)

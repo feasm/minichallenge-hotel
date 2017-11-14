@@ -172,8 +172,7 @@ extension GameKitHelper {
             
             switch gameData.messageType {
             case .PLAYER_MESSAGE:
-                let playerData = try! decoder.decode(PlayerData.self, from: jsonData)
-                GameManager.shared.movePlayer(name: playerData.name, target: playerData.target, position: playerData.position)
+                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target!, position: gameData.position!)
             case .GUEST_MESSAGE:
                 print("guest message")
 //                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)
