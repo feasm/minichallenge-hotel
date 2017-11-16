@@ -28,7 +28,7 @@ class Player : BaseEntity
         
         let vc = VisualComponent(position: position, image: "main_char")
         vc.sprite.anchorPoint = vc.getAnchorPoint()
-        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
+//        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
 
         stateMachine = GKStateMachine(states: [IdleState(entity: self), WalkState(entity: self)])
@@ -69,7 +69,7 @@ class Player : BaseEntity
         }
     }
     
-    func moveToDirection(direction : MovementDirection)
+    func moveToDirection(direction : MovementDirection, broadcast: Bool = true)
     {
         self.direction = direction
         
@@ -92,9 +92,12 @@ class Player : BaseEntity
         
         updateDirection()
         
-        target = Target(tile: CGPoint(x: dx, y: dy))
-        
-        stateMachine?.enter(WalkState.self)
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: CGPoint(x: dx, y: dy))
+            target = Target(position : targetPos)
+            stateMachine?.enter(WalkState.self)
+        }
 
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
         
@@ -106,5 +109,11 @@ class Player : BaseEntity
     func moveToTarget(target: Target) {
         self.target = target
         stateMachine?.enter(WalkState.self)
+    }
+    
+    func updateName() {
+        if let vc = component(ofType: VisualComponent.self) {
+            vc.addName(name: self.name!)
+        }
     }
 }

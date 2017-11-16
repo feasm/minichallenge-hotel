@@ -64,6 +64,11 @@ class GameManager {
     func updateWithDeltaTime(seconds: CFTimeInterval) {
         player.update(deltaTime: seconds)
         
+        for remotePlayer in players
+        {
+            remotePlayer.update(deltaTime: seconds)
+        }
+        
         for guest in guests
         {
             guest.update(deltaTime: seconds)

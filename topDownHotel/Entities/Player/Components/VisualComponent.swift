@@ -115,6 +115,15 @@ class VisualComponent : GKComponent
         //sprite.position = sprite.position + (position * CGFloat(moveSpeed))
     }
     
+    func addName(name: String) {
+        let playerName = SKLabelNode(fontNamed: "Arial")
+        playerName.text = name
+        playerName.fontColor = SKColor.white
+        playerName.fontSize = 50
+        playerName.position = CGPoint(x: 0, y: sprite.frame.size.height + 10)
+        sprite.addChild(playerName)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

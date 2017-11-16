@@ -34,11 +34,7 @@ class WalkState: BaseState
                     vc.sprite.color = UIColor.blue
                 }
                 
-                let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: (target?.tile)!)
-                
-                //let collision = vc.sprite.physicsBody?.allContactedBodies().map { $0.node?.name }
-                
-                vc.sprite.run(SKAction.move(to: targetPos, duration: 0.1)) {
+                vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.1)) {
                     self.entity.target = nil
                     self.stateMachine?.enter(IdleState.self)
                     /*if let player = self.entity as? Player {
