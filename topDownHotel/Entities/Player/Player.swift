@@ -106,6 +106,7 @@ class Player : BaseEntity
         
         switch direction {
         case .NONE:
+            target = nil
             return
         case .DOWN:
             dy = -1

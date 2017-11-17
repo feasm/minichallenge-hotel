@@ -9,9 +9,34 @@
 import GameplayKit
 import SpriteKit
 
+class VisualAnimation
+{
+    var timePerFrame : TimeInterval!
+    private(set) var textures : [SKTexture] = []
+    init(images: [String])
+    {
+        self.timePerFrame = 0
+        for image in images
+        {
+            self.textures.append(SKTexture(imageNamed: image))
+        }
+    }
+    
+    func tpf(fps: Double) -> TimeInterval {
+        return TimeInterval(Double(textures.count)/fps)
+    }
+    
+    func animation(timePerFrame: TimeInterval? = nil) -> SKAction
+    {
+        let tpf = timePerFrame != nil ? timePerFrame : self.timePerFrame
+        return SKAction.animate(with: textures, timePerFrame: tpf!)//0.05tpf!)
+    }
+}
+
 class VisualComponent : GKComponent
 {
     private(set) var sprite: SKSpriteNode!
+    private(set) var animations : [String : VisualAnimation] = [:]
     
     private var isMoving = false
     private var moveSpeed = 30
@@ -27,6 +52,10 @@ class VisualComponent : GKComponent
         super.init()
         self.sprite = SKSpriteNode(texture: texture, color: .clear, size: texture.size())
         self.sprite.position = position
+        
+        self.animations["walk"] = VisualAnimation(images: ["walk1", "walk2", "walk3", "walk2"])
+        self.animations["walk"]?.timePerFrame = 0.2
+        self.animations["idle"] = VisualAnimation(images: ["main_char"])
     }
     
     convenience init(tile: CGPoint, direction: String) {
@@ -71,6 +100,23 @@ class VisualComponent : GKComponent
         let size = CGSize(width: 96, height: 96)
         self.init(position: position, color: color, size: size)
         setPhysics(physics)
+    }
+    
+    func animate(name: String, repetition: Bool)
+    {
+        if let anim = animations[name]
+        {
+            if repetition
+            {
+                let action = anim.animation()
+                self.sprite.run(SKAction.repeatForever(action), withKey: "spriteAnimation")
+            }
+            else
+            {
+                let action = anim.animation()
+                self.sprite.run(action, withKey: "spriteAnimation")
+            }
+        }
     }
     
     func setPhysics(_ physics: Bool = false, size: CGSize? = nil)

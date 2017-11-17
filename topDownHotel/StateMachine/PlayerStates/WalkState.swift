@@ -29,14 +29,19 @@ class WalkState: BaseState
             self.target = entity.target
             //sprite.run(SKAction.move(to: targetPos, duration: 0.3))
             if let vc = entity.component(ofType: VisualComponent.self) {
-                if let _ = previousState as? IdleState
-                {
-                    vc.sprite.color = UIColor.blue
+                
+                if let _ = previousState as? IdleState {
+                    vc.animate(name: "walk", repetition: true)
                 }
                 
                 vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.2)) {
-                    self.entity.target = nil
-                    self.stateMachine?.enter(IdleState.self)
+                    //self.entity.target = nil
+                    if self.entity.target == nil {
+                        self.stateMachine?.enter(IdleState.self)
+                    }
+                    else {
+                        self.stateMachine?.enter(WalkState.self)
+                    }
                     /*if let player = self.entity as? Player {
                         if player.direction == .NONE {
                             self.stateMachine?.enter(IdleState.self)
