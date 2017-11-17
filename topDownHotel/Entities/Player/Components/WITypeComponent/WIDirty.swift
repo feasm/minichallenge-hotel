@@ -17,21 +17,31 @@ class WIDirty : WITypeComponent
     
     override func performInteraction() {
         super.performInteraction()
-//        if let scene = GameManager.shared.gameScene, let vc = entity?.component(ofType: VisualComponent.self)
-//        {
-//            if let tileMap = scene.worldInteractionTileMap
-//            {
-//                let tilePosition = BuildManager.tilePosition(position: vc.sprite.position)
-//                guard let _ = tileMap.tileDefinition(atColumn: Int(tilePosition.x), row: Int(tilePosition.y))
-//                else {
-//                    //print("sujou")
-//                    let tile = tileMap.tileSet.tileGroups.
-//                    tileMap.setTileGroup(tile, forColumn: Int(tilePosition.x), row: Int(tilePosition.y))
-//                    return
-//                }
-//                return
-//            }
-//        }
+        if let scene = GameManager.shared.gameScene, let vc = entity?.component(ofType: VisualComponent.self)
+        {
+            if let tileMap = scene.worldInteractionTileMap
+            {
+                let tilePosition = BuildManager.tilePosition(position: vc.sprite.position)
+                guard let _ = tileMap.tileDefinition(atColumn: Int(tilePosition.x), row: Int(tilePosition.y))
+                else {
+                    //print("sujou")
+                    let temp = tilePosition
+                    Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false, block: { (_) in
+                        let currentTile = BuildManager.tilePosition(position: vc.sprite.position)
+                        if currentTile == temp
+                        {
+                            let tile = tileMap.tileSet.tileGroups.first(where:{
+                                ($0.name?.contains("Dirty"))!
+                            })
+                            tileMap.setTileGroup(tile, forColumn: Int(tilePosition.x), row: Int(tilePosition.y))
+                        }
+                    })
+                    
+                    return
+                }
+                return
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

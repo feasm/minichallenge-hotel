@@ -18,14 +18,18 @@ protocol BuildManagerDelegate {
 class BuildManager {
     // MARK: - Constants
     static let TILE_SIZE : CGFloat = 96
+    static let TILES_HORIZONTAL : Int = 50
+    static let TILES_VERTICAL : Int = 50
     static let shared = BuildManager()
     
     // MARK: - Public
     var delegate : BuildManagerDelegate?
     var roomSize : CGSize = CGSize.zero
+    
+    var floor : [[SKSpriteNode?]] = []
 
     private init() {
-        
+        createFloor()
     }
  
     // MARK: - Public
@@ -66,6 +70,53 @@ class BuildManager {
         return positions
     }
     
+    func canMove(_ position: CGPoint) -> Bool
+    {
+        if let gameScene = GameManager.shared.gameScene
+        {
+            if let body = gameScene.physicsWorld.body(at: position)
+            {
+                if body.node?.name != nil
+                {
+                    return false
+                }
+            }
+        }
+        
+        return true
+        
+    }
+    
+    func getRoomSize() -> CGSize
+    {
+        if roomSize == .zero
+        {
+            if let scene = GameManager.shared.gameScene
+            {
+                roomSize = scene.backgroundTileMap.mapSize
+            }
+        }
+        return roomSize
+    }
+    
+    // MARK: - Private
+    
+    private func createFloor()
+    {
+        for _ in 0..<BuildManager.TILES_VERTICAL
+        {
+            var dirty : [SKSpriteNode?] = []
+            for _ in 0..<BuildManager.TILES_HORIZONTAL
+            {
+                dirty.append(nil)
+            }
+            floor.append(dirty)
+        }
+        
+    }
+    
+    // MARK: - Static
+    
     static func tilePosition(tile : CGPoint, tileMap : SKTileMapNode? = nil) -> CGPoint
     {
         if tileMap != nil {
@@ -98,18 +149,6 @@ class BuildManager {
             }
         }
         return CGPoint.zero
-    }
-    
-    func getRoomSize() -> CGSize
-    {
-        if roomSize == .zero
-        {
-            if let scene = GameManager.shared.gameScene
-            {
-                roomSize = scene.backgroundTileMap.mapSize
-            }
-        }
-        return roomSize
     }
 }
 

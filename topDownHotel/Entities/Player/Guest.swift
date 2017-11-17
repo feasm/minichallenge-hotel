@@ -9,36 +9,85 @@
 import GameplayKit
 import SpriteKit
 
+enum GuestType : String {
+    case ATMOSPHERE = "atmosphere"
+    case BIRDALINE = "birdalien"
+    case BOCUDO = "bocudo"
+    case GASEOUS = "gaseous"
+    case NARIGUDALIEN = "narigudalien"
+    case ORELHAR = "orelhar"
+    case SUJEIROSO = "sujeiroso"
+}
+
 class Guest: BaseEntity {
     var index: Int?
+    var type : GuestType!
+    var following : BaseEntity?
     
-    init(position: CGPoint) {
+    init(position: CGPoint, type : GuestType) {
         super.init()
         
-        let sprites = ["atmosphere", "birdalien", "bocudo", "gaseous", "narigudalien", "orelhar", "sujeiroso"]
-        let sprite = sprites.chooseOne
-        let vc = VisualComponent(position: position, image: sprite)
+        let vc = VisualComponent(position: position, image: type.rawValue)
         vc.sprite.anchorPoint = vc.getAnchorPoint()
         vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
         
+        stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
+        stateMachine?.enter(WaitingPlayerActionState.self)
+        
+        self.type = type
         let wi = WorldInteraction()
         self.addComponent(wi)
         
-        wi.addByType(.DIRTY_FLOOR)
-        
-        stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
-        stateMachine?.enter(WaitingPlayerActionState.self)
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
-            GameManager.shared.sendToRoom(guest: self, to: 1)
+        switch type {
+        case .ATMOSPHERE:
+            break
+        case .BIRDALINE:
+            break
+        case .BOCUDO:
+            wi.addByType(.NOISY)
+            break
+        case .GASEOUS:
+            break
+        case .NARIGUDALIEN:
+            break
+        case .ORELHAR:
+            break
+        case .SUJEIROSO:
+            wi.addByType(.DIRTY_FLOOR)
+            break
         }
+        
+//        self.following = GameManager.shared.player
     }
-    
+
     override func update(deltaTime seconds: TimeInterval) {
         updateZPosition()
         if let wi = component(ofType: WorldInteraction.self)
         {
             wi.performInteraction()
+        }
+        
+        if let following = following as? Player
+        {
+            if let followVC = following.component(ofType: VisualComponent.self)
+            {
+                if let guestVC = component(ofType: VisualComponent.self)
+                {
+                    let distance = followVC.sprite.position.distance(to: guestVC.sprite.position)
+                    if distance > 4*96
+                    {
+                        self.target = Target(position: following.backPosition)
+                        self.stateMachine?.enter(PathState.self)
+                    }
+                    else
+                    {
+                        let action = SKAction.move(to: following.backPosition, duration: 0.2)
+                        action.timingMode = .linear
+                        guestVC.sprite.run(action)
+                    }
+                }
+            }
         }
     }
     

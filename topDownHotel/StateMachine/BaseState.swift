@@ -13,11 +13,13 @@ class Target: Codable
     var position : CGPoint?
     var tile : CGPoint?
     var room : Int?
+    var player : String?
     
-    init(position: CGPoint? = nil, tile: CGPoint? = nil, room: Int? = nil) {
+    init(position: CGPoint? = nil, tile: CGPoint? = nil, room: Int? = nil, player: String? = nil) {
         self.position = position
         self.tile = tile
         self.room = room
+        self.player = player
     }
 }
 

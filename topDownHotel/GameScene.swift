@@ -43,7 +43,7 @@ class GameScene: SKScene {
         
         GameManager.shared.configureFor(scene: self)
         
-        GameManager.shared.spawnGuest(at: .zero)
+        GameManager.shared.spawnGuest(at: .zero, type: .ATMOSPHERE)
         
         setupGridCollision()
         
@@ -213,7 +213,12 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        for t in touches {
+            if BuildManager.shared.canMove(t.location(in: self))
+            {
+                print("canMove")
+            }
+            self.touchDown(atPoint: t.location(in: self)) }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -255,7 +260,7 @@ extension GameScene: GameKitHelperDelegate {
 
 extension GameScene: GuestManagerDelegate {
     func spawnGuest() -> Guest {
-        return GameManager.shared.spawnGuest(at: spawnPosition)
+        return GameManager.shared.spawnGuest(at: spawnPosition, type: .ATMOSPHERE)
     }
     
     func sendActionData(messageType: MessageType) {
