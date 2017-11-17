@@ -9,35 +9,57 @@
 import GameplayKit
 import SpriteKit
 
+enum GuestType : String {
+    case ATMOSPHERE = "atmosphere"
+    case BIRDALINE = "birdalien"
+    case BOCUDO = "bocudo"
+    case GASEOUS = "gaseous"
+    case NARIGUDALIEN = "narigudalien"
+    case ORELHAR = "orelhar"
+    case SUJEIROSO = "sujeiroso"
+}
+
 class Guest: BaseEntity {
-    
+    var type : GuestType!
     var following : BaseEntity?
     
-    init(position: CGPoint) {
+    init(position: CGPoint, type : GuestType) {
         super.init()
         
-        let sprites = ["atmosphere", "birdalien", "bocudo", "gaseous", "narigudalien", "orelhar", "sujeiroso"]
-        let sprite = sprites.chooseOne
-        let vc = VisualComponent(position: position, image: sprite)
+        let vc = VisualComponent(position: position, image: type.rawValue)
         vc.sprite.anchorPoint = vc.getAnchorPoint()
-//        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
+        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
-        
-        let wi = WorldInteraction()
-        self.addComponent(wi)
-        
-        wi.addByType(.DIRTY_FLOOR)
         
         stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
         stateMachine?.enter(WaitingPlayerActionState.self)
-        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
-            //GameManager.shared.sendToRoom(guest: self, to: 1)
-            //self.target = Target(position: vc.sprite.position)
-            //self.stateMachine?.enter(PathState.self)
-            self.following = GameManager.shared.player
+        
+        self.type = type
+        let wi = WorldInteraction()
+        self.addComponent(wi)
+        
+        switch type {
+        case .ATMOSPHERE:
+            break
+        case .BIRDALINE:
+            break
+        case .BOCUDO:
+            wi.addByType(.NOISY)
+            break
+        case .GASEOUS:
+            break
+        case .NARIGUDALIEN:
+            break
+        case .ORELHAR:
+            break
+        case .SUJEIROSO:
+            wi.addByType(.DIRTY_FLOOR)
+            break
         }
+        
+//        self.following = GameManager.shared.player
     }
-    
+
     override func update(deltaTime seconds: TimeInterval) {
         updateZPosition()
         if let wi = component(ofType: WorldInteraction.self)

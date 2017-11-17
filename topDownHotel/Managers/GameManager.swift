@@ -144,7 +144,7 @@ extension GameManager
 {
     func spawnGuest(at position : CGPoint)
     {
-        let guest = Guest(position: position)
+        let guest = Guest(position: position, type: .SUJEIROSO)
         addEntity(entity: guest)
     }
 }

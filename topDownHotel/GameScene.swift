@@ -257,7 +257,7 @@ extension GameScene: GameKitHelperDelegate {
 
 extension GameScene: GuestManagerDelegate {
     func spawnGuest() -> Guest {
-        return Guest(position: .zero)
+        return Guest(position: .zero, type: .ATMOSPHERE)
     }
     
     func sendActionData(messageType: MessageType) {
