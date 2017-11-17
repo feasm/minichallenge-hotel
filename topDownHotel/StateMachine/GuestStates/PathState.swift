@@ -16,6 +16,8 @@ class PathState : BaseState
             return true
         case is IdleState.Type:
             return true
+        case is PathState.Type:
+            return true
         default:
             return false
         }

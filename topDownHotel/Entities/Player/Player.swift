@@ -20,6 +20,8 @@ enum MovementDirection : String
 class Player : BaseEntity
 {
     private(set) var direction : MovementDirection = .NONE
+    private(set) var lastDirection : MovementDirection = .NONE
+    private(set) var backPosition : CGPoint!
     var id: String?
     var name: String?
     
@@ -27,8 +29,9 @@ class Player : BaseEntity
         super.init()
         
         let vc = VisualComponent(position: position, image: "main_char")
+        backPosition = position
         vc.sprite.anchorPoint = vc.getAnchorPoint()
-        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
+//        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
 
         stateMachine = GKStateMachine(states: [IdleState(entity: self), WalkState(entity: self)])
@@ -41,6 +44,7 @@ class Player : BaseEntity
     
     override func update(deltaTime seconds: TimeInterval) {
         updateZPosition()
+        updateBackPosition()
         if direction != .NONE
         {
             moveToDirection(direction: self.direction)
@@ -53,6 +57,30 @@ class Player : BaseEntity
         {
             let zPosition = (-vc.sprite.position.y + (BuildManager.shared.getRoomSize().height/2)) / BuildManager.TILE_SIZE
             vc.sprite.zPosition = zPosition
+        }
+    }
+    
+    func updateBackPosition()
+    {
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            let current = BuildManager.tilePosition(position: vc.sprite.position)
+            var back = CGPoint.zero
+            let distance : Int = 1
+            switch self.lastDirection
+            {
+            case .UP:
+                back = current + CGPoint(x: 0, y: -distance)
+            case .DOWN:
+                back = current + CGPoint(x: 0, y: distance)
+            case .RIGHT:
+                back = current + CGPoint(x: -distance, y: 0)
+            case .LEFT:
+                back = current + CGPoint(x: distance, y: 0)
+            default:
+                return
+            }
+            self.backPosition = BuildManager.tilePosition(tile: back)
         }
     }
     
@@ -69,7 +97,7 @@ class Player : BaseEntity
         }
     }
     
-    func moveToDirection(direction : MovementDirection)
+    func moveToDirection(direction : MovementDirection, broadcast: Bool = true)
     {
         self.direction = direction
         
@@ -78,6 +106,7 @@ class Player : BaseEntity
         
         switch direction {
         case .NONE:
+            target = nil
             return
         case .DOWN:
             dy = -1
@@ -90,11 +119,16 @@ class Player : BaseEntity
        
         }
         
+        self.lastDirection = direction
+        
         updateDirection()
         
-        target = Target(tile: CGPoint(x: dx, y: dy))
-        
-        stateMachine?.enter(WalkState.self)
+        if let vc = component(ofType: VisualComponent.self)
+        {
+            let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: CGPoint(x: dx, y: dy))
+            target = Target(position : targetPos)
+            stateMachine?.enter(WalkState.self)
+        }
 
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
         
@@ -106,5 +140,11 @@ class Player : BaseEntity
     func moveToTarget(target: Target) {
         self.target = target
         stateMachine?.enter(WalkState.self)
+    }
+    
+    func updateName() {
+        if let vc = component(ofType: VisualComponent.self) {
+            vc.addName(name: self.name!)
+        }
     }
 }

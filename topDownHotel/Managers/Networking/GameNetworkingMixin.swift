@@ -34,6 +34,7 @@ class GameNetworkingMixin {
             let newPlayer = Player(position: .zero)
             newPlayer.id = player.playerID
             newPlayer.name = player.alias
+            newPlayer.updateName()
             GameManager.shared.addPlayer(player: newPlayer)
         }
     }

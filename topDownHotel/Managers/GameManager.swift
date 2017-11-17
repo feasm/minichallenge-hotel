@@ -13,7 +13,7 @@ class GameManager {
     // MARK: - Constants
     static let shared = GameManager()
     static let DEBUG : Bool = false
-    static let MULTIPLAYER_ON : Bool = true
+    static let MULTIPLAYER_ON : Bool = false
     let directionalPad : DPad = DPad()
     let isHost: Bool = false
     
@@ -63,6 +63,11 @@ class GameManager {
     
     func updateWithDeltaTime(seconds: CFTimeInterval) {
         player.update(deltaTime: seconds)
+        
+        for remotePlayer in players
+        {
+            remotePlayer.update(deltaTime: seconds)
+        }
         
         for guest in guests
         {
@@ -118,6 +123,11 @@ extension GameManager {
     }
     
     func findPlayer(name: String) -> Player? {
+        if player.name == name
+        {
+            return self.player
+        }
+        
         for player in players {
             if player.name == name {
                 return player
@@ -134,7 +144,7 @@ extension GameManager
 {
     func spawnGuest(at position : CGPoint)
     {
-        let guest = Guest(position: position)
+        let guest = Guest(position: position, type: .SUJEIROSO)
         addEntity(entity: guest)
     }
 }

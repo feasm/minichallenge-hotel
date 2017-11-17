@@ -26,7 +26,10 @@ class IdleState: BaseState {
         {
             if let vc = entity.component(ofType: VisualComponent.self)
             {
-                vc.sprite.color = UIColor.red
+                if self.entity.target == nil
+                {
+                    vc.animate(name: "idle", repetition: false)
+                }
             }
         }
     }
