@@ -39,10 +39,8 @@ class GuestManager {
     }
     
     func initQueueManager() {
-//        let currentFloor = GameManager.shared.hotel.loadFloor(floorID: 0)!
-//        let receptionPosition = currentFloor.getReceptionPosition() - CGPoint(x: 1200, y: 0)
-//
-//        self.queueManager = QueueManager(startPosition: receptionPosition)
+        let scene = self.gameScene as! GameScene
+        self.queueManager = QueueManager(startPosition: scene.spawnPosition)
     }
     
     func setupAsHost(gameScene: GuestManagerDelegate, maxGuestsSpawn: Int = 5) {
@@ -78,7 +76,7 @@ extension GuestManager {
         self.prepareNextSpawn()
         
         // Configurado removedor de guests da fila para testes, remover após implementar o envio para o quarto
-        //        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
+//                Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(sendToRoom), userInfo: nil, repeats: true)
         
         if GameManager.DEBUG {
             print("Spawner configured")
@@ -102,23 +100,23 @@ extension GuestManager {
     }
     
     @objc func spawnGuest() {
-//        let newGuest = self.gameScene?.spawnGuest()
-//        newGuest?.index = self.guests.count
-//        self.guests.append(newGuest!)
-//        self.currentGuestsSpawn += 1
-//
-//        self.queueManager.addGuest(guest: newGuest!)
-//
-//        if GameManager.shared.isHost || !GameManager.MULTIPLAYER_ON {
-//            if self.currentGuestsSpawn == self.maxGuestsSpawn {
-//                self.stopSpawner()
-//            } else {
-//                self.prepareNextSpawn()
-//                if GameManager.MULTIPLAYER_ON {
-//                    self.gameScene?.sendActionData(messageType: .SPAWN_GUEST)
-//                }
-//            }
-//        }
+        let newGuest = self.gameScene?.spawnGuest()
+        newGuest?.index = self.guests.count
+        self.guests.append(newGuest!)
+        self.currentGuestsSpawn += 1
+
+        self.queueManager.addGuest(guest: newGuest!)
+
+        if GameManager.shared.isHost || !GameManager.MULTIPLAYER_ON {
+            if self.currentGuestsSpawn == self.maxGuestsSpawn {
+                self.stopSpawner()
+            } else {
+                self.prepareNextSpawn()
+                if GameManager.MULTIPLAYER_ON {
+                    MultiplayerNetworking.shared.sendActionData(messageType: .SPAWN_GUEST)
+                }
+            }
+        }
         
         if GameManager.DEBUG {
             print("Guest spawned: \(self.nextSpawnTimer) seconds delay")

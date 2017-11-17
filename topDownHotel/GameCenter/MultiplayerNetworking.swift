@@ -35,8 +35,8 @@ extension MultiplayerNetworking {
     }
     
     func sendGameBegin() {
-        let data = Data(bytes: [1])
-        self.sendData(data: data)
+//        let data = Data(bytes: [1])
+//        self.sendData(data: data)
     }
 }
 
@@ -51,15 +51,24 @@ extension MultiplayerNetworking {
     func sendPlayerData(player: Player) {
         if let vc = player.component(ofType: VisualComponent.self) {
             let gameData = GameData(messageType: .PLAYER_MESSAGE, name: player.name!, target: player.target!, position: vc.sprite.position)
-            let dataStr = self.encodeData(gameData: gameData)
             
-            self.sendData(data: Data(base64Encoded: dataStr.toBase64())!)
+            self.sendData(gameData)
         }
     }
     
-    func sendData(data: Data) {
+    func sendActionData(messageType: MessageType) {
+        let gameData = GameData(messageType: messageType)
+        self.sendData(gameData)
+    }
+    
+    func sendData(_ gameData: GameData) {
         do {
-            try GameKitHelper.shared.match?.sendData(toAllPlayers: data, with: .reliable)
+            let dataStr = self.encodeData(gameData: gameData)
+            
+            try GameKitHelper.shared.match?.sendData(
+                toAllPlayers: Data(base64Encoded: dataStr.toBase64())!,
+                with: .reliable
+            )
         } catch {
             print("Error sending data")
         }

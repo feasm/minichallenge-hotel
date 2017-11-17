@@ -16,6 +16,7 @@ class GameScene: SKScene {
     var foregroundTileMap : SKTileMapNode!
     var worldInteractionTileMap : SKTileMapNode!
     
+    var spawnPosition : CGPoint!
     var cameraTarget : SKSpriteNode?
     {
         didSet
@@ -37,10 +38,12 @@ class GameScene: SKScene {
         obstaclesTileMap = childNode(withName: "obstacles") as! SKTileMapNode
         foregroundTileMap = childNode(withName: "foreground") as! SKTileMapNode
         worldInteractionTileMap = childNode(withName: "worldInteraction") as! SKTileMapNode
+        let guestSpawn = childNode(withName: "guestSpawn") as! SKSpriteNode
+        spawnPosition = guestSpawn.position
         
         GameManager.shared.configureFor(scene: self)
         
-        GameManager.shared.spawnGuest(at: .zero)
+        GameManager.shared.spawnGuest(at: .zero, type: .ATMOSPHERE)
         
         setupGridCollision()
         
@@ -257,7 +260,7 @@ extension GameScene: GameKitHelperDelegate {
 
 extension GameScene: GuestManagerDelegate {
     func spawnGuest() -> Guest {
-        return Guest(position: .zero, type: .ATMOSPHERE)
+        return GameManager.shared.spawnGuest(at: spawnPosition, type: .ATMOSPHERE)
     }
     
     func sendActionData(messageType: MessageType) {

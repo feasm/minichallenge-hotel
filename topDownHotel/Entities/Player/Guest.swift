@@ -20,6 +20,7 @@ enum GuestType : String {
 }
 
 class Guest: BaseEntity {
+    var index: Int?
     var type : GuestType!
     var following : BaseEntity?
     
