@@ -21,6 +21,10 @@ struct GameData: Codable {
     var name: String?
     var target: Target?
     var position: CGPoint?
+    
+    init(messageType: MessageType) {
+        self.messageType = messageType
+    }
 }
 
 // MARK: Player Data

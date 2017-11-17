@@ -10,6 +10,7 @@ import GameplayKit
 import SpriteKit
 
 class Guest: BaseEntity {
+    var index: Int?
     
     init(position: CGPoint) {
         super.init()
@@ -18,7 +19,7 @@ class Guest: BaseEntity {
         let sprite = sprites.chooseOne
         let vc = VisualComponent(position: position, image: sprite)
         vc.sprite.anchorPoint = vc.getAnchorPoint()
-//        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
+        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
         
         let wi = WorldInteraction()

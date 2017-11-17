@@ -28,7 +28,7 @@ class Player : BaseEntity
         
         let vc = VisualComponent(position: position, image: "main_char")
         vc.sprite.anchorPoint = vc.getAnchorPoint()
-//        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
+        vc.setPhysics(true, size: CGSize(width: 96, height: 96))
         self.addComponent(vc)
 
         stateMachine = GKStateMachine(states: [IdleState(entity: self), WalkState(entity: self)])

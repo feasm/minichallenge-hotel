@@ -15,7 +15,7 @@ class GameManager {
     static let DEBUG : Bool = false
     static let MULTIPLAYER_ON : Bool = true
     let directionalPad : DPad = DPad()
-    let isHost: Bool = false
+    var isHost: Bool = false
     
     // MARK: - Private
     private weak var scene: SKScene?
@@ -137,10 +137,11 @@ extension GameManager {
 
 extension GameManager
 {
-    func spawnGuest(at position : CGPoint)
+    func spawnGuest(at position : CGPoint) -> Guest
     {
         let guest = Guest(position: position)
         addEntity(entity: guest)
+        return guest
     }
 }
 

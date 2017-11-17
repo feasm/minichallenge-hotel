@@ -176,6 +176,8 @@ extension GameKitHelper {
             case .GUEST_MESSAGE:
                 print("guest message")
 //                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)
+            case .SPAWN_GUEST:
+                GuestManager.shared.spawnGuest()
             default:
                 print("default message")
             }
