@@ -11,6 +11,8 @@ import SpriteKit
 
 class Guest: BaseEntity {
     
+    var following : BaseEntity?
+    
     init(position: CGPoint) {
         super.init()
         
@@ -29,7 +31,10 @@ class Guest: BaseEntity {
         stateMachine = GKStateMachine(states: [WaitingPlayerActionState(entity: self), PathState(entity: self)])
         stateMachine?.enter(WaitingPlayerActionState.self)
         Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (_) in
-            GameManager.shared.sendToRoom(guest: self, to: 1)
+            //GameManager.shared.sendToRoom(guest: self, to: 1)
+            //self.target = Target(position: vc.sprite.position)
+            //self.stateMachine?.enter(PathState.self)
+            self.following = GameManager.shared.player
         }
     }
     
@@ -38,6 +43,28 @@ class Guest: BaseEntity {
         if let wi = component(ofType: WorldInteraction.self)
         {
             wi.performInteraction()
+        }
+        
+        if let following = following as? Player
+        {
+            if let followVC = following.component(ofType: VisualComponent.self)
+            {
+                if let guestVC = component(ofType: VisualComponent.self)
+                {
+                    let distance = followVC.sprite.position.distance(to: guestVC.sprite.position)
+                    if distance > 4*96
+                    {
+                        self.target = Target(position: following.backPosition)
+                        self.stateMachine?.enter(PathState.self)
+                    }
+                    else
+                    {
+                        let action = SKAction.move(to: following.backPosition, duration: 0.2)
+                        action.timingMode = .linear
+                        guestVC.sprite.run(action)
+                    }
+                }
+            }
         }
     }
     

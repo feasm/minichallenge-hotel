@@ -108,23 +108,56 @@ class DPad: UIView {
     
     //MARK: Touches
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            if upButton.layer.contains(touch.location(in: upButton)){
-                GameManager.shared.updateDirection(direction: .UP)
-                upButton.isHighlighted = true
-            } else if leftButton.layer.contains(touch.location(in: leftButton)) {
-                GameManager.shared.updateDirection(direction: .LEFT)
-                leftButton.isHighlighted = true
-            } else if downButton.layer.contains(touch.location(in: downButton)) {
-                GameManager.shared.updateDirection(direction: .DOWN)
-                downButton.isHighlighted = true
-            } else if rightButton.layer.contains(touch.location(in: rightButton)) {
-                GameManager.shared.updateDirection(direction: .RIGHT)
-                rightButton.isHighlighted = true
-            }
+    func updatePadDirection(_ position : CGPoint)
+    {
+        //print(position)
+        if upButton.frame.contains(position){
+            GameManager.shared.updateDirection(direction: .UP)
+            upButton.isHighlighted = true
+            leftButton.isHighlighted = false
+            downButton.isHighlighted = false
+            rightButton.isHighlighted = false
+        } else if leftButton.frame.contains(position) {
+            GameManager.shared.updateDirection(direction: .LEFT)
+            leftButton.isHighlighted = true
+            upButton.isHighlighted = false
+            downButton.isHighlighted = false
+            rightButton.isHighlighted = false
+        } else if downButton.frame.contains(position) {
+            GameManager.shared.updateDirection(direction: .DOWN)
+            downButton.isHighlighted = true
+            upButton.isHighlighted = false
+            leftButton.isHighlighted = false
+            rightButton.isHighlighted = false
+        } else if rightButton.frame.contains(position) {
+            GameManager.shared.updateDirection(direction: .RIGHT)
+            rightButton.isHighlighted = true
+            upButton.isHighlighted = false
+            leftButton.isHighlighted = false
+            downButton.isHighlighted = false
         }
-        
+        else
+        {
+            GameManager.shared.updateDirection(direction: .NONE)
+            upButton.isHighlighted = false
+            leftButton.isHighlighted = false
+            downButton.isHighlighted = false
+            rightButton.isHighlighted = false
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches
+        {
+        //if let touch = touches.first {
+            updatePadDirection(touch.location(in: self))
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            updatePadDirection(touch.location(in: self))
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

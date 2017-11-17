@@ -13,7 +13,7 @@ class GameManager {
     // MARK: - Constants
     static let shared = GameManager()
     static let DEBUG : Bool = false
-    static let MULTIPLAYER_ON : Bool = true
+    static let MULTIPLAYER_ON : Bool = false
     let directionalPad : DPad = DPad()
     let isHost: Bool = false
     
@@ -123,6 +123,11 @@ extension GameManager {
     }
     
     func findPlayer(name: String) -> Player? {
+        if player.name == name
+        {
+            return self.player
+        }
+        
         for player in players {
             if player.name == name {
                 return player

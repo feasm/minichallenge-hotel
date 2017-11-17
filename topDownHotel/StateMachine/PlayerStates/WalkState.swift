@@ -34,7 +34,7 @@ class WalkState: BaseState
                     vc.sprite.color = UIColor.blue
                 }
                 
-                vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.1)) {
+                vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.2)) {
                     self.entity.target = nil
                     self.stateMachine?.enter(IdleState.self)
                     /*if let player = self.entity as? Player {
