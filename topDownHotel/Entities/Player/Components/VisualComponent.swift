@@ -131,7 +131,6 @@ class VisualComponent : GKComponent
             sprite.physicsBody?.allowsRotation = false
             sprite.physicsBody?.friction = 0
             sprite.physicsBody?.usesPreciseCollisionDetection = true
-            sprite.physicsBody?.mass = 500
         }
     }
     

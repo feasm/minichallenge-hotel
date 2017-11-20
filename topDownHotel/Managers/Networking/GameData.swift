@@ -29,7 +29,7 @@ struct GameData: Codable {
 
 // MARK: Player Data
 extension GameData {
-    init(messageType: MessageType, name: String, target: Target, position: CGPoint) {
+    init(messageType: MessageType, name: String, target: Target?, position: CGPoint) {
         self.messageType = messageType
         
         self.name = name

@@ -13,7 +13,7 @@ class GameManager {
     // MARK: - Constants
     static let shared = GameManager()
     static let DEBUG : Bool = false
-    static let MULTIPLAYER_ON : Bool = false
+    static let MULTIPLAYER_ON : Bool = true
     let directionalPad : DPad = DPad()
     var isHost: Bool = false
     
@@ -230,9 +230,13 @@ extension GameManager
 
 // MARK: Multiplayer
 extension GameManager {
-    func movePlayer(name: String, target: Target, position: CGPoint) {
+    func movePlayer(name: String, target: Target?, position: CGPoint) {
         if let player = self.findPlayer(name: name) {
-            player.moveToTarget(target: target)
+            if target != nil {
+                player.moveToTarget(target: target!)
+            } else {
+                player.stateMachine?.enter(IdleState.self)
+            }
         }
     }
 }
