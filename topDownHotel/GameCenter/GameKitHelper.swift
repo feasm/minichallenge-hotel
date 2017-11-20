@@ -145,8 +145,10 @@ extension GameKitHelper {
         
         self.match?.chooseBestHostingPlayer(completionHandler: { (player) in
             if player?.alias == GKLocalPlayer.localPlayer().alias {
+                print("Server em: \(player?.alias ?? "Erro ao pegar alias do host")")
                 GameServer.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
             } else {
+                print("Cliente em: \(player?.alias ?? "Erro no alias do cliente")")
                 GameClient.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
             }
         })
@@ -172,7 +174,7 @@ extension GameKitHelper {
             
             switch gameData.messageType {
             case .PLAYER_MESSAGE:
-                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target!, position: gameData.position!)
+                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)
             case .GUEST_MESSAGE:
                 print("guest message")
 //                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)

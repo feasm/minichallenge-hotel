@@ -49,6 +49,8 @@ class Player : BaseEntity
         {
             moveToDirection(direction: self.direction)
         }
+        
+        stateMachine?.update(deltaTime: seconds)
     }
     
     func updateZPosition()
@@ -107,7 +109,6 @@ class Player : BaseEntity
         switch direction {
         case .NONE:
             target = nil
-            return
         case .DOWN:
             dy = -1
         case .UP:
@@ -119,17 +120,19 @@ class Player : BaseEntity
        
         }
         
-        self.lastDirection = direction
-        
-        updateDirection()
-        
-        if let vc = component(ofType: VisualComponent.self)
+        if direction != .NONE
         {
-            let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: CGPoint(x: dx, y: dy))
-            target = Target(position : targetPos)
-            stateMachine?.enter(WalkState.self)
+            self.lastDirection = direction
+            
+            updateDirection()
+            
+            if let vc = component(ofType: VisualComponent.self)
+            {
+                let targetPos = GameManager.shared.movementPositionByTile(from: vc.sprite.position, tile: CGPoint(x: dx, y: dy))
+                target = Target(position : targetPos)
+                stateMachine?.enter(WalkState.self)
+            }
         }
-
         //vc.movePlayer(to: CGPoint(x: dx, y: dy))
         
         if GameManager.MULTIPLAYER_ON && broadcast {

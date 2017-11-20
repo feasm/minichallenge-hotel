@@ -23,39 +23,76 @@ class WalkState: BaseState
         }
     }
     
-    override func didEnter(from previousState: GKState?)
-    {
+    override func update(deltaTime seconds: TimeInterval) {
+        super.update(deltaTime: seconds)
         if entity.target != nil {
             self.target = entity.target
             //sprite.run(SKAction.move(to: targetPos, duration: 0.3))
             if let vc = entity.component(ofType: VisualComponent.self) {
-                
-                if let _ = previousState as? IdleState {
+                if vc.sprite.action(forKey: "spriteAnimation") == nil
+                {
                     vc.animate(name: "walk", repetition: true)
                 }
                 
-                vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.2)) {
-                    //self.entity.target = nil
-                    if self.entity.target == nil {
-                        self.stateMachine?.enter(IdleState.self)
-                    }
-                    else {
-                        self.stateMachine?.enter(WalkState.self)
-                    }
-                    /*if let player = self.entity as? Player {
-                        if player.direction == .NONE {
-                            self.stateMachine?.enter(IdleState.self)
-                        }
-                        else {
-                            self.stateMachine?.enter(WalkState.self)
-                        }
-                    }*/
-                }
+                vc.sprite.run(SKAction.move(to: (target?.position)!, duration: 0.2))
             }
         }
         else
         {
-            self.stateMachine?.enter(IdleState.self)
+            stateMachine?.enter(IdleState.self)
         }
+    }
+    
+    override func didEnter(from previousState: GKState?)
+    {
+//
+//            self.target = entity.target
+//            //sprite.run(SKAction.move(to: targetPos, duration: 0.3))
+//            if let vc = entity.component(ofType: VisualComponent.self) {
+//
+//                if let _ = previousState as? IdleState {
+////                    vc.animate(name: "walk", repetition: true)
+//                }
+//
+//
+//                if let action = vc.sprite.action(forKey: "spriteAnimation")
+//                {
+//
+//                }
+//                else
+//                {
+//                    vc.animate(name: "walk", repetition: true)
+//                }
+//                let sequence = SKAction.sequence([SKAction.move(to: (target?.position)!, duration: 0.2), SKAction.run({
+//                    self.entity.target = nil
+//                    self.stateMachine?.enter(IdleState.self)
+//                })])
+//
+//                vc.sprite.run(sequence, withKey: "walking")
+//
+//
+//                //vc.sprite.run {
+//
+//                    /*if self.entity.target == nil {
+//                        self.stateMachine?.enter(IdleState.self)
+//                    }
+//                    else {
+//                        self.stateMachine?.enter(WalkState.self)
+//                    }*/
+//                    /*if let player = self.entity as? Player {
+//                        if player.direction == .NONE {
+//                            self.stateMachine?.enter(IdleState.self)
+//                        }
+//                        else {
+//                            self.stateMachine?.enter(WalkState.self)
+//                        }
+//                    }*/
+//                //}
+//            }
+//        }
+//        else
+//        {
+//            self.stateMachine?.enter(IdleState.self)
+//        }
     }
 }
