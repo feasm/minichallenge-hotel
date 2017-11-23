@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var worldInteractionTileMap : SKTileMapNode!
     
     var spawnPosition : CGPoint!
+    var queuePosition : CGPoint!
     var cameraTarget : SKSpriteNode?
     {
         didSet
@@ -38,12 +39,15 @@ class GameScene: SKScene {
         obstaclesTileMap = childNode(withName: "obstacles") as! SKTileMapNode
         foregroundTileMap = childNode(withName: "foreground") as! SKTileMapNode
         worldInteractionTileMap = childNode(withName: "worldInteraction") as! SKTileMapNode
+        
         let guestSpawn = childNode(withName: "guestSpawn") as! SKSpriteNode
         spawnPosition = guestSpawn.position
+        let initialQueue = childNode(withName: "initialQueue") as! SKSpriteNode
+        queuePosition = initialQueue.position
         
         GameManager.shared.configureFor(scene: self)
         
-        GameManager.shared.spawnGuest(at: .zero, type: .ATMOSPHERE)
+//        GameManager.shared.spawnGuest(at: .zero, type: .ATMOSPHERE)
         
         setupGridCollision()
         

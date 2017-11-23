@@ -50,8 +50,7 @@ class QueueManager {
         let queuePosition = getLastQueuePosition()
         
         self.guests.append(guest)
-        //let moveToQueue = SKAction.walkTo(from: guest.guestNode!.position, to: queuePosition, speed: 3)
-        //guest.guestNode?.run(moveToQueue)
+        guest.moveToQueue(queuePosition: queuePosition)
         
         if GameManager.DEBUG {
             print("Moving new guest to queue...")
@@ -74,6 +73,6 @@ class QueueManager {
     private func getLastQueuePosition() -> CGPoint {
         let positionOffset = CGPoint(x: QueueManager.POSITION_OFFSET * self.guests.count, y: 0)
         
-        return self.startPosition + positionOffset
+        return self.startPosition - positionOffset
     }
 }

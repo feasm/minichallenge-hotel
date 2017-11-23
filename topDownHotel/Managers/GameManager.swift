@@ -192,7 +192,7 @@ extension GameManager
     {
         guard let tileMap = tileMap, let scene = self.scene as? GameScene else { return [] }
 
-        let graph = scene.walkGraph
+        let graph = scene.graph //scene.walkGraph
         
         let fromColumn = tileMap.tileColumnIndex(fromPosition: from)
         let fromRow = tileMap.tileRowIndex(fromPosition: from)

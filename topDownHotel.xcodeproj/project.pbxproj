@@ -134,8 +134,8 @@
 		1B84FB571FBB63A2003688C5 /* GuestStates */ = {
 			isa = PBXGroup;
 			children = (
-				1B37C5B21FB4C8E600B0A058 /* PathState.swift */,
 				1B37C5B41FB4C9AE00B0A058 /* WaitingPlayerActionState.swift */,
+				1B37C5B21FB4C8E600B0A058 /* PathState.swift */,
 				1BB7EF081FBE19140082F41F /* FollowState.swift */,
 			);
 			path = GuestStates;
@@ -585,7 +585,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = topDownHotel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.topDownHotel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -600,11 +600,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = topDownHotel/topDownHotel.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4XWMMXB4KD;
 				INFOPLIST_FILE = topDownHotel/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adonaypuszczynski.topDownHotel;
 				PRODUCT_NAME = "$(TARGET_NAME)";

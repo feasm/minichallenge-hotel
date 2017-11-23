@@ -100,6 +100,11 @@ class Guest: BaseEntity {
         }
     }
     
+    func moveToQueue(queuePosition: CGPoint) {
+        self.target = Target(position: queuePosition, tile: nil, room: nil, player: nil)
+        stateMachine?.enter(PathState.self)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

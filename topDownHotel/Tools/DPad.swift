@@ -13,6 +13,9 @@ class DPad: UIView {
     var leftButton : UIButton!
     var downButton : UIButton!
     var rightButton : UIButton!
+    
+    var actionButton : UIButton!
+    
     var middleView : UIImageView!
     
     override init(frame: CGRect) {
@@ -32,11 +35,14 @@ class DPad: UIView {
         isUserInteractionEnabled = true
     }
     
-    func setupButtons(){
+    func setupButtons() {
         upButton = UIButton()
         downButton = UIButton()
         leftButton = UIButton()
         rightButton = UIButton()
+        
+        actionButton = UIButton()
+        
         middleView = UIImageView()
         
         addSubview(upButton)

@@ -40,7 +40,7 @@ class GuestManager {
     
     func initQueueManager() {
         let scene = self.gameScene as! GameScene
-        self.queueManager = QueueManager(startPosition: scene.spawnPosition)
+        self.queueManager = QueueManager(startPosition: scene.queuePosition)
     }
     
     func setupAsHost(gameScene: GuestManagerDelegate, maxGuestsSpawn: Int = 5) {
