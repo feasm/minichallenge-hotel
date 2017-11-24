@@ -26,6 +26,10 @@ class Player: SKSpriteNode {
         self.setPhysics()
     }
     
+    override init(texture: SKTexture?, color: UIColor, size: CGSize) {
+        super.init(texture: texture, color: color, size: size)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -33,6 +37,7 @@ class Player: SKSpriteNode {
     func update(direction: PlayerDirection) {
         self.setDirection(direction)
         self.checkCollision()
+        //print(zRotation)
     }
     
     func setDirection(_ direction: PlayerDirection) {
@@ -61,11 +66,15 @@ extension Player {
         self.setSpeed()
     }
     
+    
+    
     func setSpeed() {
         self.physicsBody?.velocity = playerSpeed
     }
     
     func rotateByAngle(_ angle: Float) {
+    
+        
         let ca = cosf(angle)
         let sa = sinf(angle)
         

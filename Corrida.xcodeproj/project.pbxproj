@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BC5045E1FC74FD300F34070 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC504571FC74FD300F34070 /* String+Extensions.swift */; };
+		1BC5045F1FC74FD300F34070 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC504581FC74FD300F34070 /* Utils.swift */; };
+		1BC504601FC74FD300F34070 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC504591FC74FD300F34070 /* CGPoint+Extensions.swift */; };
+		1BC504611FC74FD300F34070 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC5045A1FC74FD300F34070 /* UIColor+Extensions.swift */; };
+		1BC504621FC74FD300F34070 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC5045B1FC74FD300F34070 /* Array+Extensions.swift */; };
+		1BC504631FC74FD300F34070 /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC5045C1FC74FD300F34070 /* CGVector+Extensions.swift */; };
+		1BC504641FC74FD300F34070 /* SKAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC5045D1FC74FD300F34070 /* SKAction+Extensions.swift */; };
+		1BC504661FC7674300F34070 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BC504651FC7674300F34070 /* CGFloat+Extensions.swift */; };
 		BCFABCE71FC5BB16007B94FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABCE61FC5BB16007B94FF /* AppDelegate.swift */; };
 		BCFABCE91FC5BB16007B94FF /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BCFABCE81FC5BB16007B94FF /* GameScene.sks */; };
 		BCFABCEB1FC5BB16007B94FF /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = BCFABCEA1FC5BB16007B94FF /* Actions.sks */; };
@@ -17,10 +25,17 @@
 		BCFABCF71FC5BB17007B94FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCFABCF51FC5BB17007B94FF /* LaunchScreen.storyboard */; };
 		BCFABD021FC5F53F007B94FF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABD011FC5F53F007B94FF /* Player.swift */; };
 		BCFABD051FC5FA1F007B94FF /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABD041FC5FA1F007B94FF /* GameManager.swift */; };
-		BCFABD081FC6FCFC007B94FF /* CGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABD071FC6FCFC007B94FF /* CGVector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1BC504571FC74FD300F34070 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		1BC504581FC74FD300F34070 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		1BC504591FC74FD300F34070 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		1BC5045A1FC74FD300F34070 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		1BC5045B1FC74FD300F34070 /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		1BC5045C1FC74FD300F34070 /* CGVector+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGVector+Extensions.swift"; sourceTree = "<group>"; };
+		1BC5045D1FC74FD300F34070 /* SKAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKAction+Extensions.swift"; sourceTree = "<group>"; };
+		1BC504651FC7674300F34070 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		BCFABCE31FC5BB16007B94FF /* Corrida.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Corrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCFABCE61FC5BB16007B94FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCFABCE81FC5BB16007B94FF /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -33,7 +48,6 @@
 		BCFABCF81FC5BB17007B94FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BCFABD011FC5F53F007B94FF /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		BCFABD041FC5FA1F007B94FF /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
-		BCFABD071FC6FCFC007B94FF /* CGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +131,14 @@
 		BCFABD061FC6FCEA007B94FF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BCFABD071FC6FCFC007B94FF /* CGVector.swift */,
+				1BC5045B1FC74FD300F34070 /* Array+Extensions.swift */,
+				1BC5045A1FC74FD300F34070 /* UIColor+Extensions.swift */,
+				1BC504651FC7674300F34070 /* CGFloat+Extensions.swift */,
+				1BC504591FC74FD300F34070 /* CGPoint+Extensions.swift */,
+				1BC5045C1FC74FD300F34070 /* CGVector+Extensions.swift */,
+				1BC5045D1FC74FD300F34070 /* SKAction+Extensions.swift */,
+				1BC504571FC74FD300F34070 /* String+Extensions.swift */,
+				1BC504581FC74FD300F34070 /* Utils.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -197,11 +218,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFABD021FC5F53F007B94FF /* Player.swift in Sources */,
+				1BC504661FC7674300F34070 /* CGFloat+Extensions.swift in Sources */,
+				1BC504611FC74FD300F34070 /* UIColor+Extensions.swift in Sources */,
+				1BC5045E1FC74FD300F34070 /* String+Extensions.swift in Sources */,
+				1BC504641FC74FD300F34070 /* SKAction+Extensions.swift in Sources */,
+				1BC504621FC74FD300F34070 /* Array+Extensions.swift in Sources */,
 				BCFABCED1FC5BB16007B94FF /* GameScene.swift in Sources */,
-				BCFABD081FC6FCFC007B94FF /* CGVector.swift in Sources */,
+				1BC504601FC74FD300F34070 /* CGPoint+Extensions.swift in Sources */,
 				BCFABCEF1FC5BB16007B94FF /* GameViewController.swift in Sources */,
+				1BC504631FC74FD300F34070 /* CGVector+Extensions.swift in Sources */,
 				BCFABCE71FC5BB16007B94FF /* AppDelegate.swift in Sources */,
 				BCFABD051FC5FA1F007B94FF /* GameManager.swift in Sources */,
+				1BC5045F1FC74FD300F34070 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
