@@ -357,6 +357,19 @@ class PrepareViewController: UIViewController {
             }
             break
         }
+        
+        tryStartGame()
+    }
+    
+    func tryStartGame() {
+        guard readyClicked,
+            !readyFirstPlayer.isHidden,
+            (!readySecondPlayer.isHidden || GameManager.shared.players.count <= 2),
+            (!readyThirdPlayer.isHidden || GameManager.shared.players.count <= 3) else {
+               return
+        }
+        
+        performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
     }
     
     //MARK: Actions
@@ -373,6 +386,8 @@ class PrepareViewController: UIViewController {
         
         let playerStatus: PlayerStatusEnum = readyClicked ? .READY : .NOT_READY
         MultiplayerNetworking.shared.sendReady(playerStatus)
+        
+        tryStartGame()
     }
 
 

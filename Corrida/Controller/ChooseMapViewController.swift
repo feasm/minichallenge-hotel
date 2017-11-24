@@ -37,6 +37,7 @@ class ChooseMapViewController: UIViewController {
     
     func setup() {
         setupMap()
+        setupButtons()
         
         background.image = nil
     }
@@ -44,6 +45,19 @@ class ChooseMapViewController: UIViewController {
     func setupMap(){
         mapImage.layer.cornerRadius = 50
         mapImage.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+    }
+    
+    func setupButtons() {
+        if !GameManager.shared.isHost {
+            readyButton.alpha = 0.2
+            readyButton.isUserInteractionEnabled = false
+            
+            nextButton.alpha = 0.2
+            nextButton.isUserInteractionEnabled = false
+            
+            previousButton.alpha = 0.2
+            previousButton.isUserInteractionEnabled = false
+        }
     }
     
     //MARK: Helper Methods
