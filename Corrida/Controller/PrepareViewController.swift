@@ -90,8 +90,6 @@ class PrepareViewController: UIViewController {
     func setup() {
         GameKitHelper.shared.prepareViewController = self
         //TODO: SET BACKGROUND
-        
-        setupPlayers(firstName: "", secondName: "", thirdName:  "")
         setupCharacters()
         setupSelected()
     }
@@ -118,14 +116,20 @@ class PrepareViewController: UIViewController {
                                       byRoundingCorners:[.topLeft, .bottomLeft],
                                       cornerRadii: CGSize(width: 20, height:  20))
         
-        let maskNames = CAShapeLayer()
-        maskNames.path = pathNames.cgPath
+        let maskFirstName = CAShapeLayer()
+        maskFirstName.path = pathNames.cgPath
+        
+        let maskSecondName = CAShapeLayer()
+        maskSecondName.path = pathNames.cgPath
+        
+        let maskThirdName = CAShapeLayer()
+        maskThirdName.path = pathNames.cgPath
         
         //setup first player
         backgroundFirstPlayer.image = nil
         readyFirstPlayer.isHidden = true
         nameFirstPlayer.text = firstName
-        nameFirstPlayer.layer.mask = maskNames
+        nameFirstPlayer.layer.mask = maskFirstName
         nameFirstPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundFirstPlayer.layer.mask = maskLayerTop
         
@@ -133,14 +137,14 @@ class PrepareViewController: UIViewController {
         backgroundSecondPlayer.image = nil
         readySecondPlayer.isHidden = true
         nameSecondPlayer.text = secondName
-        nameSecondPlayer.layer.mask = maskNames
+        nameSecondPlayer.layer.mask = maskSecondName
         nameSecondPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     
         //setup third player
         backgroundThirdPlayer.image = nil
         readyThirdPlayer.isHidden = true
         nameThirdPlayer.text = thirdName
-        nameThirdPlayer.layer.mask = maskNames
+        nameThirdPlayer.layer.mask = maskThirdName
         nameThirdPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundThirdPlayer.layer.mask = maskLayerBottom
     }

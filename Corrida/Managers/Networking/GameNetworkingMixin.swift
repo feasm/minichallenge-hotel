@@ -23,6 +23,8 @@ class GameNetworkingMixin {
             self.setOtherPlayers(players!)
             
             MultiplayerNetworking.shared.sendGameBegin()
+            
+            self.setPlayerNames()
         }
     }
     
@@ -57,6 +59,8 @@ class GameNetworkingMixin {
                     }
                 }
             }
+            
+            self.setPlayerNames()
         }
     }
     
@@ -74,5 +78,19 @@ class GameNetworkingMixin {
             newPlayer.setup(id: player.playerID!, alias: player.alias!)
             GameManager.shared.players.append(newPlayer)
         }
+    }
+    
+    private func setPlayerNames() {
+        var playerNames: [String] = ["", "", ""]
+        var index = 0
+        for player in GameManager.shared.players {
+            if player.alias != GameManager.shared.localPlayer.alias {
+                playerNames[index] = player.alias
+            } else {
+                index += 1
+            }
+        }
+        
+        GameKitHelper.shared.prepareViewController?.setupPlayers(firstName: playerNames[0], secondName: playerNames[1], thirdName:  playerNames[2])
     }
 }
