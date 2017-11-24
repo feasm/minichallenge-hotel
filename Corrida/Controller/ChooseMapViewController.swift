@@ -36,27 +36,9 @@ class ChooseMapViewController: UIViewController {
     //MARK: Setup Methods
     
     func setup() {
-        setupButtons()
         setupMap()
         
         background.image = nil
-    }
-    
-    func setupButtons(){
-        readyButton.layer.cornerRadius = 5
-        readyButton.layer.borderWidth = 2
-        readyButton.layer.borderColor = #colorLiteral(red: 0.1505601427, green: 0.8847555052, blue: 0.4229805416, alpha: 1)
-        readyButton.layer.masksToBounds = true
-        
-        nextButton.layer.cornerRadius = 25
-        nextButton.layer.borderWidth = 2
-        nextButton.layer.borderColor = #colorLiteral(red: 0.1505601427, green: 0.8847555052, blue: 0.4229805416, alpha: 1)
-        nextButton.layer.masksToBounds = true
-        
-        previousButton.layer.cornerRadius = 25
-        previousButton.layer.borderWidth = 2
-        previousButton.layer.borderColor = #colorLiteral(red: 0.8847555052, green: 0.1994391783, blue: 0.1890848464, alpha: 1)
-        previousButton.layer.masksToBounds = true
     }
     
     func setupMap(){

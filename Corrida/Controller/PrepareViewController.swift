@@ -89,45 +89,58 @@ class PrepareViewController: UIViewController {
     
     func setup() {
         GameKitHelper.shared.prepareViewController = self
-        
         //TODO: SET BACKGROUND
-        background.image = nil
         
-        setupButton()
         setupPlayers()
         setupCharacters()
         setupSelected()
     }
     
-    func setupButton() {
-        readyButton.layer.cornerRadius = 5
-        readyButton.layer.borderWidth = 2
-        readyButton.layer.borderColor = #colorLiteral(red: 0.1505601427, green: 0.8847555052, blue: 0.4229805416, alpha: 1)
-        readyButton.layer.masksToBounds = true
-    }
-    
     func setupPlayers() {
         
         //setup first player
-        viewFirstPlayer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
+        viewFirstPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundFirstPlayer.image = nil
-        readyFirstPlayer.isHidden = false
+        readyFirstPlayer.isHidden = true
         loadingFirstPlayer.isHidden = false
+        loadingFirstPlayer.color = UIColor.white
         loadingFirstPlayer.startAnimating()
         
+        let pathTop = UIBezierPath(roundedRect:viewFirstPlayer.bounds,
+                                byRoundingCorners:[.topLeft],
+                                cornerRadii: CGSize(width: 20, height:  20))
+        
+        let maskLayerTop = CAShapeLayer()
+        
+        maskLayerTop.path = pathTop.cgPath
+        viewFirstPlayer.layer.mask = maskLayerTop
+        backgroundFirstPlayer.layer.mask = maskLayerTop
+        
         //setup second player
-        viewSecondPlayer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
+        viewSecondPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundSecondPlayer.image = nil
-        readySecondPlayer.isHidden = false
+        readySecondPlayer.isHidden = true
         loadingSecondPlayer.isHidden = false
+        loadingSecondPlayer.color = UIColor.white
         loadingSecondPlayer.startAnimating()
         
         //setup third player
-        viewThirdPlayer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
+        viewThirdPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundThirdPlayer.image = nil
-        readyThirdPlayer.isHidden = false
+        readyThirdPlayer.isHidden = true
         loadingThirdPlayer.isHidden = false
+        loadingThirdPlayer.color = UIColor.white
         loadingThirdPlayer.startAnimating()
+        
+        let pathBottom = UIBezierPath(roundedRect:viewThirdPlayer.bounds,
+                                   byRoundingCorners:[.bottomLeft],
+                                   cornerRadii: CGSize(width: 20, height:  20))
+        
+        let maskLayerBottom = CAShapeLayer()
+        
+        maskLayerBottom.path = pathBottom.cgPath
+        viewThirdPlayer.layer.mask = maskLayerBottom
+        backgroundThirdPlayer.layer.mask = maskLayerBottom
     }
     
     func setupCharacters() {
@@ -140,54 +153,79 @@ class PrepareViewController: UIViewController {
         
         //setup first character
         backgroundFirstCharacter.isUserInteractionEnabled = false
-//        backgroundFirstCharacter.image = nil
-        backgroundFirstCharacter.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+        backgroundFirstCharacter.layer.cornerRadius = 5
+        backgroundFirstCharacter.layer.borderWidth = 2
+        backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
+        backgroundFirstCharacter.layer.masksToBounds =  true
         
         //setup second character
         backgroundSecondCharacter.isUserInteractionEnabled = false
-//        backgroundSecondCharacter.image = nil
-        backgroundSecondCharacter.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        backgroundSecondCharacter.layer.cornerRadius = 5
+        backgroundSecondCharacter.layer.borderWidth = 2
+        backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
+        backgroundSecondCharacter.layer.masksToBounds =  true
         
         //setup third character
         backgroundThirdCharacter.isUserInteractionEnabled = false
-//        backgroundThirdCharacter.image = nil
-        backgroundThirdCharacter.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+        backgroundThirdCharacter.layer.cornerRadius = 5
+        backgroundThirdCharacter.layer.borderWidth = 2
+        backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
+        backgroundThirdCharacter.layer.masksToBounds =  true
         
         //setup forth character
         backgroundFourthCharacter.isUserInteractionEnabled = false
-//        backgroundFourthCharacter.image = nil
-        backgroundFourthCharacter.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        backgroundFourthCharacter.layer.cornerRadius = 5
+        backgroundFourthCharacter.layer.borderWidth = 2
+        backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
+        backgroundFourthCharacter.layer.masksToBounds =  true
     }
     
     func setupSelected() {
-        //TODO: SET IMAGES SELECTED CHARACTER AND BASE
+        //TODO: SET IMAGES SELECTED CHARACTER
         
         if selectedCharacter != nil {
             switch selectedCharacter! {
             case .FIRST:
-                print("FIRST CHARACTER SELECTED")
                 imageSelectedCharacter.image = backgroundFirstCharacter.image
+                
+                backgroundFirstCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
+                backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .SECOND:
-                print("SECOND CHARACTER SELECTED")
                 imageSelectedCharacter.image = backgroundSecondCharacter.image
+                
+                backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundSecondCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
+                backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .THIRD:
-                print("THIRD CHARACTER SELECTED")
                 imageSelectedCharacter.image = backgroundThirdCharacter.image
+                
+                backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundThirdCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
+                backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .FORTH:
-                print("FORTH CHARACTER SELECTED")
                 imageSelectedCharacter.image = backgroundFourthCharacter.image
+                
+                backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
+                backgroundFourthCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
                 break
             }
         } else {
             imageSelectedCharacter.image = nil
-            imageSelectedCharacter.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+            
+            backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
+            backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
+            backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
+            backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
         }
-        
-        imageBaseSelected.image =  nil
-        imageBaseSelected.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
     }
     
     //MARK: Helper Methods
@@ -204,17 +242,15 @@ class PrepareViewController: UIViewController {
             selectedCharacter = .FORTH
         }
         
-        //TODO: SEND DATA DO GAMECENTER
+        //recebe data do gamecenter
         MultiplayerNetworking.shared.sendCharacterData(character: selectedCharacter!)
         
         setupSelected()
     }
     
     func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum){
-        //TODO: SET CHARACTERS IMAGE
         
-        //TODO: RECEBE PLAYER CHANGE CHARACTER
-        
+        //recebe player change character data
         var playerNum = player
         if player.rawValue > GameManager.shared.localNumber {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
