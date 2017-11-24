@@ -30,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func sceneDidLoad() {
         // Carrega Personagens
         self.localPlayer = self.childNode(withName: "Player") as! Player
-        self.localPlayer.setup(alias: "Eu")
+        self.localPlayer.setup(id: "0", alias: "Eu")
         self.localPlayer.name = self.localPlayer.alias
         self.players.append(localPlayer)
         

@@ -12,6 +12,7 @@ class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 400.0
     static let ROTATION_SPEED: Float = 0.1
     
+    var id: String!
     var alias: String!
     var playerSpeed: CGVector = CGVector(dx: 0, dy: Player.CONSTANT_SPEED)
     var rotation: CGFloat = 0
@@ -19,11 +20,13 @@ class Player: SKSpriteNode {
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
     
-    func setup(alias: String) {
+    func setup(id: String, alias: String) {
+        self.id = id
         self.alias = alias
-        
-        self.showPath()
-        self.setPhysics()
+    }
+    
+    init() {
+        super.init(texture: nil, color: UIColor.white, size: CGSize(width: 0, height: 0))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,6 +54,11 @@ class Player: SKSpriteNode {
 
 // MARK: Player Physics
 extension Player {
+    func setupPhysics() {
+        self.showPath()
+        self.setPhysics()
+    }
+    
     func setPhysics() {
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.affectedByGravity = false

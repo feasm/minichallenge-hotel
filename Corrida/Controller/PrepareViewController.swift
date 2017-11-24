@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum CharactersEnum : Int {
+enum CharactersEnum : Int, Codable {
     case FIRST = 1
     case SECOND = 2
     case THIRD = 3
@@ -88,6 +88,8 @@ class PrepareViewController: UIViewController {
     //MARK: Setup Methods
     
     func setup() {
+        GameKitHelper.shared.prepareViewController = self
+        
         //TODO: SET BACKGROUND
         background.image = nil
         
@@ -138,22 +140,22 @@ class PrepareViewController: UIViewController {
         
         //setup first character
         backgroundFirstCharacter.isUserInteractionEnabled = false
-        backgroundFirstCharacter.image = nil
+//        backgroundFirstCharacter.image = nil
         backgroundFirstCharacter.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
         
         //setup second character
         backgroundSecondCharacter.isUserInteractionEnabled = false
-        backgroundSecondCharacter.image = nil
+//        backgroundSecondCharacter.image = nil
         backgroundSecondCharacter.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
         
         //setup third character
         backgroundThirdCharacter.isUserInteractionEnabled = false
-        backgroundThirdCharacter.image = nil
+//        backgroundThirdCharacter.image = nil
         backgroundThirdCharacter.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
         
         //setup forth character
         backgroundFourthCharacter.isUserInteractionEnabled = false
-        backgroundFourthCharacter.image = nil
+//        backgroundFourthCharacter.image = nil
         backgroundFourthCharacter.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
     }
     
@@ -164,19 +166,19 @@ class PrepareViewController: UIViewController {
             switch selectedCharacter! {
             case .FIRST:
                 print("FIRST CHARACTER SELECTED")
-                imageSelectedCharacter.image = nil
+                imageSelectedCharacter.image = backgroundFirstCharacter.image
                 break
             case .SECOND:
                 print("SECOND CHARACTER SELECTED")
-                imageSelectedCharacter.image = nil
+                imageSelectedCharacter.image = backgroundSecondCharacter.image
                 break
             case .THIRD:
                 print("THIRD CHARACTER SELECTED")
-                imageSelectedCharacter.image = nil
+                imageSelectedCharacter.image = backgroundThirdCharacter.image
                 break
             case .FORTH:
                 print("FORTH CHARACTER SELECTED")
-                imageSelectedCharacter.image = nil
+                imageSelectedCharacter.image = backgroundFourthCharacter.image
                 break
             }
         } else {
@@ -203,6 +205,7 @@ class PrepareViewController: UIViewController {
         }
         
         //TODO: SEND DATA DO GAMECENTER
+        MultiplayerNetworking.shared.sendCharacterData(character: selectedCharacter!)
         
         setupSelected()
     }
@@ -212,52 +215,57 @@ class PrepareViewController: UIViewController {
         
         //TODO: RECEBE PLAYER CHANGE CHARACTER
         
-        switch player {
+        var playerNum = player
+        if player.rawValue > GameManager.shared.localNumber {
+            playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
+        }
+        
+        switch playerNum {
         case .FIRST:
             switch character {
             case .FIRST:
-                backgroundFirstPlayer.image = nil
+                backgroundFirstPlayer.image = backgroundFirstCharacter.image
                 break
             case .SECOND:
-                backgroundFirstPlayer.image = nil
+                backgroundFirstPlayer.image = backgroundSecondCharacter.image
                 break
             case .THIRD:
-                backgroundFirstPlayer.image = nil
+                backgroundFirstPlayer.image = backgroundThirdCharacter.image
                 break
             case .FORTH:
-                backgroundFirstPlayer.image = nil
+                backgroundFirstPlayer.image = backgroundFourthCharacter.image
                 break
             }
             break
         case .SECOND:
             switch character {
             case .FIRST:
-                backgroundSecondPlayer.image = nil
+                backgroundSecondPlayer.image = backgroundFirstCharacter.image
                 break
             case .SECOND:
-                backgroundSecondPlayer.image = nil
+                backgroundSecondPlayer.image = backgroundSecondCharacter.image
                 break
             case .THIRD:
-                backgroundSecondPlayer.image = nil
+                backgroundSecondPlayer.image = backgroundThirdCharacter.image
                 break
             case .FORTH:
-                backgroundSecondPlayer.image = nil
+                backgroundSecondPlayer.image = backgroundFourthCharacter.image
                 break
             }
             break
         case .THIRD:
             switch character {
             case .FIRST:
-                backgroundThirdPlayer.image = nil
+                backgroundThirdPlayer.image = backgroundFirstCharacter.image
                 break
             case .SECOND:
-                backgroundThirdPlayer.image = nil
+                backgroundThirdPlayer.image = backgroundSecondCharacter.image
                 break
             case .THIRD:
-                backgroundThirdPlayer.image = nil
+                backgroundThirdPlayer.image = backgroundThirdCharacter.image
                 break
             case .FORTH:
-                backgroundThirdPlayer.image = nil
+                backgroundThirdPlayer.image = backgroundFourthCharacter.image
                 break
             }
             break

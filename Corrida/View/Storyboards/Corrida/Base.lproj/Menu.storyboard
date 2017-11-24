@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--Start View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="StartViewController" customModule="storyWork" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="StartViewController" customModule="Corrida" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,7 +71,7 @@
         <!--Choose Map View Controller-->
         <scene sceneID="C9x-ic-zh8">
             <objects>
-                <viewController id="iIJ-Tl-dF3" customClass="ChooseMapViewController" customModule="storyWork" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="iIJ-Tl-dF3" customClass="ChooseMapViewController" customModule="Corrida" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wIk-NJ-jv9">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -168,7 +168,7 @@
         <!--Prepare View Controller-->
         <scene sceneID="wGC-Rj-YT3">
             <objects>
-                <viewController id="jb6-5H-A6x" customClass="PrepareViewController" customModule="storyWork" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jb6-5H-A6x" customClass="PrepareViewController" customModule="Corrida" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AKB-K4-iXP">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -298,7 +298,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OlW-8A-6zq">
                                         <rect key="frame" x="23" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Eu" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -315,7 +315,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="815-Ko-En2">
                                         <rect key="frame" x="102" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stocco" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -332,7 +332,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rQu-Ly-AxT">
                                         <rect key="frame" x="23" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Daniel" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -349,7 +349,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUY-3n-uqL">
                                         <rect key="frame" x="102" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Adonay" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -479,4 +479,10 @@
             <point key="canvasLocation" x="942" y="705"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Adonay" width="640" height="640"/>
+        <image name="Daniel" width="640" height="640"/>
+        <image name="Eu" width="677" height="677"/>
+        <image name="Stocco" width="960" height="960"/>
+    </resources>
 </document>
