@@ -40,17 +40,17 @@ class PrepareViewController: UIViewController {
     @IBOutlet var viewFirstPlayer : UIView!
     @IBOutlet var backgroundFirstPlayer : UIImageView!
     @IBOutlet var readyFirstPlayer : UILabel!
-    @IBOutlet var loadingFirstPlayer : UIActivityIndicatorView!
+    @IBOutlet var nameFirstPlayer : UILabel!
     
     @IBOutlet var viewSecondPlayer : UIView!
     @IBOutlet var backgroundSecondPlayer : UIImageView!
     @IBOutlet var readySecondPlayer : UILabel!
-    @IBOutlet var loadingSecondPlayer : UIActivityIndicatorView!
+    @IBOutlet var nameSecondPlayer : UILabel!
     
     @IBOutlet var viewThirdPlayer : UIView!
     @IBOutlet var backgroundThirdPlayer : UIImageView!
     @IBOutlet var readyThirdPlayer : UILabel!
-    @IBOutlet var loadingThirdPlayer : UIActivityIndicatorView!
+    @IBOutlet var nameThirdPlayer : UILabel!
     
     //Characters Outlets
     @IBOutlet var viewFirstCharacter : UIView!
@@ -91,50 +91,57 @@ class PrepareViewController: UIViewController {
         GameKitHelper.shared.prepareViewController = self
         //TODO: SET BACKGROUND
         
-        setupPlayers()
+        setupPlayers(firstName: "", secondName: "", thirdName:  "")
         setupCharacters()
         setupSelected()
     }
     
-    func setupPlayers() {
+    func setupPlayers(firstName: String, secondName: String, thirdName: String) {
+        
+        //ROUND TOP-LEFT
+        let pathTop = UIBezierPath(roundedRect:viewFirstPlayer.bounds,
+                                   byRoundingCorners:[.topLeft],
+                                   cornerRadii: CGSize(width: 20, height:  20))
+        
+        let maskLayerTop = CAShapeLayer()
+        maskLayerTop.path = pathTop.cgPath
+        
+        //ROUND BOTTOM-LEFT
+        let pathBottom = UIBezierPath(roundedRect:viewThirdPlayer.bounds,
+                                      byRoundingCorners:[.bottomLeft],
+                                      cornerRadii: CGSize(width: 20, height:  20))
+        
+        let maskLayerBottom = CAShapeLayer()
+        maskLayerBottom.path = pathBottom.cgPath
+        
+        let pathNames = UIBezierPath(roundedRect:nameFirstPlayer.bounds,
+                                      byRoundingCorners:[.topLeft, .bottomLeft],
+                                      cornerRadii: CGSize(width: 20, height:  20))
+        
+        let maskNames = CAShapeLayer()
+        maskNames.path = pathNames.cgPath
         
         //setup first player
         backgroundFirstPlayer.image = nil
         readyFirstPlayer.isHidden = true
-        loadingFirstPlayer.isHidden = false
-        loadingFirstPlayer.color = UIColor.white
-        loadingFirstPlayer.startAnimating()
-        
-        let pathTop = UIBezierPath(roundedRect:viewFirstPlayer.bounds,
-                                byRoundingCorners:[.topLeft],
-                                cornerRadii: CGSize(width: 20, height:  20))
-        
-        let maskLayerTop = CAShapeLayer()
-        
-        maskLayerTop.path = pathTop.cgPath
+        nameFirstPlayer.text = firstName
+        nameFirstPlayer.layer.mask = maskNames
+        nameFirstPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundFirstPlayer.layer.mask = maskLayerTop
         
         //setup second player
         backgroundSecondPlayer.image = nil
         readySecondPlayer.isHidden = true
-        loadingSecondPlayer.isHidden = false
-        loadingSecondPlayer.color = UIColor.white
-        loadingSecondPlayer.startAnimating()
-        
+        nameSecondPlayer.text = secondName
+        nameSecondPlayer.layer.mask = maskNames
+        nameSecondPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+    
         //setup third player
         backgroundThirdPlayer.image = nil
         readyThirdPlayer.isHidden = true
-        loadingThirdPlayer.isHidden = false
-        loadingThirdPlayer.color = UIColor.white
-        loadingThirdPlayer.startAnimating()
-        
-        let pathBottom = UIBezierPath(roundedRect:viewThirdPlayer.bounds,
-                                   byRoundingCorners:[.bottomLeft],
-                                   cornerRadii: CGSize(width: 20, height:  20))
-        
-        let maskLayerBottom = CAShapeLayer()
-        
-        maskLayerBottom.path = pathBottom.cgPath
+        nameThirdPlayer.text = thirdName
+        nameThirdPlayer.layer.mask = maskNames
+        nameThirdPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundThirdPlayer.layer.mask = maskLayerBottom
     }
     
@@ -318,42 +325,30 @@ class PrepareViewController: UIViewController {
         case .FIRST:
             switch status {
             case .READY:
-                loadingFirstPlayer.isHidden = true
                 readyFirstPlayer.isHidden = false
-                loadingFirstPlayer.stopAnimating()
                 break
             case .NOT_READY:
-                loadingFirstPlayer.isHidden = false
                 readyFirstPlayer.isHidden = true
-                loadingFirstPlayer.startAnimating()
                 break
             }
             break
         case .SECOND:
             switch status {
             case .READY:
-                loadingSecondPlayer.isHidden = true
                 readySecondPlayer.isHidden = false
-                loadingSecondPlayer.stopAnimating()
                 break
             case .NOT_READY:
-                loadingSecondPlayer.isHidden = false
                 readySecondPlayer.isHidden = true
-                loadingSecondPlayer.startAnimating()
                 break
             }
             break
         case .THIRD:
             switch status {
             case .READY:
-                loadingThirdPlayer.isHidden = true
                 readyThirdPlayer.isHidden = false
-                loadingThirdPlayer.stopAnimating()
                 break
             case .NOT_READY:
-                loadingThirdPlayer.isHidden = false
                 readyThirdPlayer.isHidden = true
-                loadingThirdPlayer.startAnimating()
                 break
             }
             break
