@@ -160,6 +160,12 @@ extension GameKitHelper {
             case .PLAYER_READY:
                 prepareViewController?.setReadyPlayer(player: PlayerEnum(rawValue: gameData.playerNumber!)!, status: gameData.readyStatus!)
                 
+            case .CHANGE_MAP:
+                chooseMapViewController?.setMap(gameData.currentMap!)
+                
+            case .START_MAP:
+                chooseMapViewController?.presentGameView()
+            
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)

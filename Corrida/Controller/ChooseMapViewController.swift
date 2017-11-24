@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ChooseMapViewController: UIViewController {
     
@@ -20,7 +21,7 @@ class ChooseMapViewController: UIViewController {
     
     //MARK: Variables
     var maps = ["map1", "map2", "map3"]
-    var currentPostion = 0
+    var currentPosition = 0
     
     //MARK: Life Cicle
     override func viewDidLoad() {
@@ -36,6 +37,8 @@ class ChooseMapViewController: UIViewController {
     //MARK: Setup Methods
     
     func setup() {
+        GameKitHelper.shared.chooseMapViewController = self
+        
         setupMap()
         setupButtons()
         
@@ -63,20 +66,26 @@ class ChooseMapViewController: UIViewController {
     //MARK: Helper Methods
     
     func changeMap(change: Int) {
-        let tempPos = currentPostion+change
+        let tempPos = currentPosition+change
         
         if tempPos < maps.count && tempPos >= 0 {
-            currentPostion = tempPos
+            currentPosition = tempPos
         } else if tempPos >= maps.count {
-            currentPostion = 0
+            currentPosition = 0
         } else {
-            currentPostion = maps.count-1
+            currentPosition = maps.count-1
         }
         
-        //TODO: ARRUMAR ISSO AQUI
-//        mapImage.image = UIImage(named: maps[currentPostion])
+        setMap(currentPosition)
         
-        switch currentPostion {
+        MultiplayerNetworking.shared.sendChangeMap(currentPosition)
+    }
+    
+    func setMap(_ currentPosition: Int) {
+        //TODO: ARRUMAR ISSO AQUI
+        //        mapImage.image = UIImage(named: maps[currentPosition])
+        
+        switch currentPosition {
         case 0:
             mapImage.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
             break
@@ -91,6 +100,27 @@ class ChooseMapViewController: UIViewController {
         }
     }
     
+    func presentGameView() {
+        let gameView = SKView(frame: self.view.frame)
+        gameView.ignoresSiblingOrder = false
+        gameView.showsFPS = true
+        gameView.showsNodeCount = true
+        gameView.showsPhysics = false
+        
+        self.view.addSubview(gameView)
+        
+        let scene = GameScene(fileNamed: "GameScene")!
+        scene.scaleMode = .aspectFill
+        gameView.presentScene(scene)
+        
+        //        let pad = GameManager.shared.directionalPad
+        //        view.addSubview(pad)
+        //        pad.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        //        pad.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        //        pad.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        //        pad.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+    }
+    
     //MARK: Actions
     
     @IBAction func previousAction(){
@@ -103,6 +133,8 @@ class ChooseMapViewController: UIViewController {
     
     @IBAction func readyAction(){
         print("PREPARE GAME SCENE")
+        
+        presentGameView()
+        MultiplayerNetworking.shared.sendMapBegin()
     }
-
 }

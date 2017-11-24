@@ -77,6 +77,16 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendChangeMap(_ currentPosition: Int) {
+        let gameData = GameData(messageType: .CHANGE_MAP, currentPosition)
+        self.sendData(gameData)
+    }
+    
+    func sendMapBegin() {
+        let gameData = GameData(messageType: .START_MAP)
+        self.sendData(gameData)
+    }
+    
     func sendData(_ gameData: GameData) {
         do {
             let dataStr = self.encodeData(gameData: gameData)

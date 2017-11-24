@@ -13,6 +13,8 @@ enum MessageType: String, Codable {
     case GAME_BEGIN = "game_begin"
     case PLAYER_READY = "player_ready"
     case PLAYER_MESSAGE = "player_message"
+    case CHANGE_MAP = "change_map"
+    case START_MAP = "start_map"
 }
 
 struct GameData: Codable {
@@ -23,6 +25,8 @@ struct GameData: Codable {
     var playerNumber: Int?
     var character: CharactersEnum?
     var readyStatus: PlayerStatusEnum?
+    
+    var currentMap: Int?
     
     var name: String?
     var position: CGPoint?
@@ -52,6 +56,14 @@ extension GameData {
         self.messageType = messageType
         self.playerNumber = playerNumber
         self.readyStatus = readyStatus
+    }
+}
+
+// MARK: Map Selection
+extension GameData {
+    init(messageType: MessageType, _ currentMap: Int) {
+        self.messageType = messageType
+        self.currentMap = currentMap
     }
 }
 
