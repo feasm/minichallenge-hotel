@@ -66,16 +66,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         // Carrega Personagens
-        self.localPlayer = self.childNode(withName: "Player") as! Player
+        self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
         self.localPlayer.setup(alias: "Eu")
         self.localPlayer.name = self.localPlayer.alias
         self.players.append(localPlayer)
+        addChild(localPlayer)
         
-        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
-        player.setup(alias: "batata")
-        self.players.append(player)
-        setSpawn(to: player, id: 1)
-        addChild(player)
+//        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
+//        player.setup(alias: "batata")
+//        self.players.append(player)
+//        setSpawn(to: player, id: 1)
+//        addChild(player)
         
         self.background = self.childNode(withName: "background") as! SKSpriteNode
         
@@ -99,6 +100,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
+        self.name = "Scene"
         self.view?.showsPhysics = true
         
         setupCamera(target: localPlayer)
@@ -203,6 +205,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 // Physics
 extension GameScene {
     func didBegin(_ contact: SKPhysicsContact) {
+        
+        if contact.bodyA.node?.name == "Scene"
+        {
+            if let player = contact.bodyB.node as? Player
+            {
+                player.performCollision(type: .WALL)
+            }
+        }
+        
+        if contact.bodyB.node?.name == "Scene"
+        {
+            if let player = contact.bodyA.node as? Player
+            {
+                player.performCollision(type: .WALL)
+            }
+        }
+        
+        //print(contact.bodyA.node?.name ?? "Body A")
+        //print(contact.bodyB.node?.name ?? "Body B")
 //        if contact.bodyA.node?.name == "Path" {
 //            contact.bodyB.node?.removeFromParent()
 //        } else if contact.bodyB.node?.name == "Path" {
