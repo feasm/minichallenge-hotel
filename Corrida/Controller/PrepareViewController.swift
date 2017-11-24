@@ -99,7 +99,6 @@ class PrepareViewController: UIViewController {
     func setupPlayers() {
         
         //setup first player
-        viewFirstPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundFirstPlayer.image = nil
         readyFirstPlayer.isHidden = true
         loadingFirstPlayer.isHidden = false
@@ -113,11 +112,9 @@ class PrepareViewController: UIViewController {
         let maskLayerTop = CAShapeLayer()
         
         maskLayerTop.path = pathTop.cgPath
-        viewFirstPlayer.layer.mask = maskLayerTop
         backgroundFirstPlayer.layer.mask = maskLayerTop
         
         //setup second player
-        viewSecondPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundSecondPlayer.image = nil
         readySecondPlayer.isHidden = true
         loadingSecondPlayer.isHidden = false
@@ -125,7 +122,6 @@ class PrepareViewController: UIViewController {
         loadingSecondPlayer.startAnimating()
         
         //setup third player
-        viewThirdPlayer.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1)
         backgroundThirdPlayer.image = nil
         readyThirdPlayer.isHidden = true
         loadingThirdPlayer.isHidden = false
@@ -139,7 +135,6 @@ class PrepareViewController: UIViewController {
         let maskLayerBottom = CAShapeLayer()
         
         maskLayerBottom.path = pathBottom.cgPath
-        viewThirdPlayer.layer.mask = maskLayerBottom
         backgroundThirdPlayer.layer.mask = maskLayerBottom
     }
     
