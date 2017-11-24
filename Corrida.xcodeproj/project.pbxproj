@@ -35,6 +35,7 @@
 		BCFABD361FC81831007B94FF /* GameNetworkingMixin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABD321FC81830007B94FF /* GameNetworkingMixin.swift */; };
 		BCFABD371FC81831007B94FF /* GameServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABD331FC81830007B94FF /* GameServer.swift */; };
 		BCFABD3E1FC84B2A007B94FF /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFABD3D1FC84B2A007B94FF /* GameKit.framework */; };
+		F757F6EF1FC88227009D0B82 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F757F6EE1FC88227009D0B82 /* SpinnerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		BCFABD331FC81830007B94FF /* GameServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServer.swift; sourceTree = "<group>"; };
 		BCFABD3B1FC84AC7007B94FF /* Corrida.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Corrida.entitlements; sourceTree = "<group>"; };
 		BCFABD3D1FC84B2A007B94FF /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		F757F6EE1FC88227009D0B82 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		BCFABCE51FC5BB16007B94FF /* Corrida */ = {
 			isa = PBXGroup;
 			children = (
+				F757F6ED1FC88210009D0B82 /* Utils */,
 				BCFABD3B1FC84AC7007B94FF /* Corrida.entitlements */,
 				BCFABD2F1FC812C4007B94FF /* GameCenter */,
 				BCFABD061FC6FCEA007B94FF /* Extensions */,
@@ -232,6 +235,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F757F6ED1FC88210009D0B82 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F757F6EE1FC88227009D0B82 /* SpinnerView.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -335,6 +346,7 @@
 				BCFABCE71FC5BB16007B94FF /* AppDelegate.swift in Sources */,
 				BCFABD2E1FC812C1007B94FF /* GameKitHelper.swift in Sources */,
 				BCFABD341FC81831007B94FF /* GameClient.swift in Sources */,
+				F757F6EF1FC88227009D0B82 /* SpinnerView.swift in Sources */,
 				BCFABD051FC5FA1F007B94FF /* GameManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

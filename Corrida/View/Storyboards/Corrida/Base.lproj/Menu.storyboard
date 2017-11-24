@@ -43,6 +43,10 @@
                                     <action selector="startAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="czb-gz-RbS"/>
                                 </connections>
                             </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HtZ-Nw-Feg">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -51,9 +55,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="aUJ-uo-I4n" secondAttribute="bottom" constant="75" id="FAi-PE-LFC"/>
                             <constraint firstItem="aUJ-uo-I4n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IJG-mP-H4T"/>
                             <constraint firstItem="iV2-Nc-EBV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JxY-4K-acR"/>
+                            <constraint firstItem="HtZ-Nw-Feg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="PaG-3m-7R6"/>
                             <constraint firstItem="bfg-19-d8y" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="akq-VO-l6G"/>
+                            <constraint firstItem="HtZ-Nw-Feg" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bi9-TT-Cfr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bfg-19-d8y" secondAttribute="trailing" id="gBO-LE-g9Q"/>
                             <constraint firstItem="bfg-19-d8y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ggI-6Y-D68"/>
+                            <constraint firstItem="HtZ-Nw-Feg" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nT1-N2-TkA"/>
+                            <constraint firstItem="HtZ-Nw-Feg" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tud-YZ-pm9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bfg-19-d8y" secondAttribute="bottom" id="xUo-SI-iR4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -61,13 +69,14 @@
                     <connections>
                         <outlet property="background" destination="bfg-19-d8y" id="Kg0-kh-dWb"/>
                         <outlet property="logo" destination="iV2-Nc-EBV" id="6m6-7Q-MdS"/>
+                        <outlet property="overlayer" destination="HtZ-Nw-Feg" id="Oal-fL-y36"/>
                         <outlet property="startButton" destination="aUJ-uo-I4n" id="Alm-f9-dZ8"/>
                         <segue destination="jb6-5H-A6x" kind="show" identifier="startIdentifier" id="J4G-o4-VP3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="161" y="705"/>
+            <point key="canvasLocation" x="160.56971514242881" y="704.79999999999995"/>
         </scene>
         <!--Choose Map View Controller-->
         <scene sceneID="C9x-ic-zh8">
@@ -191,6 +200,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KGq-IK-sRb">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fYc-SQ-tZL">
                                                 <rect key="frame" x="15" y="28" width="20" height="20"/>
@@ -202,7 +212,6 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="fYc-SQ-tZL" firstAttribute="leading" secondItem="duk-hi-0Dm" secondAttribute="leading" constant="15" id="AVJ-Zn-bf2"/>
                                             <constraint firstAttribute="bottom" secondItem="KGq-IK-sRb" secondAttribute="bottom" id="Hb7-A6-haK"/>
@@ -222,6 +231,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8jw-aD-hP2">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="17Y-8q-Y45">
                                                 <rect key="frame" x="15" y="28" width="20" height="20"/>
@@ -233,7 +243,6 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="17Y-8q-Y45" firstAttribute="leading" secondItem="ViP-3F-sef" secondAttribute="leading" constant="15" id="3vT-CH-iE5"/>
                                             <constraint firstItem="8jw-aD-hP2" firstAttribute="top" secondItem="ViP-3F-sef" secondAttribute="top" id="9u9-oa-zzj"/>
@@ -253,6 +262,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HJU-jJ-IrV">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8oj-no-epg">
                                                 <rect key="frame" x="15" y="28" width="20" height="20"/>
@@ -264,7 +274,6 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="SGo-TB-lfs" secondAttribute="trailing" id="AIw-Ar-IF5"/>
                                             <constraint firstItem="8oj-no-epg" firstAttribute="centerY" secondItem="Rir-Gs-fbS" secondAttribute="centerY" id="EtE-fD-rap"/>
@@ -388,16 +397,16 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKl-eg-kLt">
-                                        <rect key="frame" x="0.0" y="0.0" width="165.5" height="204"/>
+                                        <rect key="frame" x="10" y="0.0" width="145.5" height="207"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" id="04X-PV-UUK"/>
                                     <constraint firstItem="JgO-4s-WH7" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" id="14Y-2l-vk8"/>
-                                    <constraint firstAttribute="trailing" secondItem="pKl-eg-kLt" secondAttribute="trailing" id="DBB-d0-knT"/>
+                                    <constraint firstAttribute="trailing" secondItem="pKl-eg-kLt" secondAttribute="trailing" constant="10" id="DBB-d0-knT"/>
                                     <constraint firstAttribute="trailing" secondItem="JgO-4s-WH7" secondAttribute="trailing" id="Jud-Fz-D4u"/>
-                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" id="Zdw-uM-J19"/>
-                                    <constraint firstAttribute="bottom" secondItem="pKl-eg-kLt" secondAttribute="bottom" constant="20" id="gpg-df-hMl"/>
+                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" constant="10" id="Zdw-uM-J19"/>
+                                    <constraint firstAttribute="bottom" secondItem="pKl-eg-kLt" secondAttribute="bottom" constant="17" id="gpg-df-hMl"/>
                                     <constraint firstAttribute="bottom" secondItem="JgO-4s-WH7" secondAttribute="bottom" id="ikv-NK-7Qr"/>
                                 </constraints>
                             </view>
@@ -478,8 +487,8 @@
     </scenes>
     <resources>
         <image name="Adonay" width="640" height="640"/>
-        <image name="Arrow_Next" width="110" height="110"/>
-        <image name="Arrow_Prev" width="110" height="110"/>
+        <image name="Arrow_Next" width="112" height="112"/>
+        <image name="Arrow_Prev" width="112" height="112"/>
         <image name="BackgroundMap" width="350" height="225"/>
         <image name="Base_Character" width="166" height="35"/>
         <image name="Button_Layout" width="208" height="58"/>
