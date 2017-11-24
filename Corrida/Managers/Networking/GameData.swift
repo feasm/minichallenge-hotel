@@ -13,9 +13,6 @@ enum MessageType: String, Codable {
     case GAME_BEGIN = "game_begin"
     case PLAYER_READY = "player_ready"
     case PLAYER_MESSAGE = "player_message"
-    case GUEST_MESSAGE = "guest_message"
-    case ACTION_MESSAGE = "action_message"
-    case SPAWN_GUEST = "spawn_guest"
 }
 
 struct GameData: Codable {
@@ -25,7 +22,7 @@ struct GameData: Codable {
     
     var playerNumber: Int?
     var character: CharactersEnum?
-    var ready: Bool?
+    var readyStatus: PlayerStatusEnum?
     
     var name: String?
     var position: CGPoint?
@@ -51,10 +48,10 @@ extension GameData {
         self.character = character
     }
     
-    init(messageType: MessageType, _ playerNumber: Int, _ ready: Bool) {
+    init(messageType: MessageType, _ playerNumber: Int, _ readyStatus: PlayerStatusEnum) {
         self.messageType = messageType
         self.playerNumber = playerNumber
-        self.ready = ready
+        self.readyStatus = readyStatus
     }
 }
 

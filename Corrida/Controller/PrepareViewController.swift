@@ -224,7 +224,11 @@ class PrepareViewController: UIViewController {
     }
     
     //MARK: Helper Methods
-    @objc func selectCharacter(_ sender : UITapGestureRecognizer){
+    @objc func selectCharacter(_ sender : UITapGestureRecognizer) {
+        guard !readyClicked else {
+            return
+        }
+        
         let location = sender.location(in: charactersView)
         
         if viewFirstCharacter.frame.contains(location) {
@@ -303,9 +307,14 @@ class PrepareViewController: UIViewController {
         }
     }
     
-    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum){
+    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum) {
         //TODO: RECEBE PLAYER STATE
-        switch player {
+        var playerNum = player
+        if player.rawValue > GameManager.shared.localNumber {
+            playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
+        }
+        
+        switch playerNum {
         case .FIRST:
             switch status {
             case .READY:
@@ -361,11 +370,10 @@ class PrepareViewController: UIViewController {
         } else {
             readyClicked = true
             readyButton.alpha = 0.2
-            
-//            performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
         }
         
-        MultiplayerNetworking.shared.sendReady(readyClicked)
+        let playerStatus: PlayerStatusEnum = readyClicked ? .READY : .NOT_READY
+        MultiplayerNetworking.shared.sendReady(playerStatus)
     }
 
 
