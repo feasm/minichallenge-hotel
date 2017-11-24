@@ -15,13 +15,13 @@ enum CharactersEnum : Int, Codable {
     case FORTH = 4
 }
 
-enum PlayerEnum : Int {
+enum PlayerEnum : Int, Codable {
     case FIRST = 1
     case SECOND = 2
     case THIRD = 3
 }
 
-enum PlayerStatusEnum : String {
+enum PlayerStatusEnum : String, Codable {
     case READY = "READY"
     case NOT_READY = "NOT_READY"
 }
@@ -367,8 +367,10 @@ class PrepareViewController: UIViewController {
             readyClicked = true
             readyButton.alpha = 0.2
             
-            performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
+//            performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
         }
+        
+        MultiplayerNetworking.shared.sendReady(readyClicked)
     }
 
 

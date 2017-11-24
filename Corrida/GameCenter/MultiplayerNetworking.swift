@@ -59,6 +59,11 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendReady(_ ready: Bool) {
+        let gameData = GameData(messageType: .PLAYER_READY, GameManager.shared.localNumber, ready)
+        self.sendData(gameData)
+    }
+    
     func sendPlayerData(player: Player) {
 //        if let vc = player.component(ofType: VisualComponent.self) {
 //            let gameData = GameData(messageType: .PLAYER_MESSAGE, name: player.name!, target: player.target, position: vc.sprite.position)

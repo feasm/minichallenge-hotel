@@ -153,6 +153,9 @@ extension GameKitHelper {
                 GameClient.shared.setup(gameData.playerNames!)
             case .CHARACTER_CHANGED:
                 prepareViewController?.changePlayerCharacter(player: PlayerEnum(rawValue: gameData.playerNumber!)!, character: gameData.character!)
+            case .PLAYER_READY:
+                print("ready message")
+//                prepareViewController?.changePlayerReady()
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)

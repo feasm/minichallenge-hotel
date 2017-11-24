@@ -11,6 +11,7 @@ import UIKit
 enum MessageType: String, Codable {
     case CHARACTER_CHANGED = "character_changed"
     case GAME_BEGIN = "game_begin"
+    case PLAYER_READY = "player_ready"
     case PLAYER_MESSAGE = "player_message"
     case GUEST_MESSAGE = "guest_message"
     case ACTION_MESSAGE = "action_message"
@@ -24,6 +25,7 @@ struct GameData: Codable {
     
     var playerNumber: Int?
     var character: CharactersEnum?
+    var ready: Bool?
     
     var name: String?
     var position: CGPoint?
@@ -47,6 +49,12 @@ extension GameData {
         self.messageType = messageType
         self.playerNumber = playerNumber
         self.character = character
+    }
+    
+    init(messageType: MessageType, _ playerNumber: Int, _ ready: Bool) {
+        self.messageType = messageType
+        self.playerNumber = playerNumber
+        self.ready = ready
     }
 }
 
