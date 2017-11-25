@@ -53,6 +53,10 @@ class StartViewController: UIViewController {
             
             GameKitHelper.shared.authenticateLocalPlayer()
         }
+        else
+        {
+            self.present(GameViewController(), animated: true, completion: nil)
+        }
     }
 }
 

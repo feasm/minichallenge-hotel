@@ -23,6 +23,7 @@ class Player: SKSpriteNode {
     var alias: String!
     var playerSpeed: CGVector = CGVector(dx: 0, dy: Player.CONSTANT_SPEED)
     var rotation: CGFloat = 0
+    var collide : Bool = false
     
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
@@ -32,6 +33,7 @@ class Player: SKSpriteNode {
     func setup(id: String, alias: String) {
         self.id = id
         self.alias = alias
+        setupPhysics()
     }
     
     init() {
@@ -94,8 +96,12 @@ extension Player {
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
+        self.physicsBody?.friction = 0
+        self.physicsBody?.restitution = 0
         self.physicsBody?.isDynamic = true
-        self.physicsBody!.contactTestBitMask = self.physicsBody!.collisionBitMask
+        self.physicsBody?.categoryBitMask = PhysicsCategory.PLAYER.rawValue
+        self.physicsBody?.collisionBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue
+        self.physicsBody!.contactTestBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue | PhysicsCategory.TELEPORT.rawValue
         
         self.setSpeed()
     }
@@ -108,13 +114,27 @@ extension Player {
     
     func setRotation(to angle: CGFloat)
     {
+        self.rotation = angle
         
+        let vector = CGPoint.vectorDirection(length: Player.CONSTANT_SPEED, direction: self.rotation.degrees360)
+        
+        self.playerSpeed = CGVector(dx: vector.x, dy: vector.y)
+        
+        setSpeed()
+    }
+    
+    func invertSpeed()
+    {
+        self.playerSpeed = self.playerSpeed.invert()
+        let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
+        self.rotation = angle
     }
     
     func rotateByAngle(_ angle: Float) {
     
-        setSpeed()
+        setRotation(to: rotation+CGFloat(angle))
         
+        /*
         let ca = cosf(angle)
         let sa = sinf(angle)
         
@@ -126,6 +146,8 @@ extension Player {
         let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
         //self.zRotation = angle
         self.rotation = angle
+        
+        setSpeed()*/
     }
     
     func checkCollision() {
@@ -190,19 +212,33 @@ enum CollisionType
 {
     case WALL
     case WALL_DESTROY
+    case TELEPORT
+    case NONE
 }
 
 
 // MARK: Player Collisions
+
+
+
 extension Player {
     func performCollision(type : CollisionType)
     {
+        print(type)
         switch type {
         case .WALL:
-            let newAngle = 180-self.rotation.degrees360
-            print(self.rotation.degrees360, newAngle)
-            //rotateByAngle(Float(newAngle.radians))
-            setSpeed()
+            if !collide {
+                collide = true
+//                let newAngle = -self.rotation.degrees360
+//                //print(self.rotation.degrees360, newAngle)
+//                setRotation(to: newAngle.radians)
+//                setSpeed()
+                invertSpeed()
+                setSpeed()
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (_) in
+                    self.collide = false
+                })
+            }
         default:
             return
         }
