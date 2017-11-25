@@ -22,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var localPlayer: Player!
     var players = [Player]()
     var playerDirection: PlayerDirection = .NONE
+    var collisionTypes : [UInt32 : CollisionType] = [:]
     
     var leftButton: SKSpriteNode!
     var rightButton: SKSpriteNode!
@@ -65,6 +66,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
+        
+        collisionTypes =
+        [PhysicsCategory.WALL.rawValue : .WALL,
+        PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
+        PhysicsCategory.TELEPORT.rawValue : .TELEPORT]
         
         setupCamera(target: localPlayer)
     }
@@ -196,11 +202,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 // Physics
 extension GameScene {
     func didBegin(_ contact: SKPhysicsContact) {
-        
-        let collisionTypes : [UInt32 : CollisionType] =
-        [PhysicsCategory.WALL.rawValue : .WALL,
-         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
-         PhysicsCategory.TELEPORT.rawValue : .TELEPORT]
 
 //        print(contact.bodyA.categoryBitMask)
 //        print(contact.bodyB.categoryBitMask)
@@ -208,7 +209,8 @@ extension GameScene {
         if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyA.node as? Player {
                 if let type = collisionTypes[contact.bodyB.categoryBitMask] {
-                    player.performCollision(type: type)
+                    let node = contact.bodyB.node
+                    player.performCollision(type: type, node: node)
                 }
             }
         }
@@ -216,7 +218,8 @@ extension GameScene {
         if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyB.node as? Player {
                 if let type = collisionTypes[contact.bodyA.categoryBitMask] {
-                    player.performCollision(type: type)
+                    let node = contact.bodyA.node
+                    player.performCollision(type: type, node: node)
                 }
             }
         }
@@ -228,5 +231,26 @@ extension GameScene {
 //        } else if contact.bodyB.node?.name == "Path" {
 //            contact.bodyA.node?.removeFromParent()
 //        }
+    }
+    
+    func didEnd(_ contact: SKPhysicsContact) {
+       
+        if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyA.node as? Player {
+                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                    let node = contact.bodyB.node
+                    player.releaseCollision(type: type, node: node)
+                }
+            }
+        }
+        
+        if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyB.node as? Player {
+                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                    let node = contact.bodyA.node
+                    player.releaseCollision(type: type, node: node)
+                }
+            }
+        }
     }
 }

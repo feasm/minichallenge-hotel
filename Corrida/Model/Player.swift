@@ -24,6 +24,7 @@ class Player: SKSpriteNode {
     var playerSpeed: CGVector = CGVector(dx: 0, dy: Player.CONSTANT_SPEED)
     var rotation: CGFloat = 0
     var collide : Bool = false
+    var lastTeleporter : Teleporter? = nil
     
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
@@ -106,10 +107,20 @@ extension Player {
         self.setSpeed()
     }
     
-    
+    func setPosition(_ pos: CGPoint)
+    {
+        self.run(SKAction.move(to: pos, duration: 0))
+    }
     
     func setSpeed() {
         self.physicsBody?.velocity = playerSpeed
+    }
+    
+    func invertSpeed()
+    {
+        self.playerSpeed = self.playerSpeed.invert()
+        let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
+        self.rotation = angle
     }
     
     func setRotation(to angle: CGFloat)
@@ -121,13 +132,6 @@ extension Player {
         self.playerSpeed = CGVector(dx: vector.x, dy: vector.y)
         
         setSpeed()
-    }
-    
-    func invertSpeed()
-    {
-        self.playerSpeed = self.playerSpeed.invert()
-        let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
-        self.rotation = angle
     }
     
     func rotateByAngle(_ angle: Float) {
@@ -219,13 +223,34 @@ enum CollisionType
 
 // MARK: Player Collisions
 
-
-
 extension Player {
-    func performCollision(type : CollisionType)
+    
+    func releaseCollision(type : CollisionType, node: SKNode? = nil)
     {
-        print(type)
         switch type {
+        case .TELEPORT:
+            lastTeleporter = nil
+        default:
+            return
+        }
+    }
+    
+    func performCollision(type : CollisionType, node: SKNode? = nil)
+    {
+        //print(type)
+        switch type {
+        case .TELEPORT:
+            if let node = node as? Teleporter
+            {
+                if lastTeleporter == nil
+                {
+                    lastTeleporter = node
+                    let pos = GameManager.shared.getTeleporter(from: node)
+                    print("Teleporter at: ", pos)
+                    self.animationLastPoint = pos
+                    setPosition(pos)
+                }
+            }
         case .WALL:
             if !collide {
                 collide = true

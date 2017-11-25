@@ -33,7 +33,7 @@ extension GameManager
     func getTeleporter(from: Teleporter) -> CGPoint
     {
         var temp : [Teleporter] = []
-        for t in teleporters where t.teleporter == from.teleporter
+        for t in teleporters where (t.teleporter == from.teleporter && t != from)
         {
             temp.append(t)
         }

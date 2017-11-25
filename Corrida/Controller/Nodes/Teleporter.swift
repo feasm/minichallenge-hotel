@@ -26,9 +26,10 @@ class Teleporter: SKSpriteNode {
     
     func setupPhysics()
     {
+        let sizeScale : CGFloat = 0.4
         if let texture = texture
         {
-            let body = SKPhysicsBody(texture: texture, size: self.size)
+            let body = SKPhysicsBody(texture: texture, size: self.size*sizeScale)
             body.affectedByGravity = false
             body.allowsRotation = false
             body.pinned = true
@@ -39,7 +40,7 @@ class Teleporter: SKSpriteNode {
         }
         else
         {
-            let body = SKPhysicsBody(rectangleOf: self.size)
+            let body = SKPhysicsBody(rectangleOf: self.size*sizeScale)
             body.affectedByGravity = false
             body.allowsRotation = false
             body.pinned = true
