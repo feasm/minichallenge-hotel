@@ -11,10 +11,10 @@ import UIKit
 enum MessageType: String, Codable {
     case CHARACTER_CHANGED = "character_changed"
     case GAME_BEGIN = "game_begin"
+    case PLAYER_READY = "player_ready"
     case PLAYER_MESSAGE = "player_message"
-    case GUEST_MESSAGE = "guest_message"
-    case ACTION_MESSAGE = "action_message"
-    case SPAWN_GUEST = "spawn_guest"
+    case CHANGE_MAP = "change_map"
+    case START_MAP = "start_map"
 }
 
 struct GameData: Codable {
@@ -24,6 +24,9 @@ struct GameData: Codable {
     
     var playerNumber: Int?
     var character: CharactersEnum?
+    var readyStatus: PlayerStatusEnum?
+    
+    var currentMap: Int?
     
     var name: String?
     var position: CGPoint?
@@ -47,6 +50,20 @@ extension GameData {
         self.messageType = messageType
         self.playerNumber = playerNumber
         self.character = character
+    }
+    
+    init(messageType: MessageType, _ playerNumber: Int, _ readyStatus: PlayerStatusEnum) {
+        self.messageType = messageType
+        self.playerNumber = playerNumber
+        self.readyStatus = readyStatus
+    }
+}
+
+// MARK: Map Selection
+extension GameData {
+    init(messageType: MessageType, _ currentMap: Int) {
+        self.messageType = messageType
+        self.currentMap = currentMap
     }
 }
 

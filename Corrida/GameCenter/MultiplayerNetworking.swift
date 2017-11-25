@@ -59,6 +59,11 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendReady(_ readyStatus: PlayerStatusEnum) {
+        let gameData = GameData(messageType: .PLAYER_READY, GameManager.shared.localNumber, readyStatus)
+        self.sendData(gameData)
+    }
+    
     func sendPlayerData(player: Player) {
 //        if let vc = player.component(ofType: VisualComponent.self) {
 //            let gameData = GameData(messageType: .PLAYER_MESSAGE, name: player.name!, target: player.target, position: vc.sprite.position)
@@ -69,6 +74,16 @@ extension MultiplayerNetworking {
     
     func sendActionData(messageType: MessageType) {
         let gameData = GameData(messageType: messageType)
+        self.sendData(gameData)
+    }
+    
+    func sendChangeMap(_ currentPosition: Int) {
+        let gameData = GameData(messageType: .CHANGE_MAP, currentPosition)
+        self.sendData(gameData)
+    }
+    
+    func sendMapBegin() {
+        let gameData = GameData(messageType: .START_MAP)
         self.sendData(gameData)
     }
     

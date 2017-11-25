@@ -118,6 +118,7 @@ extension GameKitHelper {
     
     func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
         viewController.dismiss(animated: true, completion: nil)
+        self.startViewController?.setLoading()
         self.match = match
         match.delegate = self
         
@@ -149,19 +150,26 @@ extension GameKitHelper {
             let gameData = try! decoder.decode(GameData.self, from: jsonData)
             
             switch gameData.messageType {
+                
             case .GAME_BEGIN:
                 GameClient.shared.setup(gameData.playerNames!)
+                
             case .CHARACTER_CHANGED:
                 prepareViewController?.changePlayerCharacter(player: PlayerEnum(rawValue: gameData.playerNumber!)!, character: gameData.character!)
+                
+            case .PLAYER_READY:
+                prepareViewController?.setReadyPlayer(player: PlayerEnum(rawValue: gameData.playerNumber!)!, status: gameData.readyStatus!)
+                
+            case .CHANGE_MAP:
+                chooseMapViewController?.setMap(gameData.currentMap!)
+                
+            case .START_MAP:
+                chooseMapViewController?.presentGameView()
+            
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)
-            case .GUEST_MESSAGE:
-                print("guest message")
-//                GuestManager.shared.updateGuest(guestIndex: gameData.guestIndex!, state: gameData.state!, target: gameData.target!)
-            case .SPAWN_GUEST:
-                print("spawn guest")
-//                GuestManager.shared.spawnGuest()
+                
             default:
                 print("default message")
             }
