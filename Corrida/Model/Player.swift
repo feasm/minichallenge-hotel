@@ -246,11 +246,13 @@ extension Player {
                 {
                     lastTeleporter = node
                     let pos = GameManager.shared.getTeleporter(from: node)
-                    print("Teleporter at: ", pos)
+                    print("Teleporter at:", pos)
                     self.animationLastPoint = pos
                     setPosition(pos)
                 }
             }
+        case .WALL_DESTROY:
+            print("Destroy:", alias)
         case .WALL:
             if !collide {
                 collide = true
