@@ -68,11 +68,17 @@ class PrepareViewController: UIViewController {
     //Selected Outlets
     @IBOutlet var imageSelectedCharacter : UIImageView!
     @IBOutlet var imageBaseSelected : UIImageView!
+    @IBOutlet var topConstraintSelectedCharacter: NSLayoutConstraint!
     
     //MARK: Variables
     
     var selectedCharacter : CharactersEnum? = nil
+    var firstPlayerSelectedCharacter : CharactersEnum? = nil
+    var secondPlayerSelectedCharacter : CharactersEnum? = nil
+    var thirdPlayerSelectedCharacter : CharactersEnum? = nil
     var readyClicked : Bool = false
+    
+    var blockedCharacters = [Int]()
 
     //MARK: Life Cicle
     override func viewDidLoad() {
@@ -90,6 +96,7 @@ class PrepareViewController: UIViewController {
     func setup() {
         GameKitHelper.shared.prepareViewController = self
         //TODO: SET BACKGROUND
+        animateSelectedCharacter()
         setupCharacters()
         setupSelected()
     }
@@ -192,7 +199,7 @@ class PrepareViewController: UIViewController {
         if selectedCharacter != nil {
             switch selectedCharacter! {
             case .FIRST:
-                imageSelectedCharacter.image = backgroundFirstCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "doggalien")
                 
                 backgroundFirstCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -200,7 +207,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .SECOND:
-                imageSelectedCharacter.image = backgroundSecondCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "birdalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
@@ -208,7 +215,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .THIRD:
-                imageSelectedCharacter.image = backgroundThirdCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "gooalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -216,7 +223,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .FORTH:
-                imageSelectedCharacter.image = backgroundFourthCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "demalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -243,13 +250,29 @@ class PrepareViewController: UIViewController {
         let location = sender.location(in: charactersView)
         
         if viewFirstCharacter.frame.contains(location) {
-            selectedCharacter = .FIRST
+            if !blockedCharacters.contains(CharactersEnum.FIRST.rawValue) {
+                selectedCharacter = .FIRST
+            } else {
+                return
+            }
         } else if viewSecondCharacter.frame.contains(location) {
-            selectedCharacter = .SECOND
+            if !blockedCharacters.contains(CharactersEnum.SECOND.rawValue) {
+                selectedCharacter = .SECOND
+            } else {
+                return
+            }
         } else if viewThirdCharacter.frame.contains(location) {
-            selectedCharacter = .THIRD
+            if !blockedCharacters.contains(CharactersEnum.THIRD.rawValue) {
+                selectedCharacter = .THIRD
+                } else {
+                    return
+            }
         } else if viewFourthCharacter.frame.contains(location) {
-            selectedCharacter = .FORTH
+            if !blockedCharacters.contains(CharactersEnum.FORTH.rawValue) {
+                selectedCharacter = .FORTH
+            } else {
+                return
+            }
         }
         
         //recebe data do gamecenter
@@ -258,7 +281,7 @@ class PrepareViewController: UIViewController {
         setupSelected()
     }
     
-    func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum){
+    func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum) {
         
         //recebe player change character data
         var playerNum = player
@@ -268,6 +291,8 @@ class PrepareViewController: UIViewController {
         
         switch playerNum {
         case .FIRST:
+            firstPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundFirstPlayer.image = backgroundFirstCharacter.image
@@ -284,6 +309,8 @@ class PrepareViewController: UIViewController {
             }
             break
         case .SECOND:
+            secondPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundSecondPlayer.image = backgroundFirstCharacter.image
@@ -300,6 +327,8 @@ class PrepareViewController: UIViewController {
             }
             break
         case .THIRD:
+            thirdPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundThirdPlayer.image = backgroundFirstCharacter.image
@@ -319,43 +348,172 @@ class PrepareViewController: UIViewController {
     }
     
     func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum) {
-        //TODO: RECEBE PLAYER STATE
         var playerNum = player
+        var character: CharactersEnum? = nil
+        
         if player.rawValue > GameManager.shared.localNumber {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
         }
         
         switch playerNum {
         case .FIRST:
+            character = firstPlayerSelectedCharacter
+            break
+        case .SECOND:
+            character = secondPlayerSelectedCharacter
+            break
+        case .THIRD:
+            character = thirdPlayerSelectedCharacter
+            break
+        }
+        
+        if blockedCharacters.contains(character!.rawValue) {
+            var index: Int = 0
+            for (i,item) in blockedCharacters.enumerated() {
+                if item == character!.rawValue {
+                    index = i
+                }
+            }
+            
+            blockedCharacters.remove(at: index)
+            
+            switch character {
+            case .FIRST?:
+                backgroundFirstCharacter.image = UIImage(named: "dogalien_icon")
+                break
+            case .SECOND?:
+                backgroundSecondCharacter.image = UIImage(named: "birdalien_icon")
+                break
+            case .THIRD?:
+                backgroundThirdCharacter.image = UIImage(named: "gooalien_icon")
+                break
+            case .FORTH?:
+                backgroundFourthCharacter.image = UIImage(named: "demonalien_icon")
+                break
+            case .none:
+                break
+            }
+        } else {
+            blockedCharacters.append(character!.rawValue)
+            
+            switch character {
+            case .FIRST?:
+                backgroundFirstCharacter.image = self.convertToGrayScale(image: self.backgroundFirstCharacter.image!)
+                break
+            case .SECOND?:
+                backgroundSecondCharacter.image = self.convertToGrayScale(image: self.backgroundSecondCharacter.image!)
+                break
+            case .THIRD?:
+                backgroundThirdCharacter.image = self.convertToGrayScale(image: self.backgroundThirdCharacter.image!)
+                break
+            case .FORTH?:
+                backgroundFourthCharacter.image = self.convertToGrayScale(image: self.backgroundFourthCharacter.image!)
+                break
+            case .none:
+                break
+            }
+        }
+        
+        switch playerNum {
+        case .FIRST:
             switch status {
             case .READY:
-                readyFirstPlayer.isHidden = false
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewFirstPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewFirstPlayer.alpha = 1.0
+                                self.readyFirstPlayer.isHidden = false
+                                self.backgroundFirstPlayer.image = self.convertToGrayScale(image: self.backgroundFirstPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readyFirstPlayer.isHidden = true
+                switch character {
+                case .FIRST?:
+                    backgroundFirstPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND?:
+                    backgroundFirstPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD?:
+                    backgroundFirstPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH?:
+                    backgroundFirstPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
+                    break
+                }
                 break
             }
             break
         case .SECOND:
             switch status {
             case .READY:
-                readySecondPlayer.isHidden = false
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewSecondPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewSecondPlayer.alpha = 1.0
+                                self.readySecondPlayer.isHidden = false
+                                self.backgroundSecondPlayer.image = self.convertToGrayScale(image: self.backgroundSecondPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readySecondPlayer.isHidden = true
+                switch character {
+                case .FIRST?:
+                    backgroundSecondPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND?:
+                    backgroundSecondPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD?:
+                    backgroundSecondPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH?:
+                    backgroundSecondPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
+                    break
+                }
                 break
             }
             break
         case .THIRD:
             switch status {
             case .READY:
-                readyThirdPlayer.isHidden = false
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewThirdPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewThirdPlayer.alpha = 1.0
+                                self.readyThirdPlayer.isHidden = false
+                                self.backgroundThirdPlayer.image = self.convertToGrayScale(image: self.backgroundThirdPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readyThirdPlayer.isHidden = true
+                switch character {
+                case .FIRST?:
+                    backgroundThirdPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND?:
+                    backgroundThirdPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD?:
+                    backgroundThirdPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH?:
+                    backgroundThirdPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
+                    break
+                }
                 break
             }
-            break
+        break
         }
         
         tryStartGame()
@@ -372,9 +530,24 @@ class PrepareViewController: UIViewController {
         performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
     }
     
+    func convertToGrayScale(image: UIImage) -> UIImage {
+        let context = CIContext(options: nil)
+        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")
+        currentFilter!.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        
+        let output = currentFilter!.outputImage
+        let cgimg = context.createCGImage(output!,from: output!.extent)
+        return UIImage(cgImage: cgimg!)
+    }
+    
+    func animateSelectedCharacter(){
+        UIView.animate(withDuration: 1, delay: 0.25, options: [.autoreverse, .repeat], animations: {
+            self.topConstraintSelectedCharacter.constant -= 10
+        }, completion: nil)
+    }
+    
     //MARK: Actions
     @IBAction func readyAction() {
-        //TODO: SEND PLAYER READY STATE
         
         if readyClicked {
             readyClicked = false

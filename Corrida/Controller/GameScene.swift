@@ -44,23 +44,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background : SKSpriteNode!
     
     override func sceneDidLoad() {
+        // Carrega todos os elementos do mapa para poderem ser utilizados no código
+        loadChildren()
+        
         // Carrega Personagens
-        self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
-        self.localPlayer.setup(id: "0", alias: "Eu")
-        self.localPlayer.name = self.localPlayer.alias
-        self.players.append(localPlayer)
-        addChild(localPlayer)
+        if !GameManager.MULTIPLAYER_ON {
+            self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
+            self.localPlayer.setup(id: "0", alias: "Eu")
+            self.localPlayer.name = self.localPlayer.alias
+            self.players.append(localPlayer)
+            addChild(self.localPlayer)
+            self.setSpawn(to: self.localPlayer, id: 0)
+        } else {
+            self.localPlayer = GameManager.shared.localPlayer
+            self.localPlayer.name = self.localPlayer.alias
+            
+            var id = 0
+            for player in GameManager.shared.players {
+                player.removeFromParent()
+                addChild(player)
+                self.setSpawn(to: player, id: id)
+                id += 1
+                
+//                self.players.append(player)
+            }
+        }
         
 //        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
 //        player.setup(alias: "batata")
 //        self.players.append(player)
 //        setSpawn(to: player, id: 1)
 //        addChild(player)
-        
-        loadChildren()
-        
-        
-        setSpawn(to: localPlayer, id: 0)
         
         // Carrega botões do controle
         if let camera = self.camera
@@ -209,9 +223,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-//        for player in self.players {
-//
-//        }
+        for player in self.players {
+            player.update(direction: .NONE)
+        }
     }
 }
 

@@ -54,16 +54,8 @@ class Player: SKSpriteNode {
     }
     
     init(type: String) {
-        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
-        animations[.FRONT] = [SKTexture(imageNamed: textureName)]
-        
-        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
-        animations[.SIDE] = [SKTexture(imageNamed: textureName)]
-        
-        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
-        animations[.BACK] = [SKTexture(imageNamed: textureName)]
-        
         super.init(texture: nil, color: .white, size: CGSize(width: 300, height: 300))
+        self.setType(type: type)
     }
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
@@ -97,6 +89,7 @@ class Player: SKSpriteNode {
         self.setSpeed()
     }
     
+
     func destroyPlayer(reason: DeathReason)
     {
         print(reason)
@@ -105,6 +98,17 @@ class Player: SKSpriteNode {
             destroyed = true
             self.removeFromParent()
         }
+    }
+
+    func setType(type: String) {
+        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
+        animations[.FRONT] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
+        animations[.SIDE] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
+        animations[.BACK] = [SKTexture(imageNamed: textureName)]
     }
 }
 

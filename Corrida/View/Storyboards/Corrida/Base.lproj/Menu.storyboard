@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,10 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bfg-19-d8y">
-                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-                                <color key="backgroundColor" red="0.14466768503189087" green="0.10440289229154587" blue="0.34686768054962158" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundMap" translatesAutoresizingMaskIntoConstraints="NO" id="iV2-Nc-EBV">
                                 <rect key="frame" x="233.5" y="75" width="200" height="150"/>
                                 <constraints>
@@ -48,7 +44,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.14509803921568626" green="0.10588235294117647" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iV2-Nc-EBV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="75" id="1Ix-7p-R6t"/>
                             <constraint firstItem="aUJ-uo-I4n" firstAttribute="top" secondItem="iV2-Nc-EBV" secondAttribute="bottom" constant="25" id="E0G-t9-hWQ"/>
@@ -56,18 +52,13 @@
                             <constraint firstItem="aUJ-uo-I4n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IJG-mP-H4T"/>
                             <constraint firstItem="iV2-Nc-EBV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JxY-4K-acR"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="PaG-3m-7R6"/>
-                            <constraint firstItem="bfg-19-d8y" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="akq-VO-l6G"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bi9-TT-Cfr"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bfg-19-d8y" secondAttribute="trailing" id="gBO-LE-g9Q"/>
-                            <constraint firstItem="bfg-19-d8y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ggI-6Y-D68"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nT1-N2-TkA"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tud-YZ-pm9"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bfg-19-d8y" secondAttribute="bottom" id="xUo-SI-iR4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="background" destination="bfg-19-d8y" id="Kg0-kh-dWb"/>
                         <outlet property="logo" destination="iV2-Nc-EBV" id="6m6-7Q-MdS"/>
                         <outlet property="overlayer" destination="HtZ-Nw-Feg" id="Oal-fL-y36"/>
                         <outlet property="startButton" destination="aUJ-uo-I4n" id="Alm-f9-dZ8"/>
@@ -184,7 +175,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gFm-fp-yTc">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-                                <color key="backgroundColor" red="0.14466768503189087" green="0.10440289229154587" blue="0.34686768054962158" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.14509803921568626" green="0.10588235294117647" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Character" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYb-ez-gPT">
                                 <rect key="frame" x="255.5" y="25" width="156.5" height="21"/>
@@ -320,7 +311,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OlW-8A-6zq">
                                         <rect key="frame" x="23" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Eu" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dogalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -336,7 +327,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="815-Ko-En2">
                                         <rect key="frame" x="102" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stocco" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="birdalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -352,7 +343,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rQu-Ly-AxT">
                                         <rect key="frame" x="23" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Daniel" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gooalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -368,7 +359,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUY-3n-uqL">
                                         <rect key="frame" x="102" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Adonay" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="demonalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -409,11 +400,11 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKl-eg-kLt">
-                                        <rect key="frame" x="10" y="0.0" width="145.5" height="207"/>
+                                        <rect key="frame" x="10" y="50" width="145.5" height="157"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" id="04X-PV-UUK"/>
+                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" constant="50" id="04X-PV-UUK"/>
                                     <constraint firstItem="JgO-4s-WH7" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" id="14Y-2l-vk8"/>
                                     <constraint firstAttribute="trailing" secondItem="pKl-eg-kLt" secondAttribute="trailing" constant="10" id="DBB-d0-knT"/>
                                     <constraint firstAttribute="trailing" secondItem="JgO-4s-WH7" secondAttribute="trailing" id="Jud-Fz-D4u"/>
@@ -482,6 +473,7 @@
                         <outlet property="readyThirdPlayer" destination="wwe-gq-PRc" id="oFl-gm-9Jr"/>
                         <outlet property="selectedView" destination="Aui-dY-Iwe" id="ZUg-oM-pzy"/>
                         <outlet property="titleLabel" destination="EYb-ez-gPT" id="SRr-g2-R75"/>
+                        <outlet property="topConstraintSelectedCharacter" destination="04X-PV-UUK" id="coY-up-uRh"/>
                         <outlet property="viewFirstCharacter" destination="OlW-8A-6zq" id="q5f-rz-94Y"/>
                         <outlet property="viewFirstPlayer" destination="duk-hi-0Dm" id="dMS-4s-tjy"/>
                         <outlet property="viewFourthCharacter" destination="QUY-3n-uqL" id="2rW-cs-YRW"/>
@@ -498,14 +490,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Adonay" width="640" height="640"/>
         <image name="Arrow_Next" width="112" height="112"/>
         <image name="Arrow_Prev" width="112" height="112"/>
         <image name="BackgroundMap" width="350" height="225"/>
         <image name="Base_Character" width="166" height="35"/>
         <image name="Button_Layout" width="208" height="58"/>
-        <image name="Daniel" width="640" height="640"/>
-        <image name="Eu" width="677" height="677"/>
-        <image name="Stocco" width="960" height="960"/>
+        <image name="birdalien_icon" width="150" height="200"/>
+        <image name="demonalien_icon" width="150" height="200"/>
+        <image name="dogalien_icon" width="150" height="200"/>
+        <image name="gooalien_icon" width="150" height="200"/>
     </resources>
 </document>

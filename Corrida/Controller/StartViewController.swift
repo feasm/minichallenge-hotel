@@ -11,7 +11,6 @@ import UIKit
 class StartViewController: UIViewController {
     
     //MARK: Outlets
-    @IBOutlet var background : UIImageView!
     @IBOutlet var logo : UIImageView!
     @IBOutlet var startButton : UIButton!
     
@@ -30,7 +29,7 @@ class StartViewController: UIViewController {
     
     //MARK: Setup Methods
     func setup() {
-        
+
     }
     
     //MARK: Helper Methods
