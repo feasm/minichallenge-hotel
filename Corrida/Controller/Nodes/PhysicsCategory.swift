@@ -15,4 +15,5 @@ enum PhysicsCategory : UInt32
     case BARRIER = 2
     case PLAYER = 3
     case TELEPORT = 4
+    case TRAIL = 5
 }

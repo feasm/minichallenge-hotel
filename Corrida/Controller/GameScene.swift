@@ -9,6 +9,16 @@
 import SpriteKit
 import GameplayKit
 
+
+enum NodesZPosition : CGFloat
+{
+    case CONTROLLERS = 20
+    case PLAYER = 10
+    case PLAYER_TRAIL = 9
+    case ASSETS = 8
+    case BACKGROUND = 7
+}
+
 enum PlayerDirection {
     case UP
     case DOWN
@@ -71,19 +81,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         {
             camera.setScale(1)
             self.leftButton = camera.childNode(withName: "LeftButton") as! SKSpriteNode
+            self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
+            self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
         }
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
+        self.physicsBody?.restitution = 1
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
         
-        collisionTypes =
-        [PhysicsCategory.WALL.rawValue : .WALL,
+    
+        
+        collisionTypes = [
+        PhysicsCategory.WALL.rawValue : .WALL,
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
-        PhysicsCategory.TELEPORT.rawValue : .TELEPORT]
+        PhysicsCategory.TELEPORT.rawValue : .TELEPORT,
+        PhysicsCategory.TRAIL.rawValue : .TRAIL]
         
         setupCamera(target: localPlayer)
     }
@@ -91,6 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func loadChildren()
     {
         self.background = self.childNode(withName: "background") as! SKSpriteNode
+        self.background.zPosition = NodesZPosition.BACKGROUND.rawValue
         
         GameManager.shared.teleporters.removeAll()
         
@@ -236,14 +253,7 @@ extension GameScene {
                 }
             }
         }
-        
-        //print(contact.bodyA.node?.name ?? "Body A")
-        //print(contact.bodyB.node?.name ?? "Body B")
-//        if contact.bodyA.node?.name == "Path" {
-//            contact.bodyB.node?.removeFromParent()
-//        } else if contact.bodyB.node?.name == "Path" {
-//            contact.bodyA.node?.removeFromParent()
-//        }
+
     }
     
     func didEnd(_ contact: SKPhysicsContact) {

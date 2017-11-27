@@ -141,9 +141,9 @@
 		BCFABCE51FC5BB16007B94FF /* Corrida */ = {
 			isa = PBXGroup;
 			children = (
+				BCFABD3B1FC84AC7007B94FF /* Corrida.entitlements */,
 				1B1B0C211FC9F16B000D407A /* Extensions */,
 				F757F6ED1FC88210009D0B82 /* Utils */,
-				BCFABD3B1FC84AC7007B94FF /* Corrida.entitlements */,
 				BCFABD2F1FC812C4007B94FF /* GameCenter */,
 				BCFABD031FC5FA0D007B94FF /* Managers */,
 				BCFABD001FC5BBA6007B94FF /* Controller */,
