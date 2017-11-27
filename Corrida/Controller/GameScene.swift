@@ -17,60 +17,45 @@ enum PlayerDirection {
     case NONE
 }
 
-class Spawner : SKSpriteNode
-{
-    @IBInspectable var spawner : Int = 0
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        if let data = userData
-        {
-            if let spawner = data["spawner"] as? Int
-            {
-                self.spawner = spawner
-            }
-        }
-    }
-    
-    func getSpawner() -> Int
-    {
-        return self.spawner
-    }
-    
-    func location() -> CGPoint
-    {
-        return self.position
-    }
-    
-    func angleTo(_ position: CGPoint, degrees : Bool = false) -> CGFloat
-    {
-        return self.position.angle(position, degrees: degrees)
-    }
-}
-
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var localPlayer: Player!
     var players = [Player]()
     var playerDirection: PlayerDirection = .NONE
+    var collisionTypes : [UInt32 : CollisionType] = [:]
     
     var leftButton: SKSpriteNode!
     var rightButton: SKSpriteNode!
     var buttonPressed: Bool = false
     
     var spawners : [Int: Spawner?] = [:]
+    //var teleporters : [Teleporter] = []
     
     var background : SKSpriteNode!
     
     override func sceneDidLoad() {
         // Carrega Personagens
-        self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
-        self.localPlayer.setup(id: "0", alias: "Eu")
-        self.localPlayer.name = self.localPlayer.alias
-        self.players.append(localPlayer)
-        addChild(localPlayer)
+        if !GameManager.MULTIPLAYER_ON {
+            self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
+            self.localPlayer.setup(id: "0", alias: "Eu")
+            self.localPlayer.name = self.localPlayer.alias
+            self.players.append(localPlayer)
+            addChild(self.localPlayer)
+            setSpawn(to: self.localPlayer, id: 0)
+        } else {
+            self.localPlayer = GameManager.shared.localPlayer
+            self.localPlayer.setType(type: "dogalien")
+            self.localPlayer.name = self.localPlayer.alias
+            
+            var id = 0
+            for player in GameManager.shared.players {
+                player.setType(type: "dogalien")
+                player.setupPhysics()
+                addChild(player)
+                setSpawn(to: player, id: id)
+                id += 1
+            }
+        }
         
 //        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
 //        player.setup(alias: "batata")
@@ -78,17 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        setSpawn(to: player, id: 1)
 //        addChild(player)
         
-        self.background = self.childNode(withName: "background") as! SKSpriteNode
-        
-        for child in children
-        {
-            if let child = child as? Spawner
-            {
-                spawners[child.getSpawner()] = child
-            }
-        }
-        
-        setSpawn(to: localPlayer, id: 0)
+        loadChildren()
         
         // Carrega botões do controle
         if let camera = self.camera
@@ -100,10 +75,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
+        self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
         
+        collisionTypes =
+        [PhysicsCategory.WALL.rawValue : .WALL,
+        PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
+        PhysicsCategory.TELEPORT.rawValue : .TELEPORT]
+        
         setupCamera(target: localPlayer)
+    }
+    
+    func loadChildren()
+    {
+        self.background = self.childNode(withName: "background") as! SKSpriteNode
+        
+        GameManager.shared.teleporters.removeAll()
+        
+        for child in children
+        {
+            if let child = child as? Spawner
+            {
+                spawners[child.getSpawner()] = child
+            }
+            
+            if let child = child as? Barrier
+            {
+                child.setupPhysics()
+            }
+            
+            if let child = child as? Teleporter
+            {
+                child.setupPhysics()
+                GameManager.shared.teleporters.append(child)
+            }
+        }
+        
     }
     
     func setSpawn(to player: Player, id: Int)
@@ -111,7 +119,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if spawners[id] != nil, let spawn = spawners[id]!
         {
             player.position = spawn.location()
-            player.rotateByAngle(Float(spawn.angleTo(.zero)))
+            player.setRotation(to: spawn.angleTo(.zero))
+            //player.rotateByAngle(Float(spawn.angleTo(.zero)))
         }
     }
     
@@ -176,9 +185,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches {
-            let location = t.location(in: self)
-        }
+//        for t in touches {
+//            let location = t.location(in: self)
+//        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -196,29 +205,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-        for player in self.players {
-            
-        }
+//        for player in self.players {
+//
+//        }
     }
 }
 
 // Physics
 extension GameScene {
     func didBegin(_ contact: SKPhysicsContact) {
+
+//        print(contact.bodyA.categoryBitMask)
+//        print(contact.bodyB.categoryBitMask)
         
-        if contact.bodyA.node?.name == "Scene"
-        {
-            if let player = contact.bodyB.node as? Player
-            {
-                player.performCollision(type: .WALL)
+        if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyA.node as? Player {
+                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                    let node = contact.bodyB.node
+                    player.performCollision(type: type, node: node)
+                }
             }
         }
         
-        if contact.bodyB.node?.name == "Scene"
-        {
-            if let player = contact.bodyA.node as? Player
-            {
-                player.performCollision(type: .WALL)
+        if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyB.node as? Player {
+                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                    let node = contact.bodyA.node
+                    player.performCollision(type: type, node: node)
+                }
             }
         }
         
@@ -229,5 +243,26 @@ extension GameScene {
 //        } else if contact.bodyB.node?.name == "Path" {
 //            contact.bodyA.node?.removeFromParent()
 //        }
+    }
+    
+    func didEnd(_ contact: SKPhysicsContact) {
+       
+        if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyA.node as? Player {
+                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                    let node = contact.bodyB.node
+                    player.releaseCollision(type: type, node: node)
+                }
+            }
+        }
+        
+        if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
+            if let player = contact.bodyB.node as? Player {
+                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                    let node = contact.bodyA.node
+                    player.releaseCollision(type: type, node: node)
+                }
+            }
+        }
     }
 }

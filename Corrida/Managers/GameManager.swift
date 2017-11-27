@@ -6,11 +6,14 @@
 //  Copyright © 2017 Felipe Melo. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import SpriteKit
 
 class GameManager {
     static let shared: GameManager = GameManager()
     static let MULTIPLAYER_ON: Bool = true
+    
+    var teleporters : [Teleporter] = []
     
     var localPlayer: Player!
     var localNumber: Int!
@@ -20,5 +23,29 @@ class GameManager {
     
     private init() {
         
+    }
+}
+
+// MARK: Teleporters
+
+extension GameManager
+{
+    func getTeleporter(from: Teleporter) -> CGPoint
+    {
+        var temp : [Teleporter] = []
+        for t in teleporters where (t.teleporter == from.teleporter && t != from)
+        {
+            temp.append(t)
+        }
+        
+        if temp.count > 0
+        {
+            let t = temp.chooseOne
+            return t.position
+        }
+        else
+        {
+            return from.position
+        }
     }
 }

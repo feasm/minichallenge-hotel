@@ -33,4 +33,9 @@ extension CGVector {
     func normalized() -> CGVector {
         return self / length()
     }
+    
+    func invert() -> CGVector
+    {
+        return CGVector(dx: self.dy, dy: -self.dy)
+    }
 }
