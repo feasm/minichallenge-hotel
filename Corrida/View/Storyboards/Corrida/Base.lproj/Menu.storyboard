@@ -311,7 +311,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OlW-8A-6zq">
                                         <rect key="frame" x="23" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Eu" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dogalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="F8J-H7-ttT">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -327,7 +327,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="815-Ko-En2">
                                         <rect key="frame" x="102" y="10" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stocco" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="birdalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="7rj-Qf-VdO">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -343,7 +343,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rQu-Ly-AxT">
                                         <rect key="frame" x="23" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Daniel" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gooalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="DeF-gi-ytB">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -359,7 +359,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUY-3n-uqL">
                                         <rect key="frame" x="102" y="114" width="75" height="100"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Adonay" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="demonalien_icon" translatesAutoresizingMaskIntoConstraints="NO" id="kJ4-XE-VFd">
                                                 <rect key="frame" x="0.0" y="0.0" width="75" height="100"/>
                                             </imageView>
                                         </subviews>
@@ -490,14 +490,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Adonay" width="640" height="640"/>
         <image name="Arrow_Next" width="112" height="112"/>
         <image name="Arrow_Prev" width="112" height="112"/>
         <image name="BackgroundMap" width="350" height="225"/>
         <image name="Base_Character" width="166" height="35"/>
         <image name="Button_Layout" width="208" height="58"/>
-        <image name="Daniel" width="640" height="640"/>
-        <image name="Eu" width="677" height="677"/>
-        <image name="Stocco" width="960" height="960"/>
+        <image name="birdalien_icon" width="150" height="200"/>
+        <image name="demonalien_icon" width="150" height="200"/>
+        <image name="dogalien_icon" width="150" height="200"/>
+        <image name="gooalien_icon" width="150" height="200"/>
     </resources>
 </document>
