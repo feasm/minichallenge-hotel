@@ -8,9 +8,16 @@
 
 import SpriteKit
 
+enum SpriteDirection : String
+{
+    case SIDE = "side"
+    case BACK = "back"
+    case FRONT = "front"
+}
+
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 400.0
-    static let ROTATION_SPEED: Float = 0.1
+    static let ROTATION_SPEED: Float = 0.05
     
     var id: String!
     var alias: String!
@@ -19,6 +26,8 @@ class Player: SKSpriteNode {
     
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
+    
+    var animations : [SpriteDirection : [SKTexture]] = [:]
     
     func setup(id: String, alias: String) {
         self.id = id
@@ -29,6 +38,25 @@ class Player: SKSpriteNode {
         super.init(texture: nil, color: UIColor.white, size: CGSize(width: 0, height: 0))
     }
     
+    init(type: String) {
+        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
+        animations[.FRONT] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
+        animations[.SIDE] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
+        animations[.BACK] = [SKTexture(imageNamed: textureName)]
+        
+        super.init(texture: nil, color: .white, size: CGSize(width: 300, height: 300))
+    }
+    
+    override init(texture: SKTexture?, color: UIColor, size: CGSize) {
+        super.init(texture: texture, color: color, size: size)
+        
+        
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -36,6 +64,8 @@ class Player: SKSpriteNode {
     func update(direction: PlayerDirection) {
         self.setDirection(direction)
         self.checkCollision()
+        self.updateDirection()
+        //print(zRotation)
     }
     
     func setDirection(_ direction: PlayerDirection) {
@@ -60,7 +90,8 @@ extension Player {
     }
     
     func setPhysics() {
-        self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        //self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.isDynamic = true
@@ -69,11 +100,21 @@ extension Player {
         self.setSpeed()
     }
     
+    
+    
     func setSpeed() {
         self.physicsBody?.velocity = playerSpeed
     }
     
+    func setRotation(to angle: CGFloat)
+    {
+        
+    }
+    
     func rotateByAngle(_ angle: Float) {
+    
+        setSpeed()
+        
         let ca = cosf(angle)
         let sa = sinf(angle)
         
@@ -83,7 +124,8 @@ extension Player {
         )
         
         let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
-        self.zRotation = angle
+        //self.zRotation = angle
+        self.rotation = angle
     }
     
     func checkCollision() {
@@ -91,9 +133,80 @@ extension Player {
     }
 }
 
+
+extension Player
+{
+    func updateDirection()
+    {
+        if animations.count > 0
+        {
+            var angle = self.rotation.degrees
+            angle = angle > 0 ? angle : (360.0 + angle)
+            let angle_range : CGFloat = 40.0
+            
+            if angle.inBetween(0, angle_range) || angle.inBetween(360-angle_range, 360)
+            {
+                if let animate = self.animations[.SIDE]
+                {
+                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.xScale = abs(xScale)
+                }
+            }
+            else if angle.inBetween(angle_range, 180-angle_range)
+            {
+                if let animate = self.animations[.BACK]
+                {
+                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    if angle.inBetween(angle_range, (180-angle_range)/2.0)
+                    {
+                        self.xScale = abs(xScale)
+                    }
+                    else
+                    {
+                        self.xScale = -abs(xScale)
+                    }
+                }
+            }
+            else if angle.inBetween(180-angle_range, 180+(2.0 * angle_range))
+            {
+                if let animate = self.animations[.SIDE]
+                {
+                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.xScale = -abs(xScale)
+                }
+            }
+            else if angle.inBetween(180+(2.0 * angle_range), 360-angle_range)
+            {
+                if let animate = self.animations[.FRONT]
+                {
+                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                }
+            }
+        }
+    }
+}
+
+enum CollisionType
+{
+    case WALL
+    case WALL_DESTROY
+}
+
+
 // MARK: Player Collisions
 extension Player {
-    
+    func performCollision(type : CollisionType)
+    {
+        switch type {
+        case .WALL:
+            let newAngle = 180-self.rotation.degrees360
+            print(self.rotation.degrees360, newAngle)
+            //rotateByAngle(Float(newAngle.radians))
+            setSpeed()
+        default:
+            return
+        }
+    }
 }
 
 // MARK: Player Path

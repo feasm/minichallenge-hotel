@@ -15,13 +15,13 @@ enum CharactersEnum : Int, Codable {
     case FORTH = 4
 }
 
-enum PlayerEnum : Int {
+enum PlayerEnum : Int, Codable {
     case FIRST = 1
     case SECOND = 2
     case THIRD = 3
 }
 
-enum PlayerStatusEnum : String {
+enum PlayerStatusEnum : String, Codable {
     case READY = "READY"
     case NOT_READY = "NOT_READY"
 }
@@ -90,8 +90,6 @@ class PrepareViewController: UIViewController {
     func setup() {
         GameKitHelper.shared.prepareViewController = self
         //TODO: SET BACKGROUND
-        
-        setupPlayers(firstName: "", secondName: "", thirdName:  "")
         setupCharacters()
         setupSelected()
     }
@@ -118,14 +116,20 @@ class PrepareViewController: UIViewController {
                                       byRoundingCorners:[.topLeft, .bottomLeft],
                                       cornerRadii: CGSize(width: 20, height:  20))
         
-        let maskNames = CAShapeLayer()
-        maskNames.path = pathNames.cgPath
+        let maskFirstName = CAShapeLayer()
+        maskFirstName.path = pathNames.cgPath
+        
+        let maskSecondName = CAShapeLayer()
+        maskSecondName.path = pathNames.cgPath
+        
+        let maskThirdName = CAShapeLayer()
+        maskThirdName.path = pathNames.cgPath
         
         //setup first player
         backgroundFirstPlayer.image = nil
         readyFirstPlayer.isHidden = true
         nameFirstPlayer.text = firstName
-        nameFirstPlayer.layer.mask = maskNames
+        nameFirstPlayer.layer.mask = maskFirstName
         nameFirstPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundFirstPlayer.layer.mask = maskLayerTop
         
@@ -133,14 +137,14 @@ class PrepareViewController: UIViewController {
         backgroundSecondPlayer.image = nil
         readySecondPlayer.isHidden = true
         nameSecondPlayer.text = secondName
-        nameSecondPlayer.layer.mask = maskNames
+        nameSecondPlayer.layer.mask = maskSecondName
         nameSecondPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     
         //setup third player
         backgroundThirdPlayer.image = nil
         readyThirdPlayer.isHidden = true
         nameThirdPlayer.text = thirdName
-        nameThirdPlayer.layer.mask = maskNames
+        nameThirdPlayer.layer.mask = maskThirdName
         nameThirdPlayer.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         backgroundThirdPlayer.layer.mask = maskLayerBottom
     }
@@ -231,7 +235,11 @@ class PrepareViewController: UIViewController {
     }
     
     //MARK: Helper Methods
-    @objc func selectCharacter(_ sender : UITapGestureRecognizer){
+    @objc func selectCharacter(_ sender : UITapGestureRecognizer) {
+        guard !readyClicked else {
+            return
+        }
+        
         let location = sender.location(in: charactersView)
         
         if viewFirstCharacter.frame.contains(location) {
@@ -310,8 +318,14 @@ class PrepareViewController: UIViewController {
         }
     }
     
-    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum, character: CharactersEnum){
-        switch player {
+    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum, character: CharactersEnum) {
+        //TODO: RECEBE PLAYER STATE
+        var playerNum = player
+        if player.rawValue > GameManager.shared.localNumber {
+            playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
+        }
+        
+        switch playerNum {
         case .FIRST:
             switch status {
             case .READY:
@@ -391,6 +405,19 @@ class PrepareViewController: UIViewController {
             }
             break
         }
+        
+        tryStartGame()
+    }
+    
+    func tryStartGame() {
+        guard readyClicked,
+            !readyFirstPlayer.isHidden,
+            (!readySecondPlayer.isHidden || GameManager.shared.players.count <= 2),
+            (!readyThirdPlayer.isHidden || GameManager.shared.players.count <= 3) else {
+               return
+        }
+        
+        performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
     }
     
     func convertToGrayScale(image: UIImage) -> UIImage {
@@ -409,9 +436,12 @@ class PrepareViewController: UIViewController {
         } else {
             readyClicked = true
             readyButton.alpha = 0.2
-            
-            performSegue(withIdentifier: "chooseMapIdentifier", sender: nil)
         }
+        
+        let playerStatus: PlayerStatusEnum = readyClicked ? .READY : .NOT_READY
+        MultiplayerNetworking.shared.sendReady(playerStatus)
+        
+        tryStartGame()
     }
 
 

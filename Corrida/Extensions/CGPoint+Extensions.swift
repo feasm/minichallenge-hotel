@@ -49,6 +49,36 @@ extension CGPoint
         let yDist = self.y - a.y
         return CGFloat(sqrt((xDist * xDist) + (yDist * yDist)))
     }
+    
+    func angle(_ from: CGPoint, degrees: Bool = true) -> CGFloat
+    {
+        let radians = atan2(from.y-self.y, from.x-self.x)
+        if degrees
+        {
+            var degreeAngle = radians * (180.0/CGFloat.pi)
+            degreeAngle = degreeAngle > 0 ? degreeAngle : (360.0 + degreeAngle)
+            return degreeAngle
+        }
+        return radians
+    }
+    
+    static func vectorDirection(length: CGFloat, direction: CGFloat, degrees : Bool = true) -> CGPoint
+    {
+        var angle = direction
+        if degrees
+        {
+            angle = direction.radians
+        }
+        
+        return CGPoint(x: cos(angle)*length, y: sin(angle)*length)
+    }
+    
+    func positionDirection(length: CGFloat, direction: CGFloat, degrees : Bool = true) -> CGPoint
+    {
+        let vector = CGPoint.vectorDirection(length: length, direction: direction, degrees: degrees)
+        return self + vector
+    }
+    
 }
 
 

@@ -37,6 +37,12 @@ class StartViewController: UIViewController {
         performSegue(withIdentifier: "startIdentifier", sender: nil)
     }
     
+    func setLoading() {
+        overlayer.isHidden = false
+        let spinner = SpinnerView(frame: CGRect(x:self.view.bounds.midX-50, y:self.view.bounds.midY-50, width: 100, height:100))
+        self.view.addSubview(spinner)
+    }
+    
     //MARK: Actions
     @IBAction func startAction() {
         if GameManager.MULTIPLAYER_ON {
@@ -45,10 +51,6 @@ class StartViewController: UIViewController {
             NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
             
             GameKitHelper.shared.authenticateLocalPlayer()
-            
-            overlayer.isHidden = false
-            let spinner = SpinnerView(frame: CGRect(x:self.view.bounds.midX-50, y:self.view.bounds.midY-50, width: 100, height:100))
-            self.view.addSubview(spinner)
         }
     }
 }
