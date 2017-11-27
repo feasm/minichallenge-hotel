@@ -73,6 +73,9 @@ class PrepareViewController: UIViewController {
     //MARK: Variables
     
     var selectedCharacter : CharactersEnum? = nil
+    var firstPlayerSelectedCharacter : CharactersEnum? = nil
+    var secondPlayerSelectedCharacter : CharactersEnum? = nil
+    var thirdPlayerSelectedCharacter : CharactersEnum? = nil
     var readyClicked : Bool = false
     
     var blockedCharacters = [Int]()
@@ -288,6 +291,8 @@ class PrepareViewController: UIViewController {
         
         switch playerNum {
         case .FIRST:
+            firstPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundFirstPlayer.image = backgroundFirstCharacter.image
@@ -304,6 +309,8 @@ class PrepareViewController: UIViewController {
             }
             break
         case .SECOND:
+            secondPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundSecondPlayer.image = backgroundFirstCharacter.image
@@ -320,6 +327,8 @@ class PrepareViewController: UIViewController {
             }
             break
         case .THIRD:
+            thirdPlayerSelectedCharacter = character
+            
             switch character {
             case .FIRST:
                 backgroundThirdPlayer.image = backgroundFirstCharacter.image
@@ -338,17 +347,30 @@ class PrepareViewController: UIViewController {
         }
     }
     
-    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum, character: CharactersEnum) {
-        //TODO: RECEBE PLAYER STATE
+    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum) {
         var playerNum = player
+        var character: CharactersEnum? = nil
+        
         if player.rawValue > GameManager.shared.localNumber {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
         }
         
-        if blockedCharacters.contains(character.rawValue) {
+        switch player {
+        case .FIRST:
+            character = firstPlayerSelectedCharacter
+            break
+        case .SECOND:
+            character = secondPlayerSelectedCharacter
+            break
+        case .THIRD:
+            character = thirdPlayerSelectedCharacter
+            break
+        }
+        
+        if blockedCharacters.contains(character!.rawValue) {
             var index: Int = 0
             for (i,item) in blockedCharacters.enumerated() {
-                if item == character.rawValue {
+                if item == character!.rawValue {
                     index = i
                 }
             }
@@ -356,34 +378,38 @@ class PrepareViewController: UIViewController {
             blockedCharacters.remove(at: index)
             
             switch character {
-            case .FIRST:
-                backgroundFirstCharacter.image = UIImage(named: "Eu")
+            case .FIRST?:
+                backgroundFirstCharacter.image = UIImage(named: "dogalien_icon")
                 break
-            case .SECOND:
-                backgroundSecondCharacter.image = UIImage(named: "Stocco")
+            case .SECOND?:
+                backgroundSecondCharacter.image = UIImage(named: "birdalien_icon")
                 break
-            case .THIRD:
-                backgroundThirdCharacter.image = UIImage(named: "Daniel")
+            case .THIRD?:
+                backgroundThirdCharacter.image = UIImage(named: "gooalien_icon")
                 break
-            case .FORTH:
-                backgroundFourthCharacter.image = UIImage(named: "Adonay")
+            case .FORTH?:
+                backgroundFourthCharacter.image = UIImage(named: "demonalien_icon")
+                break
+            case .none:
                 break
             }
         } else {
-            blockedCharacters.append(character.rawValue)
+            blockedCharacters.append(character!.rawValue)
             
             switch character {
-            case .FIRST:
+            case .FIRST?:
                 backgroundFirstCharacter.image = self.convertToGrayScale(image: self.backgroundFirstCharacter.image!)
                 break
-            case .SECOND:
+            case .SECOND?:
                 backgroundSecondCharacter.image = self.convertToGrayScale(image: self.backgroundSecondCharacter.image!)
                 break
-            case .THIRD:
+            case .THIRD?:
                 backgroundThirdCharacter.image = self.convertToGrayScale(image: self.backgroundThirdCharacter.image!)
                 break
-            case .FORTH:
+            case .FORTH?:
                 backgroundFourthCharacter.image = self.convertToGrayScale(image: self.backgroundFourthCharacter.image!)
+                break
+            case .none:
                 break
             }
         }
@@ -392,7 +418,7 @@ class PrepareViewController: UIViewController {
         case .FIRST:
             switch status {
             case .READY:
-                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewFirstPlayer.alpha = 0.0 },
                                completion: { _ in
                                 
@@ -404,17 +430,19 @@ class PrepareViewController: UIViewController {
             case .NOT_READY:
                 readyFirstPlayer.isHidden = true
                 switch character {
-                case .FIRST:
+                case .FIRST?:
                     backgroundFirstPlayer.image = backgroundFirstCharacter.image
                     break
-                case .SECOND:
+                case .SECOND?:
                     backgroundFirstPlayer.image = backgroundSecondCharacter.image
                     break
-                case .THIRD:
+                case .THIRD?:
                     backgroundFirstPlayer.image = backgroundThirdCharacter.image
                     break
-                case .FORTH:
+                case .FORTH?:
                     backgroundFirstPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
                     break
                 }
                 break
@@ -423,7 +451,7 @@ class PrepareViewController: UIViewController {
         case .SECOND:
             switch status {
             case .READY:
-                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewSecondPlayer.alpha = 0.0 },
                                completion: { _ in
                                 
@@ -435,17 +463,19 @@ class PrepareViewController: UIViewController {
             case .NOT_READY:
                 readySecondPlayer.isHidden = true
                 switch character {
-                case .FIRST:
+                case .FIRST?:
                     backgroundSecondPlayer.image = backgroundFirstCharacter.image
                     break
-                case .SECOND:
+                case .SECOND?:
                     backgroundSecondPlayer.image = backgroundSecondCharacter.image
                     break
-                case .THIRD:
+                case .THIRD?:
                     backgroundSecondPlayer.image = backgroundThirdCharacter.image
                     break
-                case .FORTH:
+                case .FORTH?:
                     backgroundSecondPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
                     break
                 }
                 break
@@ -454,7 +484,7 @@ class PrepareViewController: UIViewController {
         case .THIRD:
             switch status {
             case .READY:
-                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewThirdPlayer.alpha = 0.0 },
                                completion: { _ in
                                 
@@ -466,22 +496,24 @@ class PrepareViewController: UIViewController {
             case .NOT_READY:
                 readyThirdPlayer.isHidden = true
                 switch character {
-                case .FIRST:
+                case .FIRST?:
                     backgroundThirdPlayer.image = backgroundFirstCharacter.image
                     break
-                case .SECOND:
+                case .SECOND?:
                     backgroundThirdPlayer.image = backgroundSecondCharacter.image
                     break
-                case .THIRD:
+                case .THIRD?:
                     backgroundThirdPlayer.image = backgroundThirdCharacter.image
                     break
-                case .FORTH:
+                case .FORTH?:
                     backgroundThirdPlayer.image = backgroundFourthCharacter.image
+                    break
+                case .none:
                     break
                 }
                 break
             }
-            break
+        break
         }
         
         tryStartGame()
@@ -509,10 +541,8 @@ class PrepareViewController: UIViewController {
     }
     
     func animateSelectedCharacter(){
-        UIView.animate(withDuration: 1200, delay: 0, usingSpringWithDamping: 0.00, initialSpringVelocity: 0.0004, options: UIViewAnimationOptions(), animations: {
-            self.topConstraintSelectedCharacter.constant -= 3
-            self.imageSelectedCharacter.layoutIfNeeded()
-            
+        UIView.animate(withDuration: 1, delay: 0.25, options: [.autoreverse, .repeat], animations: {
+            self.topConstraintSelectedCharacter.constant -= 10
         }, completion: nil)
     }
     
