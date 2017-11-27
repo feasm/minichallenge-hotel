@@ -22,6 +22,8 @@ class Teleporter: SKSpriteNode {
                 self.teleporter = teleporter
             }
         }
+        
+        zPosition = NodesZPosition.ASSETS.rawValue
     }
     
     func setupPhysics()
