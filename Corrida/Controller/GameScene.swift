@@ -35,11 +35,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         // Carrega Personagens
-        self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
-        self.localPlayer.setup(id: "0", alias: "Eu")
-        self.localPlayer.name = self.localPlayer.alias
-        self.players.append(localPlayer)
-        addChild(localPlayer)
+        if !GameManager.MULTIPLAYER_ON {
+            self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
+            self.localPlayer.setup(id: "0", alias: "Eu")
+            self.localPlayer.name = self.localPlayer.alias
+            self.players.append(localPlayer)
+            addChild(self.localPlayer)
+            setSpawn(to: self.localPlayer, id: 0)
+        } else {
+            self.localPlayer = GameManager.shared.localPlayer
+            self.localPlayer.setType(type: "dogalien")
+            self.localPlayer.name = self.localPlayer.alias
+            
+            var id = 0
+            for player in GameManager.shared.players {
+                player.setType(type: "dogalien")
+                player.setupPhysics()
+                addChild(player)
+                setSpawn(to: player, id: id)
+                id += 1
+            }
+        }
         
 //        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
 //        player.setup(alias: "batata")
@@ -48,10 +64,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        addChild(player)
         
         loadChildren()
-        
-        
-        
-        setSpawn(to: localPlayer, id: 0)
         
         // Carrega botões do controle
         if let camera = self.camera

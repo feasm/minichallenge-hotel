@@ -83,6 +83,17 @@ class Player: SKSpriteNode {
         
         self.setSpeed()
     }
+    
+    func setType(type: String) {
+        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
+        animations[.FRONT] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
+        animations[.SIDE] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
+        animations[.BACK] = [SKTexture(imageNamed: textureName)]
+    }
 }
 
 // MARK: Player Physics
