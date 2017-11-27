@@ -68,11 +68,14 @@ class PrepareViewController: UIViewController {
     //Selected Outlets
     @IBOutlet var imageSelectedCharacter : UIImageView!
     @IBOutlet var imageBaseSelected : UIImageView!
+    @IBOutlet var topConstraintSelectedCharacter: NSLayoutConstraint!
     
     //MARK: Variables
     
     var selectedCharacter : CharactersEnum? = nil
     var readyClicked : Bool = false
+    
+    var blockedCharacters = [Int]()
 
     //MARK: Life Cicle
     override func viewDidLoad() {
@@ -90,6 +93,7 @@ class PrepareViewController: UIViewController {
     func setup() {
         GameKitHelper.shared.prepareViewController = self
         //TODO: SET BACKGROUND
+        animateSelectedCharacter()
         setupCharacters()
         setupSelected()
     }
@@ -243,13 +247,29 @@ class PrepareViewController: UIViewController {
         let location = sender.location(in: charactersView)
         
         if viewFirstCharacter.frame.contains(location) {
-            selectedCharacter = .FIRST
+            if !blockedCharacters.contains(CharactersEnum.FIRST.rawValue) {
+                selectedCharacter = .FIRST
+            } else {
+                return
+            }
         } else if viewSecondCharacter.frame.contains(location) {
-            selectedCharacter = .SECOND
+            if !blockedCharacters.contains(CharactersEnum.SECOND.rawValue) {
+                selectedCharacter = .SECOND
+            } else {
+                return
+            }
         } else if viewThirdCharacter.frame.contains(location) {
-            selectedCharacter = .THIRD
+            if !blockedCharacters.contains(CharactersEnum.THIRD.rawValue) {
+                selectedCharacter = .THIRD
+                } else {
+                    return
+            }
         } else if viewFourthCharacter.frame.contains(location) {
-            selectedCharacter = .FORTH
+            if !blockedCharacters.contains(CharactersEnum.FORTH.rawValue) {
+                selectedCharacter = .FORTH
+            } else {
+                return
+            }
         }
         
         //recebe data do gamecenter
@@ -325,13 +345,61 @@ class PrepareViewController: UIViewController {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
         }
         
+        if blockedCharacters.contains(character.rawValue) {
+            var index: Int
+            for (i,item) in blockedCharacters.enumerated() {
+                if item == character.rawValue {
+                    index = i
+                }
+            }
+            
+            blockedCharacters.remove(at: index)
+            
+            switch character {
+            case .FIRST:
+                backgroundFirstCharacter.image = UIImage(named: "Eu")
+                break
+            case .SECOND:
+                backgroundSecondCharacter.image = UIImage(named: "Stocco")
+                break
+            case .THIRD:
+                backgroundThirdCharacter.image = UIImage(named: "Daniel")
+                break
+            case .FORTH:
+                backgroundFourthCharacter.image = UIImage(named: "Adonay")
+                break
+            }
+        } else {
+            blockedCharacters.append(character.rawValue)
+            
+            switch character {
+            case .FIRST:
+                backgroundFirstCharacter.image = self.convertToGrayScale(image: self.backgroundFirstCharacter.image!)
+                break
+            case .SECOND:
+                backgroundSecondCharacter.image = self.convertToGrayScale(image: self.backgroundSecondCharacter.image!)
+                break
+            case .THIRD:
+                backgroundThirdCharacter.image = self.convertToGrayScale(image: self.backgroundThirdCharacter.image!)
+                break
+            case .FORTH:
+                backgroundFourthCharacter.image = self.convertToGrayScale(image: self.backgroundFourthCharacter.image!)
+                break
+            }
+        }
+        
         switch playerNum {
         case .FIRST:
             switch status {
             case .READY:
-                viewFirstPlayer.blink()
-                readyFirstPlayer.isHidden = false
-                backgroundFirstPlayer.image = convertToGrayScale(image: backgroundFirstPlayer.image!)
+                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewFirstPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewFirstPlayer.alpha = 1.0
+                                self.readyFirstPlayer.isHidden = false
+                                self.backgroundFirstPlayer.image = self.convertToGrayScale(image: self.backgroundFirstPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readyFirstPlayer.isHidden = true
@@ -355,9 +423,14 @@ class PrepareViewController: UIViewController {
         case .SECOND:
             switch status {
             case .READY:
-                viewSecondPlayer.blink()
-                readySecondPlayer.isHidden = false
-                backgroundSecondPlayer.image = convertToGrayScale(image: backgroundSecondPlayer.image!)
+                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewSecondPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewSecondPlayer.alpha = 1.0
+                                self.readySecondPlayer.isHidden = false
+                                self.backgroundSecondPlayer.image = self.convertToGrayScale(image: self.backgroundSecondPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readySecondPlayer.isHidden = true
@@ -381,9 +454,14 @@ class PrepareViewController: UIViewController {
         case .THIRD:
             switch status {
             case .READY:
-                viewThirdPlayer.blink()
-                readyThirdPlayer.isHidden = false
-                backgroundThirdPlayer.image = convertToGrayScale(image: backgroundThirdPlayer.image!)
+                UIView.animate(withDuration: 0.8, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
+                               animations: { self.viewThirdPlayer.alpha = 0.0 },
+                               completion: { _ in
+                                
+                                self.viewThirdPlayer.alpha = 1.0
+                                self.readyThirdPlayer.isHidden = false
+                                self.backgroundThirdPlayer.image = self.convertToGrayScale(image: self.backgroundThirdPlayer.image!)
+                })
                 break
             case .NOT_READY:
                 readyThirdPlayer.isHidden = true
@@ -421,14 +499,25 @@ class PrepareViewController: UIViewController {
     }
     
     func convertToGrayScale(image: UIImage) -> UIImage {
-        let ciImage = CIImage(image: image)
-        ciImage?.applyingFilter("CIColorControls", parameters: ["inputSaturation": 0, "inputContrast": 1])
-        return UIImage(ciImage: ciImage!)
+        let context = CIContext(options: nil)
+        let currentFilter = CIFilter(name: "CIPhotoEffectNoir")
+        currentFilter!.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        
+        let output = currentFilter!.outputImage
+        let cgimg = context.createCGImage(output!,from: output!.extent)
+        return UIImage(cgImage: cgimg!)
+    }
+    
+    func animateSelectedCharacter(){
+        UIView.animate(withDuration: 1200, delay: 0, usingSpringWithDamping: 0.00, initialSpringVelocity: 0.0004, options: UIViewAnimationOptions(), animations: {
+            self.topConstraintSelectedCharacter.constant -= 3
+            self.imageSelectedCharacter.layoutIfNeeded()
+            
+        }, completion: nil)
     }
     
     //MARK: Actions
     @IBAction func readyAction() {
-        //TODO: SEND PLAYER READY STATE
         
         if readyClicked {
             readyClicked = false

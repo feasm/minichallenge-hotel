@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -44,7 +44,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.25098039220000001" green="0.51372549020000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.14509803921568626" green="0.10588235294117647" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iV2-Nc-EBV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="75" id="1Ix-7p-R6t"/>
                             <constraint firstItem="aUJ-uo-I4n" firstAttribute="top" secondItem="iV2-Nc-EBV" secondAttribute="bottom" constant="25" id="E0G-t9-hWQ"/>
@@ -175,7 +175,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gFm-fp-yTc">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-                                <color key="backgroundColor" red="0.14466768503189087" green="0.10440289229154587" blue="0.34686768054962158" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.14509803921568626" green="0.10588235294117647" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Character" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYb-ez-gPT">
                                 <rect key="frame" x="255.5" y="25" width="156.5" height="21"/>
@@ -400,11 +400,11 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKl-eg-kLt">
-                                        <rect key="frame" x="10" y="0.0" width="145.5" height="207"/>
+                                        <rect key="frame" x="10" y="50" width="145.5" height="157"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" id="04X-PV-UUK"/>
+                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" constant="50" id="04X-PV-UUK"/>
                                     <constraint firstItem="JgO-4s-WH7" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" id="14Y-2l-vk8"/>
                                     <constraint firstAttribute="trailing" secondItem="pKl-eg-kLt" secondAttribute="trailing" constant="10" id="DBB-d0-knT"/>
                                     <constraint firstAttribute="trailing" secondItem="JgO-4s-WH7" secondAttribute="trailing" id="Jud-Fz-D4u"/>
@@ -473,6 +473,7 @@
                         <outlet property="readyThirdPlayer" destination="wwe-gq-PRc" id="oFl-gm-9Jr"/>
                         <outlet property="selectedView" destination="Aui-dY-Iwe" id="ZUg-oM-pzy"/>
                         <outlet property="titleLabel" destination="EYb-ez-gPT" id="SRr-g2-R75"/>
+                        <outlet property="topConstraintSelectedCharacter" destination="04X-PV-UUK" id="coY-up-uRh"/>
                         <outlet property="viewFirstCharacter" destination="OlW-8A-6zq" id="q5f-rz-94Y"/>
                         <outlet property="viewFirstPlayer" destination="duk-hi-0Dm" id="dMS-4s-tjy"/>
                         <outlet property="viewFourthCharacter" destination="QUY-3n-uqL" id="2rW-cs-YRW"/>
