@@ -49,12 +49,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.localPlayer = GameManager.shared.localPlayer
 //            self.localPlayer.setType(type: "dogalien")
             self.localPlayer.name = self.localPlayer.alias
-            self.addChild(self.localPlayer)
+//            self.localPlayer.removeFromParent()
+//            self.addChild(self.localPlayer)
             
             var id = 0
             for player in GameManager.shared.players {
 //                player.setType(type: "dogalien")
-                player.setup(id: String(id), alias: player.alias)
+//                player.setup(id: String(id), alias: player.alias)
+//                player.setPhysics()
+                player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
                 id += 1

@@ -35,6 +35,7 @@ class GameNetworkingMixin {
         for playerName in playerNames {
             let newPlayer = Player(type: "dogalien")
             newPlayer.alias = playerName
+            newPlayer.setPhysics()
             
             GameManager.shared.players.append(newPlayer)
             
