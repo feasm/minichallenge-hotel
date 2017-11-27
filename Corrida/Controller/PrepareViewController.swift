@@ -68,7 +68,6 @@ class PrepareViewController: UIViewController {
     //Selected Outlets
     @IBOutlet var imageSelectedCharacter : UIImageView!
     @IBOutlet var imageBaseSelected : UIImageView!
-    @IBOutlet var topConstraintSelectedCharacter: NSLayoutConstraint!
     
     //MARK: Variables
     
@@ -95,10 +94,9 @@ class PrepareViewController: UIViewController {
     
     func setup() {
         GameKitHelper.shared.prepareViewController = self
-        //TODO: SET BACKGROUND
-        animateSelectedCharacter()
         setupCharacters()
         setupSelected()
+        animateSelectedCharacter()
     }
     
     func setupPlayers(firstName: String, secondName: String, thirdName: String) {
@@ -157,8 +155,6 @@ class PrepareViewController: UIViewController {
     }
     
     func setupCharacters() {
-        //TODO: SET BACKGROUND IMAGES
-        
         let gesture = UITapGestureRecognizer(target: self, action: #selector(selectCharacter(_:)))
         
         charactersView.isUserInteractionEnabled = true
@@ -194,8 +190,6 @@ class PrepareViewController: UIViewController {
     }
     
     func setupSelected() {
-        //TODO: SET IMAGES SELECTED CHARACTER
-        
         if selectedCharacter != nil {
             switch selectedCharacter! {
             case .FIRST:
@@ -541,9 +535,10 @@ class PrepareViewController: UIViewController {
     }
     
     func animateSelectedCharacter(){
-        UIView.animate(withDuration: 1, delay: 0.25, options: [.autoreverse, .repeat], animations: {
-            self.topConstraintSelectedCharacter.constant -= 10
-        }, completion: nil)
+        UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse],
+                       animations: {
+                            self.imageSelectedCharacter.frame.origin.y += 10
+                        }, completion: nil)
     }
     
     //MARK: Actions
@@ -552,14 +547,48 @@ class PrepareViewController: UIViewController {
         if readyClicked {
             readyClicked = false
             readyButton.alpha = 1.0
+            
+            switch selectedCharacter {
+            case .FIRST?:
+                backgroundFirstCharacter.image = UIImage(named: "dogalien_icon")
+                break
+            case .SECOND?:
+                backgroundSecondCharacter.image = UIImage(named: "birdalien_icon")
+                break
+            case .THIRD?:
+                backgroundThirdCharacter.image = UIImage(named: "gooalien_icon")
+                break
+            case .FORTH?:
+                backgroundFourthCharacter.image = UIImage(named: "demonalien_icon")
+                break
+            case .none:
+                break
+            }
         } else {
             readyClicked = true
             readyButton.alpha = 0.2
+            
+            switch selectedCharacter {
+            case .FIRST?:
+                backgroundFirstCharacter.image = self.convertToGrayScale(image: self.backgroundFirstCharacter.image!)
+                break
+            case .SECOND?:
+                backgroundSecondCharacter.image = self.convertToGrayScale(image: self.backgroundSecondCharacter.image!)
+                break
+            case .THIRD?:
+                backgroundThirdCharacter.image = self.convertToGrayScale(image: self.backgroundThirdCharacter.image!)
+                break
+            case .FORTH?:
+                backgroundFourthCharacter.image = self.convertToGrayScale(image: self.backgroundFourthCharacter.image!)
+                break
+            case .none:
+                break
+            }
         }
         
         let playerStatus: PlayerStatusEnum = readyClicked ? .READY : .NOT_READY
         MultiplayerNetworking.shared.sendReady(playerStatus)
-        
+
         tryStartGame()
     }
 

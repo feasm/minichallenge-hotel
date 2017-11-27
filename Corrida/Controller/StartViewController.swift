@@ -47,9 +47,9 @@ class StartViewController: UIViewController {
     @IBAction func startAction() {
         if GameManager.MULTIPLAYER_ON {
             NotificationCenter.default.addObserver(self, selector: #selector(showAuthenticationViewController), name: GameKitHelper.PRESENT_AUTHENTICATION, object: nil)
-            
+
             NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
-            
+
             GameKitHelper.shared.authenticateLocalPlayer()
         }
         else

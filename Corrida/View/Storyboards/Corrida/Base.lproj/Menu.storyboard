@@ -400,16 +400,16 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKl-eg-kLt">
-                                        <rect key="frame" x="10" y="50" width="145.5" height="157"/>
+                                        <rect key="frame" x="10" y="68" width="145.5" height="126"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" constant="50" id="04X-PV-UUK"/>
+                                    <constraint firstItem="pKl-eg-kLt" firstAttribute="top" secondItem="Aui-dY-Iwe" secondAttribute="top" constant="68" id="04X-PV-UUK"/>
                                     <constraint firstItem="JgO-4s-WH7" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" id="14Y-2l-vk8"/>
                                     <constraint firstAttribute="trailing" secondItem="pKl-eg-kLt" secondAttribute="trailing" constant="10" id="DBB-d0-knT"/>
                                     <constraint firstAttribute="trailing" secondItem="JgO-4s-WH7" secondAttribute="trailing" id="Jud-Fz-D4u"/>
                                     <constraint firstItem="pKl-eg-kLt" firstAttribute="leading" secondItem="Aui-dY-Iwe" secondAttribute="leading" constant="10" id="Zdw-uM-J19"/>
-                                    <constraint firstAttribute="bottom" secondItem="pKl-eg-kLt" secondAttribute="bottom" constant="17" id="gpg-df-hMl"/>
+                                    <constraint firstAttribute="bottom" secondItem="pKl-eg-kLt" secondAttribute="bottom" constant="30" id="gpg-df-hMl"/>
                                     <constraint firstAttribute="bottom" secondItem="JgO-4s-WH7" secondAttribute="bottom" id="ikv-NK-7Qr"/>
                                 </constraints>
                             </view>
@@ -473,7 +473,6 @@
                         <outlet property="readyThirdPlayer" destination="wwe-gq-PRc" id="oFl-gm-9Jr"/>
                         <outlet property="selectedView" destination="Aui-dY-Iwe" id="ZUg-oM-pzy"/>
                         <outlet property="titleLabel" destination="EYb-ez-gPT" id="SRr-g2-R75"/>
-                        <outlet property="topConstraintSelectedCharacter" destination="04X-PV-UUK" id="coY-up-uRh"/>
                         <outlet property="viewFirstCharacter" destination="OlW-8A-6zq" id="q5f-rz-94Y"/>
                         <outlet property="viewFirstPlayer" destination="duk-hi-0Dm" id="dMS-4s-tjy"/>
                         <outlet property="viewFourthCharacter" destination="QUY-3n-uqL" id="2rW-cs-YRW"/>
