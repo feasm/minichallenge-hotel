@@ -92,9 +92,9 @@ class Player: SKSpriteNode {
 
     func destroyPlayer(reason: DeathReason)
     {
-        print(reason)
         if !destroyed
         {
+            print(reason)
             destroyed = true
             self.removeFromParent()
         }
@@ -109,6 +109,8 @@ class Player: SKSpriteNode {
         
         textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
         animations[.BACK] = [SKTexture(imageNamed: textureName)]
+        
+        texture = animations[.FRONT]?.first
     }
 }
 
@@ -124,11 +126,11 @@ extension Player {
 //        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
         if let texture = texture
         {
-            self.physicsBody = SKPhysicsBody(texture: texture, size: texture.size()*CGFloat(0.8))
+            self.physicsBody = SKPhysicsBody(texture: texture, size: texture.size()*CGFloat(0.6))
         }
         else
         {
-            self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
+            self.physicsBody = SKPhysicsBody(circleOfRadius: (self.size.width/2)*CGFloat(0.6))
         }
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
@@ -271,7 +273,9 @@ extension Player {
     {
         switch type {
         case .TELEPORT:
-            lastTeleporter = nil
+            Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { (_) in
+                self.lastTeleporter = nil
+            })
         default:
             return
         }
@@ -282,7 +286,7 @@ extension Player {
         //print(type)
         switch type {
         case .TRAIL:
-            if !destroyed
+            if !destroyed && lastTeleporter == nil
             {
                 if let node = node
                 {
@@ -305,8 +309,8 @@ extension Player {
                     lastTeleporter = node
                     let pos = GameManager.shared.getTeleporter(from: node)
                     print("Teleporter at:", pos)
-                    self.animationLastPoint = pos
                     setPosition(pos)
+                    self.animationLastPoint = nil
                 }
             }
         case .WALL_DESTROY:
@@ -319,7 +323,7 @@ extension Player {
 //                print(self.rotation.degrees, newAngle.degrees)
 //                setRotation(to: newAngle.radians)
 //                setSpeed()
-//                //invertSpeed()
+//                invertSpeed()
 //                setSpeed()
                 self.playerSpeed = (self.physicsBody?.velocity)!
                 self.updateAngle()
@@ -376,72 +380,48 @@ extension Player {
     
     func showPath() {
         let smoothPath = SKAction.run({
-            if self.lastPosition.distance(to: self.position) > 30
+            if self.lastTeleporter == nil
             {
-                self.lastPosition = self.position
-                let path = CGMutablePath()
-                if self.animationLastPoint == nil {
-                    self.animationLastPoint = CGPoint(x: self.position.x, y: self.position.y)
-                }
-                path.move(to: self.animationLastPoint!)
-                path.addLine(to: self.position)
+                if self.lastPosition.distance(to: self.position) > 10
+                {
+                    self.lastPosition = self.position
+                    let path = CGMutablePath()
+                    if self.animationLastPoint == nil {
+                        self.animationLastPoint = CGPoint(x: self.position.x, y: self.position.y)
+                    }
+                    path.move(to: self.animationLastPoint!)
+                    path.addLine(to: self.position)
 
-                let node = SKShapeNode(path: path)
-                node.strokeColor = .black //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
-                node.lineWidth = 40
-                node.zPosition = self.zPosition - 1
+                    let node = SKShapeNode(path: path)
+                    node.strokeColor = .black //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
+                    node.lineWidth = 40
+                    node.zPosition = self.zPosition - 1
+                    
 
-                self.animationPoints.append(node)
-                self.scene?.addChild(node)
-                let wait = SKAction.wait(forDuration: 5)
-                let fadeOut = SKAction.fadeOut(withDuration: 1)
-                let remove = SKAction.removeFromParent()
-                
-                let waitPhysics = SKAction.wait(forDuration: 1)
-                let trailPhysics = SKAction.run {
-                    node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
-                    //node.physicsBody = SKPhysicsBody(polygonFrom: path) //SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 20))
-                    node.physicsBody?.isDynamic = true
-                    node.physicsBody?.friction = 0
-                    node.physicsBody?.restitution = 0
-                    node.physicsBody?.categoryBitMask = PhysicsCategory.TRAIL.rawValue
-                    node.physicsBody?.collisionBitMask = 0
-                    node.physicsBody?.contactTestBitMask = PhysicsCategory.PLAYER.rawValue
-                    node.name = self.alias
+                    self.animationPoints.append(node)
+                    self.scene?.addChild(node)
+                    let wait = SKAction.wait(forDuration: 5)
+                    let fadeOut = SKAction.fadeOut(withDuration: 1)
+                    let remove = SKAction.removeFromParent()
+                    
+                    let waitPhysics = SKAction.wait(forDuration: 1)
+                    let trailPhysics = SKAction.run {
+                        node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
+                        //node.physicsBody = SKPhysicsBody(polygonFrom: path) //SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 20))
+                        node.physicsBody?.isDynamic = true
+                        node.physicsBody?.friction = 0
+                        node.physicsBody?.restitution = 0
+                        node.physicsBody?.categoryBitMask = PhysicsCategory.TRAIL.rawValue
+                        node.physicsBody?.collisionBitMask = 0
+                        node.physicsBody?.contactTestBitMask = PhysicsCategory.PLAYER.rawValue
+                        node.name = self.alias
+                    }
+                    
+                    let actions = SKAction.group([SKAction.sequence([waitPhysics, trailPhysics]), SKAction.sequence([wait, fadeOut, remove])])
+                    node.run(actions)
+                    
+                    self.animationLastPoint = self.position
                 }
-                
-                let actions = SKAction.group([SKAction.sequence([waitPhysics, trailPhysics]), SKAction.sequence([wait, fadeOut, remove])])
-                node.run(actions)
-                
-                
-//                node.physicsBody = SKPhysicsBody(edgeLoopFrom: path) //SKPhysicsBody(polygonFrom: path) //SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 20))
-//                node.physicsBody?.isDynamic = true
-//                node.physicsBody?.friction = 0
-//                node.physicsBody?.restitution = 0
-//                node.physicsBody?.categoryBitMask = PhysicsCategory.TRAIL.rawValue
-//                node.physicsBody?.collisionBitMask = 0
-//                node.physicsBody?.contactTestBitMask = PhysicsCategory.PLAYER.rawValue
-//                node.name = self.alias
-//
-//                node.physicsBody = SKPhysicsBody(rectangleOf: node.frame.size)
-//                node.position = self.animationLastPoint!
-//                node.physicsBody?.isDynamic = false
-//                node.physicsBody?.categoryBitMask = PhysicsCategory.TRAIL.rawValue
-//                node.physicsBody?.collisionBitMask = 0
-//                node.physicsBody?.contactTestBitMask = PhysicsCategory.PLAYER.rawValue
-//                node.name = self.alias
-                
-                self.animationLastPoint = self.position
-//                Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
-//                    node.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 10))
-                
-//                    node.physicsBody?.isDynamic = true
-//                    node.physicsBody?.categoryBitMask = PhysicsCategory.TRAIL.rawValue
-//                    node.physicsBody?.collisionBitMask = 0
-//                    node.physicsBody?.contactTestBitMask = PhysicsCategory.PLAYER.rawValue
-//                    node.name = self.alias
-//                    print(node)
-//                })
             }
             
         })

@@ -70,16 +70,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-//        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
-//        player.setup(alias: "batata")
-//        self.players.append(player)
-//        setSpawn(to: player, id: 1)
-//        addChild(player)
+        let player = Player(type: "dogalien")
+        player.zPosition = 80
+        //player.setup(id: "1", alias: "batata")
+        self.players.append(player)
+        setSpawn(to: player, id: 1)
+        addChild(player)
         
         // Carrega botões do controle
         if let camera = self.camera
         {
-            camera.setScale(1)
+            camera.setScale(0.9)
             self.leftButton = camera.childNode(withName: "LeftButton") as! SKSpriteNode
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
@@ -88,7 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
-        self.physicsBody?.restitution = 1
+        self.physicsBody?.restitution = 0.6
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
@@ -150,11 +151,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for player in players where player != localPlayer
             {
                 let distance = localPlayer.position.distance(to: player.position)
-                if distance < (self.size.height/2)
+                if distance < (self.size.height)
                 {
                     if let camera = self.camera
                     {
-                        camera.run(SKAction.scale(to: 1, duration: 1))
+                        camera.run(SKAction.scale(to: 1.2, duration: 0.5))
+                        self.setupCamera(target: self.localPlayer)
                         return
                     }
                 }
@@ -162,7 +164,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            
             if let camera = self.camera
             {
-                camera.run(SKAction.scale(to: 0.6, duration: 1))
+                camera.run(SKAction.scale(to: 0.9, duration: 0.5))
+                self.setupCamera(target: self.localPlayer)
             }
         }
     }
@@ -174,8 +177,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + self.size.width/2, upperLimit: background.frame.size.width/2 - self.size.width/2)
-        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + self.size.height/2, upperLimit: background.frame.size.height/2 - self.size.height/2)
+        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + (self.size.width/2)*camera.xScale, upperLimit: background.frame.size.width/2 - (self.size.width/2)*camera.xScale)
+        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + (self.size.height/2)*camera.yScale, upperLimit: background.frame.size.height/2 - (self.size.height/2)*camera.yScale)
         
         let edgeConstraint = SKConstraint.positionX(xRange, y: yRange)
         edgeConstraint.referenceNode = background
