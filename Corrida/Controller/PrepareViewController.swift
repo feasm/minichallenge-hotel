@@ -346,7 +346,7 @@ class PrepareViewController: UIViewController {
         }
         
         if blockedCharacters.contains(character.rawValue) {
-            var index: Int
+            var index: Int = 0
             for (i,item) in blockedCharacters.enumerated() {
                 if item == character.rawValue {
                     index = i
