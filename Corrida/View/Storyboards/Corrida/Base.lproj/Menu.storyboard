@@ -189,7 +189,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="duk-hi-0Dm">
                                         <rect key="frame" x="0.0" y="75.5" width="200" height="75"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KGq-IK-sRb">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KGq-IK-sRb">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
@@ -224,7 +224,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ViP-3F-sef">
                                         <rect key="frame" x="0.0" y="150" width="200" height="75"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8jw-aD-hP2">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8jw-aD-hP2">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
@@ -259,7 +259,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rir-Gs-fbS">
                                         <rect key="frame" x="0.0" y="225.5" width="200" height="75"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HJU-jJ-IrV">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HJU-jJ-IrV">
                                                 <rect key="frame" x="0.0" y="-0.5" width="200" height="75"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="calibratedRGB"/>
                                             </imageView>
@@ -392,7 +392,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aui-dY-Iwe">
                                 <rect key="frame" x="34" y="61" width="165.5" height="224"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Base_Character" translatesAutoresizingMaskIntoConstraints="NO" id="JgO-4s-WH7">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plataforma " translatesAutoresizingMaskIntoConstraints="NO" id="JgO-4s-WH7">
                                         <rect key="frame" x="0.0" y="189" width="165.5" height="35"/>
                                         <color key="backgroundColor" red="0.23137254901960785" green="0.28235294117647058" blue="0.45490196078431372" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -490,14 +490,14 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Arrow_Next" width="112" height="112"/>
-        <image name="Arrow_Prev" width="112" height="112"/>
+        <image name="Arrow_Next" width="258" height="258"/>
+        <image name="Arrow_Prev" width="258" height="258"/>
         <image name="BackgroundMap" width="350" height="225"/>
-        <image name="Base_Character" width="166" height="35"/>
         <image name="Button_Layout" width="208" height="58"/>
         <image name="birdalien_icon" width="150" height="200"/>
         <image name="demonalien_icon" width="150" height="200"/>
         <image name="dogalien_icon" width="150" height="200"/>
         <image name="gooalien_icon" width="150" height="200"/>
+        <image name="plataforma " width="381" height="105"/>
     </resources>
 </document>
