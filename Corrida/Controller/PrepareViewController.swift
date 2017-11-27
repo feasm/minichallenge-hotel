@@ -188,7 +188,7 @@ class PrepareViewController: UIViewController {
         if selectedCharacter != nil {
             switch selectedCharacter! {
             case .FIRST:
-                imageSelectedCharacter.image = backgroundFirstCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "doggalien")
                 
                 backgroundFirstCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -196,7 +196,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .SECOND:
-                imageSelectedCharacter.image = backgroundSecondCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "birdalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = #colorLiteral(red: 0.9960784314, green: 0.8156862745, blue: 0.04705882353, alpha: 1)
@@ -204,7 +204,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .THIRD:
-                imageSelectedCharacter.image = backgroundThirdCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "gooalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -212,7 +212,7 @@ class PrepareViewController: UIViewController {
                 backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
                 break
             case .FORTH:
-                imageSelectedCharacter.image = backgroundFourthCharacter.image
+                imageSelectedCharacter.image = UIImage(named: "demalien")
                 
                 backgroundFirstCharacter.layer.borderColor = UIColor.clear.cgColor
                 backgroundSecondCharacter.layer.borderColor = UIColor.clear.cgColor
@@ -310,40 +310,93 @@ class PrepareViewController: UIViewController {
         }
     }
     
-    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum){
-        //TODO: RECEBE PLAYER STATE
+    func setReadyPlayer(player : PlayerEnum, status : PlayerStatusEnum, character: CharactersEnum){
         switch player {
         case .FIRST:
             switch status {
             case .READY:
+                viewFirstPlayer.blink()
                 readyFirstPlayer.isHidden = false
+                backgroundFirstPlayer.image = convertToGrayScale(image: backgroundFirstPlayer.image!)
                 break
             case .NOT_READY:
                 readyFirstPlayer.isHidden = true
+                switch character {
+                case .FIRST:
+                    backgroundFirstPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND:
+                    backgroundFirstPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD:
+                    backgroundFirstPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH:
+                    backgroundFirstPlayer.image = backgroundFourthCharacter.image
+                    break
+                }
                 break
             }
             break
         case .SECOND:
             switch status {
             case .READY:
+                viewSecondPlayer.blink()
                 readySecondPlayer.isHidden = false
+                backgroundSecondPlayer.image = convertToGrayScale(image: backgroundSecondPlayer.image!)
                 break
             case .NOT_READY:
                 readySecondPlayer.isHidden = true
+                switch character {
+                case .FIRST:
+                    backgroundSecondPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND:
+                    backgroundSecondPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD:
+                    backgroundSecondPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH:
+                    backgroundSecondPlayer.image = backgroundFourthCharacter.image
+                    break
+                }
                 break
             }
             break
         case .THIRD:
             switch status {
             case .READY:
+                viewThirdPlayer.blink()
                 readyThirdPlayer.isHidden = false
+                backgroundThirdPlayer.image = convertToGrayScale(image: backgroundThirdPlayer.image!)
                 break
             case .NOT_READY:
                 readyThirdPlayer.isHidden = true
+                switch character {
+                case .FIRST:
+                    backgroundThirdPlayer.image = backgroundFirstCharacter.image
+                    break
+                case .SECOND:
+                    backgroundThirdPlayer.image = backgroundSecondCharacter.image
+                    break
+                case .THIRD:
+                    backgroundThirdPlayer.image = backgroundThirdCharacter.image
+                    break
+                case .FORTH:
+                    backgroundThirdPlayer.image = backgroundFourthCharacter.image
+                    break
+                }
                 break
             }
             break
         }
+    }
+    
+    func convertToGrayScale(image: UIImage) -> UIImage {
+        let ciImage = CIImage(image: image)
+        ciImage?.applyingFilter("CIColorControls", parameters: ["inputSaturation": 0, "inputContrast": 1])
+        return UIImage(ciImage: ciImage!)
     }
     
     //MARK: Actions
