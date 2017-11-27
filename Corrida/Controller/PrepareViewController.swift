@@ -278,7 +278,7 @@ class PrepareViewController: UIViewController {
         setupSelected()
     }
     
-    func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum){
+    func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum) {
         
         //recebe player change character data
         var playerNum = player
