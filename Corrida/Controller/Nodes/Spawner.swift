@@ -22,6 +22,8 @@ class Spawner : SKSpriteNode
                 self.spawner = spawner
             }
         }
+        
+        zPosition = NodesZPosition.ASSETS.rawValue
     }
     
     func getSpawner() -> Int

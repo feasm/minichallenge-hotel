@@ -355,7 +355,7 @@ class PrepareViewController: UIViewController {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
         }
         
-        switch player {
+        switch playerNum {
         case .FIRST:
             character = firstPlayerSelectedCharacter
             break

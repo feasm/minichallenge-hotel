@@ -12,6 +12,7 @@ class Barrier: SKSpriteNode {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        zPosition = NodesZPosition.ASSETS.rawValue
     }
 
     func setupPhysics()

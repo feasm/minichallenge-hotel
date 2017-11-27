@@ -35,11 +35,13 @@ class GameNetworkingMixin {
         for playerName in playerNames {
             let newPlayer = Player(type: "dogalien")
             newPlayer.alias = playerName
+            newPlayer.setupPhysics()
             
             GameManager.shared.players.append(newPlayer)
             
             if newPlayer.alias == GameManager.shared.localPlayer.alias {
                 GameManager.shared.localNumber = index
+                GameManager.shared.localPlayer = newPlayer
             }
             index += 1
         }
