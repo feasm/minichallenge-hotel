@@ -47,20 +47,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.setSpawn(to: self.localPlayer, id: 0)
         } else {
             self.localPlayer = GameManager.shared.localPlayer
-//            self.localPlayer.setType(type: "dogalien")
             self.localPlayer.name = self.localPlayer.alias
-//            self.localPlayer.removeFromParent()
-//            self.addChild(self.localPlayer)
             
             var id = 0
             for player in GameManager.shared.players {
-//                player.setType(type: "dogalien")
-//                player.setup(id: String(id), alias: player.alias)
-//                player.setPhysics()
                 player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
                 id += 1
+                
+//                self.players.append(player)
             }
         }
         
@@ -210,9 +206,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-//        for player in self.players {
-//
-//        }
+        for player in self.players {
+            player.update(direction: .NONE)
+        }
     }
 }
 
