@@ -158,7 +158,7 @@ extension GameKitHelper {
                 prepareViewController?.changePlayerCharacter(player: PlayerEnum(rawValue: gameData.playerNumber!)!, character: gameData.character!)
                 
             case .PLAYER_READY:
-                prepareViewController?.setReadyPlayer(player: PlayerEnum(rawValue: gameData.playerNumber!)!, status: gameData.readyStatus!, character: .FIRST)
+                prepareViewController?.setReadyPlayer(player: PlayerEnum(rawValue: gameData.playerNumber!)!, status: gameData.readyStatus!)
                 
             case .CHANGE_MAP:
                 chooseMapViewController?.setMap(gameData.currentMap!)
