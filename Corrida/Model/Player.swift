@@ -117,7 +117,15 @@ extension Player {
     
     func setPhysics() {
         //self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
-        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
+//        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
+        if let texture = texture
+        {
+            self.physicsBody = SKPhysicsBody(texture: texture, size: texture.size()*CGFloat(0.8))
+        }
+        else
+        {
+            self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
+        }
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.friction = 0
