@@ -23,6 +23,8 @@ class Player: SKSpriteNode {
     var alias: String!
     var playerSpeed: CGVector = CGVector(dx: 0, dy: Player.CONSTANT_SPEED)
     var rotation: CGFloat = 0
+    var collide : Bool = false
+    var lastTeleporter : Teleporter? = nil
     
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
@@ -32,6 +34,7 @@ class Player: SKSpriteNode {
     func setup(id: String, alias: String) {
         self.id = id
         self.alias = alias
+        setupPhysics()
     }
     
     init() {
@@ -80,6 +83,17 @@ class Player: SKSpriteNode {
         
         self.setSpeed()
     }
+    
+    func setType(type: String) {
+        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
+        animations[.FRONT] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
+        animations[.SIDE] = [SKTexture(imageNamed: textureName)]
+        
+        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
+        animations[.BACK] = [SKTexture(imageNamed: textureName)]
+    }
 }
 
 // MARK: Player Physics
@@ -94,27 +108,48 @@ extension Player {
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.allowsRotation = false
+        self.physicsBody?.friction = 0
+        self.physicsBody?.restitution = 0
         self.physicsBody?.isDynamic = true
-        self.physicsBody!.contactTestBitMask = self.physicsBody!.collisionBitMask
+        self.physicsBody?.categoryBitMask = PhysicsCategory.PLAYER.rawValue
+        self.physicsBody?.collisionBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue
+        self.physicsBody!.contactTestBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue | PhysicsCategory.TELEPORT.rawValue
         
         self.setSpeed()
     }
     
-    
+    func setPosition(_ pos: CGPoint)
+    {
+        self.run(SKAction.move(to: pos, duration: 0))
+    }
     
     func setSpeed() {
         self.physicsBody?.velocity = playerSpeed
     }
     
+    func invertSpeed()
+    {
+        self.playerSpeed = self.playerSpeed.invert()
+        let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
+        self.rotation = angle
+    }
+    
     func setRotation(to angle: CGFloat)
     {
+        self.rotation = angle
         
+        let vector = CGPoint.vectorDirection(length: Player.CONSTANT_SPEED, direction: self.rotation.degrees360)
+        
+        self.playerSpeed = CGVector(dx: vector.x, dy: vector.y)
+        
+        setSpeed()
     }
     
     func rotateByAngle(_ angle: Float) {
     
-        setSpeed()
+        setRotation(to: rotation+CGFloat(angle))
         
+        /*
         let ca = cosf(angle)
         let sa = sinf(angle)
         
@@ -126,6 +161,8 @@ extension Player {
         let angle = atan2(self.playerSpeed.dy, self.playerSpeed.dx)
         //self.zRotation = angle
         self.rotation = angle
+        
+        setSpeed()*/
     }
     
     func checkCollision() {
@@ -190,19 +227,56 @@ enum CollisionType
 {
     case WALL
     case WALL_DESTROY
+    case TELEPORT
+    case NONE
 }
 
 
 // MARK: Player Collisions
+
 extension Player {
-    func performCollision(type : CollisionType)
+    
+    func releaseCollision(type : CollisionType, node: SKNode? = nil)
     {
         switch type {
+        case .TELEPORT:
+            lastTeleporter = nil
+        default:
+            return
+        }
+    }
+    
+    func performCollision(type : CollisionType, node: SKNode? = nil)
+    {
+        //print(type)
+        switch type {
+        case .TELEPORT:
+            if let node = node as? Teleporter
+            {
+                if lastTeleporter == nil
+                {
+                    lastTeleporter = node
+                    let pos = GameManager.shared.getTeleporter(from: node)
+                    print("Teleporter at:", pos)
+                    self.animationLastPoint = pos
+                    setPosition(pos)
+                }
+            }
+        case .WALL_DESTROY:
+            print("Destroy:", alias)
         case .WALL:
-            let newAngle = 180-self.rotation.degrees360
-            print(self.rotation.degrees360, newAngle)
-            //rotateByAngle(Float(newAngle.radians))
-            setSpeed()
+            if !collide {
+                collide = true
+//                let newAngle = -self.rotation.degrees360
+//                //print(self.rotation.degrees360, newAngle)
+//                setRotation(to: newAngle.radians)
+//                setSpeed()
+                invertSpeed()
+                setSpeed()
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (_) in
+                    self.collide = false
+                })
+            }
         default:
             return
         }
