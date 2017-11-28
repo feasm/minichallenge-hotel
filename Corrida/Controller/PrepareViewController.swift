@@ -76,6 +76,11 @@ class PrepareViewController: UIViewController {
     var firstPlayerSelectedCharacter : CharactersEnum? = nil
     var secondPlayerSelectedCharacter : CharactersEnum? = nil
     var thirdPlayerSelectedCharacter : CharactersEnum? = nil
+    
+    var firstPlayerReady: Bool = false
+    var secondPlayerReady: Bool = false
+    var thirdPlayerReady: Bool = false
+    
     var readyClicked : Bool = false
     
     var blockedCharacters = [Int]()
@@ -418,6 +423,7 @@ class PrepareViewController: UIViewController {
         case .FIRST:
             switch status {
             case .READY:
+                firstPlayerReady = true
                 UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewFirstPlayer.alpha = 0.0 },
                                completion: { _ in
@@ -428,6 +434,7 @@ class PrepareViewController: UIViewController {
                 })
                 break
             case .NOT_READY:
+                firstPlayerReady = false
                 readyFirstPlayer.isHidden = true
                 switch character {
                 case .FIRST?:
@@ -451,6 +458,7 @@ class PrepareViewController: UIViewController {
         case .SECOND:
             switch status {
             case .READY:
+                secondPlayerReady = true
                 UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewSecondPlayer.alpha = 0.0 },
                                completion: { _ in
@@ -461,6 +469,7 @@ class PrepareViewController: UIViewController {
                 })
                 break
             case .NOT_READY:
+                secondPlayerReady = false
                 readySecondPlayer.isHidden = true
                 switch character {
                 case .FIRST?:
@@ -484,6 +493,7 @@ class PrepareViewController: UIViewController {
         case .THIRD:
             switch status {
             case .READY:
+                thirdPlayerReady = true
                 UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .autoreverse],
                                animations: { self.viewThirdPlayer.alpha = 0.0 },
                                completion: { _ in
@@ -494,6 +504,7 @@ class PrepareViewController: UIViewController {
                 })
                 break
             case .NOT_READY:
+                thirdPlayerReady = false
                 readyThirdPlayer.isHidden = true
                 switch character {
                 case .FIRST?:
@@ -521,9 +532,9 @@ class PrepareViewController: UIViewController {
     
     func tryStartGame() {
         guard readyClicked,
-            !readyFirstPlayer.isHidden,
-            (!readySecondPlayer.isHidden || GameManager.shared.players.count <= 2),
-            (!readyThirdPlayer.isHidden || GameManager.shared.players.count <= 3) else {
+            firstPlayerReady,
+            (secondPlayerReady || GameManager.shared.players.count <= 2),
+            (thirdPlayerReady || GameManager.shared.players.count <= 3) else {
                return
         }
         

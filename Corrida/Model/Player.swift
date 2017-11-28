@@ -46,6 +46,8 @@ class Player: SKSpriteNode {
         setupPhysics()
         zPosition = NodesZPosition.PLAYER.rawValue
         lastPosition = self.position
+        self.animationLastPoint = nil
+        destroyed = false
     }
     
     init() {
@@ -289,10 +291,12 @@ extension Player {
                     if node.name == self.alias
                     {
                         destroyPlayer(reason: .HIT_MYSELF)
+                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
                     }
                     else
                     {
                         destroyPlayer(reason: .HIT_OTHER_PLAYER)
+                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
                     }
                 }
             }
@@ -312,6 +316,7 @@ extension Player {
         case .WALL_DESTROY:
 //            print("Destroy:", alias)
             destroyPlayer(reason: .HIT_WALL)
+            MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
         case .WALL:
             if !collide {
                 collide = true
