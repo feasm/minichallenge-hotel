@@ -106,13 +106,16 @@ class Player: SKSpriteNode {
     }
     
 
-    func destroyPlayer(reason: DeathReason)
+    func destroyPlayer(reason: DeathReason, defeat: Player? = nil)
     {
         if !destroyed
         {
-            print(reason)
             destroyed = true
-            self.removeFromParent()
+            if let scene = scene as? GameScene
+            {
+                scene.hitlist?.addHit(hit: Hitkill(victim: self, reason: reason, killer: defeat))
+                self.removeFromParent()
+            }
         }
     }
 
