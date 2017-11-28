@@ -34,9 +34,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var playerDirection: PlayerDirection = .NONE
     var collisionTypes : [UInt32 : CollisionType] = [:]
     
-    var leftButton: SKSpriteNode!
-    var rightButton: SKSpriteNode!
-    var buttonPressed: Bool = false
+    var leftButton : SKSpriteNode!
+    var rightButton : SKSpriteNode!
+    var buttonPressed : Bool = false
+    var isZooming : Bool = false
     
     var spawners : [Int: Spawner?] = [:]
     //var teleporters : [Teleporter] = []
@@ -72,16 +73,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-//        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
-//        player.setup(alias: "batata")
-//        self.players.append(player)
-//        setSpawn(to: player, id: 1)
-//        addChild(player)
+        let player = Player(type: "dogalien")
+        player.zPosition = 80
+        //player.setup(id: "1", alias: "batata")
+        self.players.append(player)
+        setSpawn(to: player, id: 1)
+        addChild(player)
         
         // Carrega botões do controle
         if let camera = self.camera
         {
-            camera.setScale(1)
+            camera.setScale(0.9)
             self.leftButton = camera.childNode(withName: "LeftButton") as! SKSpriteNode
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
@@ -90,12 +92,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
-        self.physicsBody?.restitution = 1
+        self.physicsBody?.restitution = 0.6
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
-        
-    
         
         collisionTypes = [
         PhysicsCategory.WALL.rawValue : .WALL,
@@ -148,36 +148,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     {
         if players.count > 1
         {
-            //var distance = 100000
+            var distance : CGFloat = 0.0
             for player in players where player != localPlayer
             {
-                let distance = localPlayer.position.distance(to: player.position)
-                if distance < (self.size.height/2)
+                let distanceForPlayer = localPlayer.position.distance(to: player.position)
+                if distanceForPlayer > distance
                 {
-                    if let camera = self.camera
-                    {
-                        camera.run(SKAction.scale(to: 1, duration: 1))
-                        return
-                    }
+                    distance = distanceForPlayer
                 }
             }
-           
-            if let camera = self.camera
+            
+            if !isZooming && distance < (self.size.height)
             {
-                camera.run(SKAction.scale(to: 0.6, duration: 1))
+                if let camera = self.camera
+                {
+                    camera.run(SKAction.scale(to: 1.2, duration: 0.8))
+//                    {
+//                        self.setupCamera(target: self.localPlayer, scale: 1.2)
+//                    }
+                    isZooming = true
+                }
+
+            }
+            else if isZooming && distance > (self.size.height)*1.3
+            {
+                if let camera = self.camera
+                {
+                    camera.run(SKAction.scale(to: 0.9, duration: 0.8))
+//                    {
+//                        self.setupCamera(target: self.localPlayer, scale: 0.9)
+//                    }
+                    isZooming = false
+                }
+                
             }
         }
     }
     
-    func setupCamera(target: SKSpriteNode)
+    func setupCamera(target: SKSpriteNode, scale : CGFloat? = nil)
     {
         guard let camera = camera
         else {
             return
         }
         
-        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + self.size.width/2, upperLimit: background.frame.size.width/2 - self.size.width/2)
-        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + self.size.height/2, upperLimit: background.frame.size.height/2 - self.size.height/2)
+        let cameraScale = scale != nil ? scale! : camera.xScale
+        
+        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + (self.size.width/2)*cameraScale, upperLimit: background.frame.size.width/2 - (self.size.width/2)*cameraScale)
+        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + (self.size.height/2)*cameraScale, upperLimit: background.frame.size.height/2 - (self.size.height/2)*cameraScale)
         
         let edgeConstraint = SKConstraint.positionX(xRange, y: yRange)
         edgeConstraint.referenceNode = background
@@ -223,6 +241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         updateCamera()
+        setupCamera(target: localPlayer)
         
         if !self.buttonPressed {
             self.playerDirection = .NONE
