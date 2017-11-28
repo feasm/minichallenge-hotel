@@ -34,9 +34,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var playerDirection: PlayerDirection = .NONE
     var collisionTypes : [UInt32 : CollisionType] = [:]
     
-    var leftButton: SKSpriteNode!
-    var rightButton: SKSpriteNode!
-    var buttonPressed: Bool = false
+    var leftButton : SKSpriteNode!
+    var rightButton : SKSpriteNode!
+    var buttonPressed : Bool = false
+    var isZooming : Bool = false
     
     var spawners : [Int: Spawner?] = [:]
     //var teleporters : [Teleporter] = []
@@ -94,8 +95,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.name = "Scene"
         self.view?.showsPhysics = true
         
-    
-        
         collisionTypes = [
         PhysicsCategory.WALL.rawValue : .WALL,
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
@@ -147,38 +146,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     {
         if players.count > 1
         {
-            //var distance = 100000
+            var distance : CGFloat = 0.0
             for player in players where player != localPlayer
             {
-                let distance = localPlayer.position.distance(to: player.position)
-                if distance < (self.size.height)
+                let distanceForPlayer = localPlayer.position.distance(to: player.position)
+                if distanceForPlayer > distance
                 {
-                    if let camera = self.camera
-                    {
-                        camera.run(SKAction.scale(to: 1.2, duration: 0.5))
-                        self.setupCamera(target: self.localPlayer)
-                        return
-                    }
+                    distance = distanceForPlayer
                 }
             }
-           
-            if let camera = self.camera
+            
+            if !isZooming && distance < (self.size.height)
             {
-                camera.run(SKAction.scale(to: 0.9, duration: 0.5))
-                self.setupCamera(target: self.localPlayer)
+                if let camera = self.camera
+                {
+                    camera.run(SKAction.scale(to: 1.2, duration: 0.8))
+//                    {
+//                        self.setupCamera(target: self.localPlayer, scale: 1.2)
+//                    }
+                    isZooming = true
+                }
+
+            }
+            else if isZooming && distance > (self.size.height)*1.3
+            {
+                if let camera = self.camera
+                {
+                    camera.run(SKAction.scale(to: 0.9, duration: 0.8))
+//                    {
+//                        self.setupCamera(target: self.localPlayer, scale: 0.9)
+//                    }
+                    isZooming = false
+                }
+                
             }
         }
     }
     
-    func setupCamera(target: SKSpriteNode)
+    func setupCamera(target: SKSpriteNode, scale : CGFloat? = nil)
     {
         guard let camera = camera
         else {
             return
         }
         
-        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + (self.size.width/2)*camera.xScale, upperLimit: background.frame.size.width/2 - (self.size.width/2)*camera.xScale)
-        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + (self.size.height/2)*camera.yScale, upperLimit: background.frame.size.height/2 - (self.size.height/2)*camera.yScale)
+        let cameraScale = scale != nil ? scale! : camera.xScale
+        
+        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + (self.size.width/2)*cameraScale, upperLimit: background.frame.size.width/2 - (self.size.width/2)*cameraScale)
+        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + (self.size.height/2)*cameraScale, upperLimit: background.frame.size.height/2 - (self.size.height/2)*cameraScale)
         
         let edgeConstraint = SKConstraint.positionX(xRange, y: yRange)
         edgeConstraint.referenceNode = background
@@ -221,6 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         localPlayer.update(direction: self.playerDirection)
         
         updateCamera()
+        setupCamera(target: localPlayer)
         
         if !self.buttonPressed {
             self.playerDirection = .NONE
