@@ -27,6 +27,7 @@ class Player: SKSpriteNode {
     var lastTeleporter : Teleporter? = nil
     var lastPosition : CGPoint = .zero
     var destroyed : Bool = false
+    var mainColor : UIColor = .white
     
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
@@ -413,7 +414,7 @@ extension Player {
                     path.addLine(to: self.position)
 
                     let node = SKShapeNode(path: path)
-                    node.strokeColor = .black //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
+                    node.strokeColor = self.mainColor //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
                     node.lineWidth = 40
                     node.zPosition = self.zPosition - 1
                     
