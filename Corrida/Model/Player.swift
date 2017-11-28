@@ -266,6 +266,8 @@ extension Player
                     self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
                 }
             }
+            
+            self.playerNameLabel?.xScale = xScale
         }
     }
 }
