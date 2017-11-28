@@ -15,6 +15,8 @@ enum MessageType: String, Codable {
     case PLAYER_MESSAGE = "player_message"
     case CHANGE_MAP = "change_map"
     case START_MAP = "start_map"
+    case PLAYER_MOVEMENT = "player_movement"
+    case PLAYER_DESTROYED = "player_destroyed"
 }
 
 struct GameData: Codable {
@@ -30,6 +32,7 @@ struct GameData: Codable {
     
     var name: String?
     var position: CGPoint?
+    var rotation: CGFloat?
     
     init(messageType: MessageType) {
         self.messageType = messageType
@@ -69,74 +72,16 @@ extension GameData {
 
 // MARK: Player Data
 extension GameData {
-//    init(messageType: MessageType, name: String, target: Target?, position: CGPoint) {
-//        self.messageType = messageType
-//
-//        self.name = name
-//        self.target = target
-//        self.position = position
-//    }
+    init(messageType: MessageType, name: String, position: CGPoint, rotation: CGFloat) {
+        self.messageType = messageType
+        self.name = name
+        self.position = position
+        self.rotation = rotation
+    }
+    
+    init(messageType: MessageType, name: String) {
+        self.messageType = messageType
+        self.name = name
+    }
 }
-
-//class GameData {
-//    let messageType: MessageType
-//
-//    init(messageType: MessageType) {
-//        self.messageType = messageType
-//    }
-//
-//    required init?(coder aDecoder: NSCoder)
-//    {
-//        self.messageType = aDecoder.decodeObject(forKey: "messageType") as! MessageType
-//    }
-//
-//    func encode(with aCoder: NSCoder)
-//    {
-//        aCoder.encode(self.messageType, forKey: "messageType")
-//    }
-//}
-
-//class PlayerData: GameData {
-//    var name: String!
-//    var target: Target!
-//    var position: CGPoint!
-//
-//    enum CodingKeys: String, CodingKey {
-//        case name
-//        case target
-//        case position
-//    }
-//
-//    init(name: String, target: Target, position: CGPoint) {
-//        super.init(messageType: .PLAYER_MESSAGE)
-//
-//        self.name = name
-//        self.target = target
-//        self.position = position
-//    }
-//
-//    required init?(coder aDecoder: NSCoder)
-//    {
-//        super.init(coder: aDecoder)
-//
-//        self.name = aDecoder.decodeObject(forKey: "name") as? String
-//        self.target = aDecoder.decodeObject(forKey: "target") as? Target
-//        self.position = aDecoder.decodeObject(forKey: "position") as? CGPoint
-//    }
-//
-//    override func encode(with aCoder: NSCoder)
-//    {
-//        super.encode(with: aCoder)
-//
-//        aCoder.encode(self.name, forKey: "name")
-//        aCoder.encode(self.target, forKey: "target")
-//        aCoder.encode(self.position, forKey: "position")
-//    }
-//}
-
-//class GuestData: GameData {
-//    override init(messageType: MessageType) {
-//        super.init(messageType: .GUEST_MESSAGE)
-//    }
-//}
 

@@ -61,6 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             var id = 0
             for player in GameManager.shared.players {
+                player.setup(id: String(id), alias: player.alias)
                 player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
@@ -216,6 +217,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         localPlayer.update(direction: self.playerDirection)
+        if GameManager.MULTIPLAYER_ON {
+            MultiplayerNetworking.shared.sendPlayerMovement(name: self.localPlayer.alias, position: self.localPlayer.position, rotation: self.localPlayer.rotation)
+        }
         
         updateCamera()
         
@@ -223,8 +227,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-        for player in self.players {
-            player.update(direction: .NONE)
+        var everyoneDestroyed: Bool = true
+        for player in GameManager.shared.players {
+            if player.alias != localPlayer.alias {
+                player.update(direction: .NONE)
+            }
+            
+            if !player.destroyed {
+                everyoneDestroyed = false
+            }
+        }
+        
+        if everyoneDestroyed {
+            GameManager.shared.destroyGameView()
         }
     }
 }
@@ -238,18 +253,22 @@ extension GameScene {
         
         if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyA.node as? Player {
-                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
-                    let node = contact.bodyB.node
-                    player.performCollision(type: type, node: node)
+                if player.alias == localPlayer.alias {
+                    if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                        let node = contact.bodyB.node
+                        player.performCollision(type: type, node: node)
+                    }
                 }
             }
         }
         
         if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyB.node as? Player {
-                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
-                    let node = contact.bodyA.node
-                    player.performCollision(type: type, node: node)
+                if player.alias == localPlayer.alias {
+                    if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                        let node = contact.bodyA.node
+                        player.performCollision(type: type, node: node)
+                    }
                 }
             }
         }

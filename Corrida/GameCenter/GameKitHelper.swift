@@ -122,18 +122,22 @@ extension GameKitHelper {
         self.match = match
         match.delegate = self
         
-        self.match?.chooseBestHostingPlayer(completionHandler: { (player) in
-            if player?.alias == GKLocalPlayer.localPlayer().alias {
-                print("Server em: \(player?.alias ?? "Erro ao pegar alias do host")")
-                
-                GameServer.shared.setup()
-                
-                self.startViewController?.matchStarted()
-            } else {
-                print("Cliente em: \(player?.alias ?? "Erro no alias do cliente")")
-//                GameClient.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
-            }
-        })
+        if !self._matchStarted! && match.expectedPlayerCount == 0 {
+            print("Ready to start a match!")
+            
+            self.match?.chooseBestHostingPlayer(completionHandler: { (player) in
+                if player?.alias == GKLocalPlayer.localPlayer().alias {
+                    print("Server em: \(player?.alias ?? "Erro ao pegar alias do host")")
+                    
+                    GameServer.shared.setup()
+                    
+                    self.startViewController?.matchStarted()
+                } else {
+                    print("Cliente em: \(player?.alias ?? "Erro no alias do cliente")")
+                    //                GameClient.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
+                }
+            })
+        }
     }
 }
 
@@ -165,7 +169,12 @@ extension GameKitHelper {
                 
             case .START_MAP:
                 chooseMapViewController?.presentGameView()
+                
+            case .PLAYER_MOVEMENT:
+                GameManager.shared.movePlayer(name: gameData.name!, position: gameData.position!, rotation: gameData.rotation!)
             
+            case .PLAYER_DESTROYED:
+                GameManager.shared.destroyPlayer(name: gameData.name!)
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)
@@ -186,10 +195,6 @@ extension GameKitHelper {
         switch(state) {
         case .stateConnected:
             print("Player connected!")
-            
-            if !self._matchStarted! && match.expectedPlayerCount == 0 {
-                print("Ready to start a match!")
-            }
             
         case .stateDisconnected:
             print("Player disconnected!")

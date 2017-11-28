@@ -101,17 +101,10 @@ class ChooseMapViewController: UIViewController {
     }
     
     func presentGameView() {
-        let gameView = SKView(frame: self.view.frame)
-        gameView.ignoresSiblingOrder = false
-        gameView.showsFPS = true
-        gameView.showsNodeCount = true
-        gameView.showsPhysics = false
-        
+        let gameView = GameManager.shared.createGameView(view: self.view)
         self.view.addSubview(gameView)
         
-        let scene = GameScene(fileNamed: "GameScene")!
-        scene.scaleMode = .aspectFill
-        gameView.presentScene(scene)
+        GameManager.shared.loadScene(sceneName: "GameScene")
         
         //        let pad = GameManager.shared.directionalPad
         //        view.addSubview(pad)

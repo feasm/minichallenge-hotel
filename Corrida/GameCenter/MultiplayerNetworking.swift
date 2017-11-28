@@ -87,6 +87,16 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendPlayerMovement(name: String, position: CGPoint, rotation: CGFloat) {
+        let gameData = GameData(messageType: .PLAYER_MOVEMENT, name: name, position: position, rotation: rotation)
+        self.sendData(gameData)
+    }
+    
+    func sendPlayerDestroyed(name: String) {
+        let gameData = GameData(messageType: .PLAYER_DESTROYED, name: name)
+        self.sendData(gameData)
+    }
+    
     func sendData(_ gameData: GameData) {
         do {
             let dataStr = self.encodeData(gameData: gameData)
