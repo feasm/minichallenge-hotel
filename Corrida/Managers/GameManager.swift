@@ -17,6 +17,7 @@ class GameManager {
     
     var localPlayer: Player!
     var localNumber: Int!
+    var playerNumberToWatch: Int = 0
     
     var players = [Player]()
     var isHost: Bool = false
@@ -28,8 +29,6 @@ class GameManager {
     }
     
     func movePlayer(name: String, position: CGPoint, rotation: CGFloat) {
-        var playerToMove: Player?
-        
         for player in self.players {
             if player.alias == name {
                 player.position = position
@@ -51,6 +50,27 @@ class GameManager {
     // TODO: Implementar se o rastro ficar desinronizado
     func createPath() {
         
+    }
+    
+    func findPlayerToWatch(offset: Int) -> Player? {
+        var index = 0
+        
+        repeat {
+            playerNumberToWatch += offset
+            if playerNumberToWatch >= GameManager.shared.players.count {
+                playerNumberToWatch = 0
+            } else if playerNumberToWatch < 0 {
+                playerNumberToWatch = GameManager.shared.players.count - 1
+            }
+            
+            index += 1
+            
+            if index > GameManager.shared.players.count {
+                return nil
+            }
+        } while(GameManager.shared.players[playerNumberToWatch].destroyed)
+        
+        return GameManager.shared.players[playerNumberToWatch]
     }
 }
 
