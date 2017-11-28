@@ -44,6 +44,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var background : SKSpriteNode!
     
+    var miniMap : Minimap!
+    
     override func sceneDidLoad() {
         // Carrega todos os elementos do mapa para poderem ser utilizados no código
         loadChildren()
@@ -86,6 +88,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
             self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
+            camera.zPosition = NodesZPosition.CONTROLLERS.rawValue+1
         }
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
@@ -94,6 +97,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
+        
+
+        
+        miniMap = Minimap(scene: self)
+        miniMap.configure(at: CGPoint(x: 0, y: -370), scale: 0.22)
         
         collisionTypes = [
         PhysicsCategory.WALL.rawValue : .WALL,
@@ -237,6 +245,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         updateCamera()
         setupCamera(target: localPlayer)
+        
+        miniMap.update(players: players)
         
         if !self.buttonPressed {
             self.playerDirection = .NONE
