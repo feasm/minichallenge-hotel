@@ -88,7 +88,6 @@ class GameNetworkingMixin {
         for player in GameManager.shared.players {
             if player.alias != GameManager.shared.localPlayer.alias {
                 playerNames[index] = player.alias
-            } else if !GameManager.shared.isHost {
                 index += 1
             }
         }

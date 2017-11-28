@@ -31,6 +31,8 @@ class Player: SKSpriteNode {
     var animationLastPoint: CGPoint?
     var animationPoints = [SKShapeNode]()
     
+    var playerNameLabel: SKLabelNode?
+    
     var animations : [SpriteDirection : [SKTexture]] = [:]
     
     enum DeathReason
@@ -76,6 +78,17 @@ class Player: SKSpriteNode {
         self.updateDirection()
         self.setSpeed()
         //print(zRotation)
+    }
+    
+    func updateName() {
+        if playerNameLabel == nil {
+            playerNameLabel = SKLabelNode(fontNamed: "Arial")
+            playerNameLabel!.text = self.alias
+            playerNameLabel!.fontColor = SKColor.white
+            playerNameLabel!.fontSize = 50
+            playerNameLabel!.position = CGPoint(x: 0, y: self.frame.size.height + 10)
+            self.addChild(playerNameLabel!)
+        }
     }
     
     func setDirection(_ direction: PlayerDirection) {

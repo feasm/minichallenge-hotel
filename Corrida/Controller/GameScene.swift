@@ -62,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var id = 0
             for player in GameManager.shared.players {
                 player.setup(id: String(id), alias: player.alias)
+                player.updateName()
                 player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
