@@ -246,8 +246,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-        for player in self.players {
-            player.update(direction: .NONE)
+        var everyoneDestroyed: Bool = true
+        for player in GameManager.shared.players {
+            if player.alias != localPlayer.alias {
+//                player.update(direction: .NONE)
+            }
+
+            if !player.destroyed {
+                everyoneDestroyed = false
+            }
+        }
+        
+        if everyoneDestroyed {
+            GameManager.shared.destroyGameView()
         }
     }
 }
