@@ -15,9 +15,28 @@ enum SpriteDirection : String
     case FRONT = "front"
 }
 
+public class Stopwatch {
+    public init() { }
+    private var start_: TimeInterval = 0.0;
+    private var end_: TimeInterval = 0.0;
+    
+    public func start() {
+        start_ = NSDate().timeIntervalSince1970;
+    }
+    
+    public func stop() {
+        end_ = NSDate().timeIntervalSince1970;
+    }
+    
+    public func durationSeconds() -> TimeInterval {
+        return end_ - start_;
+    }
+}
+
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 500.0
     static let ROTATION_SPEED: Float = 0.05
+    static let MAX_LIVES : Int = 3
     
     var id: String!
     var alias: String!
@@ -39,6 +58,12 @@ class Player: SKSpriteNode {
     var animations : [SpriteDirection : [SKTexture]] = [:]
     var shadows : [SpriteDirection : SKTexture] = [:]
     
+    var kills : [Hitkill] = []
+    var deaths : [Hitkill] = []
+    var times : [TimeInterval] = []
+    
+    var watch : Stopwatch = Stopwatch()
+    
     enum DeathReason
     {
         case HIT_MYSELF
@@ -56,6 +81,8 @@ class Player: SKSpriteNode {
         lastPosition = self.position
         self.animationLastPoint = nil
         destroyed = false
+        
+        restartGame()
         
     }
     
@@ -156,10 +183,34 @@ class Player: SKSpriteNode {
             destroyed = true
             if let scene = scene as? GameScene
             {
-                scene.hitlist?.addHit(hit: Hitkill(victim: self, reason: reason, killer: defeat))
+                watch.stop()
+                self.times.append(watch.durationSeconds())
+                let hit = Hitkill(victim: self, reason: reason, killer: defeat)
+                self.deaths.append(hit)
+                if defeat != nil
+                {
+                    defeat?.kills.append(hit)
+                }
+                scene.hitlist?.addHit(hit: hit)
                 self.removeFromParent()
+                
+                print(times)
+                print(deaths)
             }
         }
+    }
+    
+    func lives() -> Int
+    {
+        return (Player.MAX_LIVES - deaths.count)
+    }
+    
+    func restartGame()
+    {
+        watch.start()
+        deaths.removeAll()
+        kills.removeAll()
+        times.removeAll()
     }
 
     func setType(type: CharactersEnum) {
@@ -413,7 +464,8 @@ extension Player {
                     }
                     else
                     {
-                        destroyPlayer(reason: .HIT_OTHER_PLAYER)
+                        let killer = GameManager.shared.findPlayerBy(alias: node.name ?? "nonalias")
+                        destroyPlayer(reason: .HIT_OTHER_PLAYER, defeat: killer)
                         MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
                     }
                 }

@@ -47,6 +47,19 @@ class GameManager {
         }
     }
     
+    func findPlayerBy(alias: String) -> Player?
+    {
+        for player in players
+        {
+            if player.alias == alias
+            {
+                return player
+            }
+        }
+        
+        return nil
+    }
+    
     // TODO: Implementar se o rastro ficar desinronizado
     func createPath() {
         
