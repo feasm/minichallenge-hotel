@@ -54,7 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
-            self.localPlayer = Player(type: .SECOND) //self.childNode(withName: "Player") as! Player
+            self.localPlayer = Player(type: .THIRD)
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
             GameManager.shared.players.append(localPlayer)
@@ -77,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-       let player = Player(type: .SECOND)
+       let player = Player(type: .THIRD)
        player.zPosition = 80
        //player.setup(id: "1", alias: "batata")
        GameManager.shared.players.append(player)

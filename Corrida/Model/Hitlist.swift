@@ -40,7 +40,7 @@ class HitCell : UICollectionViewCell
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 19)
         return label
     }()
     
@@ -49,7 +49,7 @@ class HitCell : UICollectionViewCell
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
@@ -84,13 +84,20 @@ class HitCell : UICollectionViewCell
     {
         self.hitKill = hit
         
-        victimLabel.text = self.hitKill.victim.alias
-        victimLabel.textColor = self.hitKill.victim.mainColor
+        let strokeTextAttributes: [NSAttributedStringKey : Any] = [
+            NSAttributedStringKey.strokeColor : UIColor.black,
+            NSAttributedStringKey.foregroundColor : self.hitKill.victim.mainColor,
+            NSAttributedStringKey.strokeWidth : -1.5 ]
+        
+        victimLabel.attributedText = NSAttributedString(string: self.hitKill.victim.alias, attributes: strokeTextAttributes)
         
         if self.hitKill.killer != nil
         {
-            killerLabel.text = self.hitKill.killer?.alias
-            killerLabel.textColor = self.hitKill.killer?.mainColor
+            let strokeTextAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedStringKey.strokeColor : UIColor.black,
+                NSAttributedStringKey.foregroundColor : self.hitKill.killer?.mainColor ?? UIColor.white,
+                NSAttributedStringKey.strokeWidth : 1.5]
+            killerLabel.attributedText = NSAttributedString(string: (self.hitKill.killer?.alias)!, attributes: strokeTextAttributes)
         }
         
         reasonIcon.image = Hitlist.getReasonIcon(reason: self.hitKill.reason)
@@ -111,7 +118,7 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
     let reuseIdentifier : String = "hitCell"
     
     let MAX_HITS_SCREEN : Int = 4
-    static let MAX_TIME_SCREEN : TimeInterval = 10
+    static let MAX_TIME_SCREEN : TimeInterval = 15
     var hits : [Hitkill] = []
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
