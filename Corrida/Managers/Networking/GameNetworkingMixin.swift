@@ -33,7 +33,7 @@ class GameNetworkingMixin {
         
         var index = 1
         for playerName in playerNames {
-            let newPlayer = Player(type: "dogalien")
+            let newPlayer = Player(type: .FIRST)
             newPlayer.alias = playerName
             newPlayer.setupPhysics()
             
@@ -68,7 +68,7 @@ class GameNetworkingMixin {
     
     private func setLocalPlayer() {
         let localPlayer = GKLocalPlayer.localPlayer()
-        let firstPlayer = Player(type: "dogalien")
+        let firstPlayer = Player(type: .FIRST)
         firstPlayer.setup(id: localPlayer.playerID!, alias: localPlayer.alias!)
         
         GameManager.shared.localPlayer = firstPlayer
@@ -76,7 +76,7 @@ class GameNetworkingMixin {
     
     private func setOtherPlayers(_ players: [GKPlayer]) {
         for player in players {
-            let newPlayer = Player(type: "dogalien")
+            let newPlayer = Player(type: .FIRST)
             newPlayer.setup(id: player.playerID!, alias: player.alias!)
             GameManager.shared.players.append(newPlayer)
         }

@@ -11,7 +11,9 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    var hitList : Hitlist = Hitlist()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,18 +25,24 @@ class GameViewController: UIViewController {
         
         self.view.addSubview(gameView)
         
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
         if let scene = GKScene(fileNamed: "GameScene") {
             
-            // Get the SKScene from the loaded GKScene
             if let sceneNode = scene.rootNode as! GameScene? {
-                // Set the scale mode to scale to fit the window
+                sceneNode.hitlist = self.hitList
                 sceneNode.scaleMode = .aspectFill
-                
                 gameView.presentScene(sceneNode)
             }
         }
+        
+        self.view.addSubview(hitList)
+        hitList.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        hitList.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        hitList.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        hitList.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        
+//        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
+//        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
+//        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
     }
 
     override var shouldAutorotate: Bool {
