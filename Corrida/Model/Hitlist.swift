@@ -69,6 +69,7 @@ class HitCell : UICollectionViewCell
         killerLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.42).isActive = true
         killerLabel.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
+        
         addSubview(reasonIcon)
         reasonIcon.leftAnchor.constraint(equalTo: killerLabel.rightAnchor, constant: 5).isActive = true
         reasonIcon.rightAnchor.constraint(equalTo: victimLabel.leftAnchor, constant: -5).isActive = true
@@ -91,6 +92,8 @@ class HitCell : UICollectionViewCell
             killerLabel.text = self.hitKill.killer?.alias
             killerLabel.textColor = self.hitKill.killer?.mainColor
         }
+        
+        reasonIcon.image = Hitlist.getReasonIcon(reason: self.hitKill.reason)
         
         Timer.scheduledTimer(withTimeInterval: Hitlist.MAX_TIME_SCREEN, repeats: false) { (_) in
             self.delegate?.deleteAt(hit: self.hitKill)
@@ -170,6 +173,16 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
         }
         
         //        print(hits.count, self.collectionView(self, numberOfItemsInSection: 0))
+    }
+    
+    static func getReasonIcon(reason: Player.DeathReason) -> UIImage?
+    {
+        switch reason {
+        case .HIT_MYSELF:
+            return UIImage(named: "Arrow_Prev")
+        default:
+            return UIImage(named: "Arrow_Prev")
+        }
     }
     
     func addHit(hit: Hitkill)

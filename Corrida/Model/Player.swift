@@ -33,8 +33,11 @@ class Player: SKSpriteNode {
     var animationPoints = [SKShapeNode]()
     
     var playerNameLabel: SKLabelNode?
+    var shadow : SKSpriteNode?
+    var mainNode : SKSpriteNode!
     
     var animations : [SpriteDirection : [SKTexture]] = [:]
+    var shadows : [SpriteDirection : SKTexture] = [:]
     
     enum DeathReason
     {
@@ -46,21 +49,27 @@ class Player: SKSpriteNode {
     func setup(id: String, alias: String) {
         self.id = id
         self.alias = alias
+        
         setupPhysics()
         zPosition = NodesZPosition.PLAYER.rawValue
+        
         lastPosition = self.position
         self.animationLastPoint = nil
         destroyed = false
+        
+        setupShadow()
     }
     
     init() {
         super.init(texture: nil, color: UIColor.white, size: CGSize(width: 0, height: 0))
         zPosition = NodesZPosition.PLAYER.rawValue
+        setupShadow()
     }
     
     init(type: String) {
-        super.init(texture: nil, color: .white, size: CGSize(width: 300, height: 300))
-        self.setType(type: type)
+        super.init(texture: nil, color: .clear, size: CGSize(width: 300, height: 300))
+        
+        self.setupMainNode(type: type)
     }
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
@@ -78,7 +87,6 @@ class Player: SKSpriteNode {
         self.checkCollision()
         self.updateDirection()
         self.setSpeed()
-        //print(zRotation)
     }
     
     func updateName() {
@@ -91,6 +99,43 @@ class Player: SKSpriteNode {
             self.addChild(playerNameLabel!)
         }
     }
+    
+    var childAngle : CGFloat = 0
+    var childRadius : CGFloat = 0
+    
+    
+    func setupMainNode(type: String)
+    {
+        mainNode = SKSpriteNode(color: .clear, size: self.size)
+        mainNode.position = CGPoint(x: 0, y: 0)
+        mainNode.zPosition = 1
+        mainNode.alpha = 1
+        
+        self.addChild(mainNode)
+        
+        let rotate : CGFloat = CGFloat(5.0).radians
+        
+        let up_down = SKAction.sequence([SKAction.rotate(byAngle: rotate, duration: 1), SKAction.rotate(byAngle: -(rotate*2), duration: 1), SKAction.rotate(byAngle: rotate, duration: 1)])
+        self.mainNode.run(SKAction.repeatForever(up_down), withKey: "updown_animation")
+        
+        self.setType(type: type)
+    }
+    
+    func setupShadow()
+    {
+        if shadow == nil
+        {
+            shadow = SKSpriteNode(color: .black, size: CGSize(width: 100, height: 100))
+            shadow?.position = CGPoint(x: 0, y: -160)
+            shadow?.zPosition = -1
+            shadow?.alpha = 0.5
+            
+            let actions = SKAction.sequence([SKAction.scale(to: 1, duration: 1), SKAction.scale(to: 0.8, duration: 1)])
+            shadow?.run(SKAction.repeatForever(actions), withKey: "shadow_animation")
+            self.addChild(shadow!)
+        }
+    }
+    
     
     func setDirection(_ direction: PlayerDirection) {
         switch(direction) {
@@ -120,16 +165,18 @@ class Player: SKSpriteNode {
     }
 
     func setType(type: String) {
+        
         var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
         animations[.FRONT] = [SKTexture(imageNamed: textureName)]
+        shadows[.FRONT] = SKTexture(imageNamed: "shadow_\(SpriteDirection.FRONT.rawValue)")
         
         textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
         animations[.SIDE] = [SKTexture(imageNamed: textureName)]
+        shadows[.SIDE] = SKTexture(imageNamed: "shadow_\(SpriteDirection.SIDE.rawValue)")
         
         textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
         animations[.BACK] = [SKTexture(imageNamed: textureName)]
-        
-        texture = animations[.FRONT]?.first
+        shadows[.BACK] = SKTexture(imageNamed: "shadow_\(SpriteDirection.BACK.rawValue)")
     }
 }
 
@@ -143,7 +190,7 @@ extension Player {
     func setPhysics() {
         //self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
 //        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
-        if let texture = texture
+        if let texture = mainNode.texture
         {
             self.physicsBody = SKPhysicsBody(texture: texture, size: texture.size()*CGFloat(0.6))
         }
@@ -236,38 +283,61 @@ extension Player
             {
                 if let animate = self.animations[.SIDE]
                 {
-                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.xScale = abs(xScale)
+                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.mainNode.xScale = abs(xScale)
+                }
+                
+                if let shadow = self.shadows[.SIDE]
+                {
+                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+//                    self.shadow?.texture = shadow
                 }
             }
             else if angle.inBetween(angle_range, 180-angle_range)
             {
                 if let animate = self.animations[.BACK]
                 {
-                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
                     if angle.inBetween(angle_range, (180-angle_range)/2.0)
                     {
-                        self.xScale = abs(xScale)
+                        self.mainNode.xScale = abs(xScale)
                     }
                     else
                     {
-                        self.xScale = -abs(xScale)
+                        self.mainNode.xScale = -abs(xScale)
                     }
+                }
+                
+                if let shadow = self.shadows[.BACK]
+                {
+//                    self.shadow?.texture = shadow
+                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
                 }
             }
             else if angle.inBetween(180-angle_range, 180+(2.0 * angle_range))
             {
                 if let animate = self.animations[.SIDE]
                 {
-                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.xScale = -abs(xScale)
+                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.mainNode.xScale = -abs(xScale)
+                }
+                
+                if let shadow = self.shadows[.SIDE]
+                {
+//                    self.shadow?.texture = shadow
+                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
                 }
             }
             else if angle.inBetween(180+(2.0 * angle_range), 360-angle_range)
             {
                 if let animate = self.animations[.FRONT]
                 {
-                    self.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+                }
+                
+                if let shadow = self.shadows[.FRONT]
+                {
+                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
                 }
             }
             

@@ -13,7 +13,8 @@ import GameplayKit
 enum NodesZPosition : CGFloat
 {
     case CONTROLLERS = 20
-    case PLAYER = 10
+    case PLAYER = 11
+    case PLAYER_SHADOW = 10
     case PLAYER_TRAIL = 9
     case ASSETS = 8
     case BACKGROUND = 7
