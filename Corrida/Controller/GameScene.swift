@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var localPlayer: Player!
     var playerToWatch: Player?
-    var players = [Player]()
+    //var players = [Player]()
     var playerDirection: PlayerDirection = .NONE
     var collisionTypes : [UInt32 : CollisionType] = [:]
     
@@ -41,6 +41,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var buttonPressed: Bool = false
     var hitlist : Hitlist?
     
+    var miniMap : Minimap!
     
     var spawners : [Int: Spawner?] = [:]
     //var teleporters : [Teleporter] = []
@@ -56,7 +57,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.localPlayer = Player(type: .SECOND) //self.childNode(withName: "Player") as! Player
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
-            self.players.append(localPlayer)
+            GameManager.shared.players.append(localPlayer)
             addChild(self.localPlayer)
             self.setSpawn(to: self.localPlayer, id: 0)
         } else {
@@ -65,6 +66,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             var id = 0
             for player in GameManager.shared.players {
+                player.setup(id: String(id), alias: player.alias)
+                player.updateName()
                 player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
@@ -74,10 +77,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-       let player = Player(type: "dogalien")
+       let player = Player(type: .SECOND)
        player.zPosition = 80
        //player.setup(id: "1", alias: "batata")
-       self.players.append(player)
+       GameManager.shared.players.append(player)
        setSpawn(to: player, id: 1)
        addChild(player)
         
@@ -89,6 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
             self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
+            camera.zPosition = NodesZPosition.CONTROLLERS.rawValue+1
         }
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
@@ -97,6 +101,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
+        
+        
+        miniMap = Minimap(scene: self)
+        miniMap.configure(at: CGPoint(x: 0, y: -370), scale: 0.22)
         
         collisionTypes = [
         PhysicsCategory.WALL.rawValue : .WALL,
@@ -147,10 +155,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func updateCamera()
     {
-        if players.count > 1
+        if GameManager.shared.players.count > 1
         {
             //var distance = 100000
-            for player in players where player != localPlayer
+            for player in GameManager.shared.players where player != localPlayer
             {
                 let distance = localPlayer.position.distance(to: player.position)
                 if distance < (self.size.height)
@@ -249,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var everyoneDestroyed: Bool = true
         for player in GameManager.shared.players {
             if player.alias != localPlayer.alias {
-//                player.update(direction: .NONE)
+                player.update(direction: .NONE)
             }
 
             if !player.destroyed {
