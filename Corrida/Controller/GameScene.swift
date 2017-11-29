@@ -31,6 +31,7 @@ enum PlayerDirection {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var localPlayer: Player!
+    var playerToWatch: Player?
     var players = [Player]()
     var playerDirection: PlayerDirection = .NONE
     var collisionTypes : [UInt32 : CollisionType] = [:]
@@ -73,12 +74,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        let player = Player(type: .SECOND)
-        player.zPosition = 80
-        //player.setup(id: "1", alias: "batata")
-        self.players.append(player)
-        setSpawn(to: player, id: 1)
-        addChild(player)
+       let player = Player(type: "dogalien")
+       player.zPosition = 80
+       //player.setup(id: "1", alias: "batata")
+       self.players.append(player)
+       setSpawn(to: player, id: 1)
+       addChild(player)
         
         // Carrega botões do controle
         if let camera = self.camera
@@ -196,12 +197,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.leftButton.color = UIColor.black
                 self.playerDirection = .LEFT
                 self.buttonPressed = true
+                
+                if localPlayer.destroyed {
+                    playerToWatch = GameManager.shared.findPlayerToWatch(offset: -1)
+                }
             }
             
             if self.rightButton.contains(location) {
                 self.rightButton.color = UIColor.black
                 self.playerDirection = .RIGHT
                 self.buttonPressed = true
+                
+                if localPlayer.destroyed {
+                    playerToWatch = GameManager.shared.findPlayerToWatch(offset: +1)
+                }
             }
         }
     }
@@ -222,6 +231,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         localPlayer.update(direction: self.playerDirection)
         
         updateCamera()
+
+        if !localPlayer.destroyed {
+            setupCamera(target: localPlayer)
+        } else if playerToWatch != nil {
+            setupCamera(target: playerToWatch!)
+        } else {
+            playerToWatch = GameManager.shared.findPlayerToWatch(offset: +1)
+        }
+        
+        miniMap.update(players: GameManager.shared.players)
         
         if !self.buttonPressed {
             self.playerDirection = .NONE
