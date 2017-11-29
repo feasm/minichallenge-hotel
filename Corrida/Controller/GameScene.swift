@@ -54,12 +54,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
-            self.localPlayer = Player(type: .SECOND) //self.childNode(withName: "Player") as! Player
+            self.localPlayer = Player(type: .THIRD)
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
             GameManager.shared.players.append(localPlayer)
             addChild(self.localPlayer)
             self.setSpawn(to: self.localPlayer, id: 0)
+            
+            let player = Player(type: .THIRD)
+            player.zPosition = 80
+            //player.setup(id: "1", alias: "batata")
+            GameManager.shared.players.append(player)
+            setSpawn(to: player, id: 1)
+            addChild(player)
+            
         } else {
             self.localPlayer = GameManager.shared.localPlayer
             self.localPlayer.name = self.localPlayer.alias
@@ -72,17 +80,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 addChild(player)
                 self.setSpawn(to: player, id: id)
                 id += 1
-                
 //                self.players.append(player)
             }
         }
-        
-       let player = Player(type: .SECOND)
-       player.zPosition = 80
-       //player.setup(id: "1", alias: "batata")
-       GameManager.shared.players.append(player)
-       setSpawn(to: player, id: 1)
-       addChild(player)
         
         // Carrega botões do controle
         if let camera = self.camera
