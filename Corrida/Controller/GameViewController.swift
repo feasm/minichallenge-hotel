@@ -37,7 +37,7 @@ class GameViewController: UIViewController {
         self.view.addSubview(hitList)
         hitList.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
         hitList.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        hitList.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        hitList.widthAnchor.constraint(equalToConstant: 230).isActive = true
         hitList.heightAnchor.constraint(equalToConstant: 250).isActive = true
         
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))

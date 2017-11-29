@@ -98,7 +98,6 @@ class Player: SKSpriteNode {
     var childAngle : CGFloat = 0
     var childRadius : CGFloat = 0
     
-    
     func setupMainNode(type: CharactersEnum)
     {
         mainNode = SKSpriteNode(color: .clear, size: self.size)
@@ -108,7 +107,7 @@ class Player: SKSpriteNode {
         
         self.addChild(mainNode)
         
-        let rotate : CGFloat = CGFloat(5.0).radians
+        let rotate : CGFloat = CGFloat(3.0).radians
         let up_down = SKAction.sequence([SKAction.rotate(byAngle: rotate, duration: 1), SKAction.rotate(byAngle: -(rotate*2), duration: 2), SKAction.rotate(byAngle: rotate, duration: 1)])
         up_down.timingMode = .linear
         self.mainNode.run(SKAction.repeatForever(up_down), withKey: "updown_animation")
@@ -117,8 +116,6 @@ class Player: SKSpriteNode {
         
         self.setType(type: type)
     }
-    
-//    -5 - (-5 x 5) - 5
     
     func setupShadow()
     {
@@ -130,7 +127,7 @@ class Player: SKSpriteNode {
             shadow?.alpha = 0.5
             shadow?.setScale(0.8)
             
-            let actions = SKAction.sequence([SKAction.scale(to: 0.8, duration: 0.5), SKAction.scale(to: 1, duration: 1), SKAction.scale(to: 0.8, duration: 1), SKAction.scale(to: 1, duration: 0.5)])
+            let actions = SKAction.sequence([SKAction.scale(to: 0.8, duration: 1), SKAction.scale(to: 1, duration: 2), SKAction.scale(to: 0.8, duration: 2), SKAction.scale(to: 1, duration: 1)])
             actions.timingMode = .linear
             shadow?.run(SKAction.repeatForever(actions), withKey: "shadow_animation")
             self.addChild(shadow!)
@@ -178,12 +175,15 @@ class Player: SKSpriteNode {
         case .THIRD: //Gosma
             prefix = "gooalien"
             mainColor = .pColorGoo
+            
         case .FORTH: //Demon
             prefix = "demonalien"
             mainColor = .pColorDemon
 //        default:
 //            prefix = "dogalien"
         }
+        
+        
         
         var textureName = "\(prefix)_\(SpriteDirection.FRONT.rawValue)"
         animations[.FRONT] = [SKTexture(imageNamed: textureName)]
@@ -197,7 +197,11 @@ class Player: SKSpriteNode {
         animations[.BACK] = [SKTexture(imageNamed: textureName)]
         shadows[.BACK] = SKTexture(imageNamed: "shadow_\(SpriteDirection.BACK.rawValue)")
         
-        mainNode.texture = animations[.FRONT]?.first
+        let texture = (animations[.FRONT]?.first)!
+        mainNode.texture = texture
+        mainNode.run(SKAction.setTexture(texture, resize: true))
+        
+        self.mainNode.setScale(0.8)
     }
 }
 
@@ -300,8 +304,9 @@ extension Player
             {
                 if let animate = self.animations[.SIDE]
                 {
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
                     self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.mainNode.xScale = abs(xScale)
+                    self.mainNode.xScale = abs(self.mainNode.xScale)
                 }
                 
                 if let shadow = self.shadows[.SIDE]
@@ -314,14 +319,15 @@ extension Player
             {
                 if let animate = self.animations[.BACK]
                 {
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
                     self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
                     if angle.inBetween(angle_range, (180-angle_range)/2.0)
                     {
-                        self.mainNode.xScale = abs(xScale)
+                        self.mainNode.xScale = abs(self.mainNode.xScale)
                     }
                     else
                     {
-                        self.mainNode.xScale = -abs(xScale)
+                        self.mainNode.xScale = -abs(self.mainNode.xScale)
                     }
                 }
                 
@@ -335,8 +341,9 @@ extension Player
             {
                 if let animate = self.animations[.SIDE]
                 {
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
                     self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.mainNode.xScale = -abs(xScale)
+                    self.mainNode.xScale = -abs(self.mainNode.xScale)
                 }
                 
                 if let shadow = self.shadows[.SIDE]
@@ -349,6 +356,7 @@ extension Player
             {
                 if let animate = self.animations[.FRONT]
                 {
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
                     self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
                 }
                 
