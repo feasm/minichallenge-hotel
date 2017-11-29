@@ -13,7 +13,8 @@ import GameplayKit
 enum NodesZPosition : CGFloat
 {
     case CONTROLLERS = 20
-    case PLAYER = 10
+    case PLAYER = 11
+    case PLAYER_SHADOW = 10
     case PLAYER_TRAIL = 9
     case ASSETS = 8
     case BACKGROUND = 7
@@ -30,13 +31,17 @@ enum PlayerDirection {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var localPlayer: Player!
-    var players = [Player]()
+    var playerToWatch: Player?
+    //var players = [Player]()
     var playerDirection: PlayerDirection = .NONE
     var collisionTypes : [UInt32 : CollisionType] = [:]
     
     var leftButton: SKSpriteNode!
     var rightButton: SKSpriteNode!
     var buttonPressed: Bool = false
+    var hitlist : Hitlist?
+    
+    var miniMap : Minimap!
     
     var spawners : [Int: Spawner?] = [:]
     //var teleporters : [Teleporter] = []
@@ -49,10 +54,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
-            self.localPlayer = Player(type: "dogalien") //self.childNode(withName: "Player") as! Player
+            self.localPlayer = Player(type: .SECOND) //self.childNode(withName: "Player") as! Player
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
-            self.players.append(localPlayer)
+            GameManager.shared.players.append(localPlayer)
             addChild(self.localPlayer)
             self.setSpawn(to: self.localPlayer, id: 0)
         } else {
@@ -62,6 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var id = 0
             for player in GameManager.shared.players {
                 player.setup(id: String(id), alias: player.alias)
+                player.updateName()
                 player.removeFromParent()
                 addChild(player)
                 self.setSpawn(to: player, id: id)
@@ -71,30 +77,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-//        let player = Player(texture: nil, color: .yellow, size: CGSize(width: 100, height: 100))
-//        player.setup(alias: "batata")
-//        self.players.append(player)
-//        setSpawn(to: player, id: 1)
-//        addChild(player)
+       let player = Player(type: .SECOND)
+       player.zPosition = 80
+       //player.setup(id: "1", alias: "batata")
+       GameManager.shared.players.append(player)
+       setSpawn(to: player, id: 1)
+       addChild(player)
         
         // Carrega botões do controle
         if let camera = self.camera
         {
-            camera.setScale(1)
+            camera.setScale(0.9)
             self.leftButton = camera.childNode(withName: "LeftButton") as! SKSpriteNode
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
             self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
+            camera.zPosition = NodesZPosition.CONTROLLERS.rawValue+1
         }
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
-        self.physicsBody?.restitution = 1
+        self.physicsBody?.restitution = 0.6
         self.physicsBody?.categoryBitMask = PhysicsCategory.WALL.rawValue
         self.name = "Scene"
         self.view?.showsPhysics = true
         
-    
+        
+        miniMap = Minimap(scene: self)
+        miniMap.configure(at: CGPoint(x: 0, y: -370), scale: 0.22)
         
         collisionTypes = [
         PhysicsCategory.WALL.rawValue : .WALL,
@@ -145,17 +155,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func updateCamera()
     {
-        if players.count > 1
+        if GameManager.shared.players.count > 1
         {
             //var distance = 100000
-            for player in players where player != localPlayer
+            for player in GameManager.shared.players where player != localPlayer
             {
                 let distance = localPlayer.position.distance(to: player.position)
-                if distance < (self.size.height/2)
+                if distance < (self.size.height)
                 {
                     if let camera = self.camera
                     {
-                        camera.run(SKAction.scale(to: 1, duration: 1))
+                        camera.run(SKAction.scale(to: 1.2, duration: 0.5))
+                        self.setupCamera(target: self.localPlayer)
                         return
                     }
                 }
@@ -163,7 +174,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            
             if let camera = self.camera
             {
-                camera.run(SKAction.scale(to: 0.6, duration: 1))
+                camera.run(SKAction.scale(to: 0.9, duration: 0.5))
+                self.setupCamera(target: self.localPlayer)
             }
         }
     }
@@ -175,8 +187,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + self.size.width/2, upperLimit: background.frame.size.width/2 - self.size.width/2)
-        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + self.size.height/2, upperLimit: background.frame.size.height/2 - self.size.height/2)
+        let xRange = SKRange(lowerLimit: -background.frame.size.width/2 + (self.size.width/2)*camera.xScale, upperLimit: background.frame.size.width/2 - (self.size.width/2)*camera.xScale)
+        let yRange = SKRange(lowerLimit: -background.frame.size.height/2 + (self.size.height/2)*camera.yScale, upperLimit: background.frame.size.height/2 - (self.size.height/2)*camera.yScale)
         
         let edgeConstraint = SKConstraint.positionX(xRange, y: yRange)
         edgeConstraint.referenceNode = background
@@ -193,12 +205,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.leftButton.color = UIColor.black
                 self.playerDirection = .LEFT
                 self.buttonPressed = true
+                
+                if localPlayer.destroyed {
+                    playerToWatch = GameManager.shared.findPlayerToWatch(offset: -1)
+                }
             }
             
             if self.rightButton.contains(location) {
                 self.rightButton.color = UIColor.black
                 self.playerDirection = .RIGHT
                 self.buttonPressed = true
+                
+                if localPlayer.destroyed {
+                    playerToWatch = GameManager.shared.findPlayerToWatch(offset: +1)
+                }
             }
         }
     }
@@ -217,11 +237,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         localPlayer.update(direction: self.playerDirection)
-        if GameManager.MULTIPLAYER_ON {
-            MultiplayerNetworking.shared.sendPlayerMovement(name: self.localPlayer.alias, position: self.localPlayer.position, rotation: self.localPlayer.rotation)
-        }
         
         updateCamera()
+
+        if !localPlayer.destroyed {
+            setupCamera(target: localPlayer)
+        } else if playerToWatch != nil {
+            setupCamera(target: playerToWatch!)
+        } else {
+            playerToWatch = GameManager.shared.findPlayerToWatch(offset: +1)
+        }
+        
+        miniMap.update(players: GameManager.shared.players)
         
         if !self.buttonPressed {
             self.playerDirection = .NONE
@@ -232,7 +259,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if player.alias != localPlayer.alias {
                 player.update(direction: .NONE)
             }
-            
+
             if !player.destroyed {
                 everyoneDestroyed = false
             }
@@ -253,22 +280,18 @@ extension GameScene {
         
         if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyA.node as? Player {
-                if player.alias == localPlayer.alias {
-                    if let type = collisionTypes[contact.bodyB.categoryBitMask] {
-                        let node = contact.bodyB.node
-                        player.performCollision(type: type, node: node)
-                    }
+                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                    let node = contact.bodyB.node
+                    player.performCollision(type: type, node: node)
                 }
             }
         }
         
         if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyB.node as? Player {
-                if player.alias == localPlayer.alias {
-                    if let type = collisionTypes[contact.bodyA.categoryBitMask] {
-                        let node = contact.bodyA.node
-                        player.performCollision(type: type, node: node)
-                    }
+                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                    let node = contact.bodyA.node
+                    player.performCollision(type: type, node: node)
                 }
             }
         }

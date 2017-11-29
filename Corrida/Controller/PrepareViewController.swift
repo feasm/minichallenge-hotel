@@ -19,6 +19,7 @@ enum PlayerEnum : Int, Codable {
     case FIRST = 1
     case SECOND = 2
     case THIRD = 3
+    case FORTH = 4
 }
 
 enum PlayerStatusEnum : String, Codable {
@@ -83,6 +84,8 @@ class PrepareViewController: UIViewController {
     var readyClicked : Bool = false
     
     var blockedCharacters = [Int]()
+    
+    var selectedCharacterInitialY: CGFloat?
 
     //MARK: Life Cicle
     override func viewDidLoad() {
@@ -98,10 +101,10 @@ class PrepareViewController: UIViewController {
     //MARK: Setup Methods
     
     func setup() {
+        selectedCharacterInitialY = imageSelectedCharacter.frame.origin.y
         GameKitHelper.shared.prepareViewController = self
         setupCharacters()
         setupSelected()
-        animateSelectedCharacter()
     }
     
     func setupPlayers(firstName: String, secondName: String, thirdName: String) {
@@ -238,6 +241,8 @@ class PrepareViewController: UIViewController {
             backgroundThirdCharacter.layer.borderColor = UIColor.clear.cgColor
             backgroundFourthCharacter.layer.borderColor = UIColor.clear.cgColor
         }
+        
+        animateSelectedCharacter()
     }
     
     //MARK: Helper Methods
@@ -275,9 +280,10 @@ class PrepareViewController: UIViewController {
         }
         
         //recebe data do gamecenter
-        MultiplayerNetworking.shared.sendCharacterData(character: selectedCharacter!)
-        
-        setupSelected()
+        if let character = selectedCharacter {
+            MultiplayerNetworking.shared.sendCharacterData(character: character)
+            setupSelected()
+        }
     }
     
     func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum) {
@@ -343,6 +349,8 @@ class PrepareViewController: UIViewController {
                 break
             }
             break
+        case .FORTH:
+            print("Nunca vai rolar, se rolar tem algo errado")
         }
     }
     
@@ -364,6 +372,8 @@ class PrepareViewController: UIViewController {
         case .THIRD:
             character = thirdPlayerSelectedCharacter
             break
+        case .FORTH:
+            print("não vai rolar, senao algo errado não está certo")
         }
         
         if blockedCharacters.contains(character!.rawValue) {
@@ -519,6 +529,8 @@ class PrepareViewController: UIViewController {
                 break
             }
         break
+        case .FORTH:
+            print("não vai rolar, senao deu alguma merda")
         }
         
         tryStartGame()
@@ -546,6 +558,7 @@ class PrepareViewController: UIViewController {
     }
     
     func animateSelectedCharacter(){
+        self.imageSelectedCharacter.frame.origin.y = selectedCharacterInitialY!
         UIView.animate(withDuration: 1.5, delay: 0, options: [.repeat, .autoreverse],
                        animations: {
                             self.imageSelectedCharacter.frame.origin.y += 10
