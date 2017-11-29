@@ -125,19 +125,38 @@ extension GameKitHelper {
         if !self._matchStarted! && match.expectedPlayerCount == 0 {
             print("Ready to start a match!")
             
-            self.match?.chooseBestHostingPlayer(completionHandler: { (player) in
-                if player?.alias == GKLocalPlayer.localPlayer().alias {
-                    print("Server em: \(player?.alias ?? "Erro ao pegar alias do host")")
-                    
-                    GameServer.shared.setup()
-                    
-                    self.startViewController?.matchStarted()
-                } else {
-                    print("Cliente em: \(player?.alias ?? "Erro no alias do cliente")")
-                    //                GameClient.shared.setup(gameScene: self.gameScene as! GuestManagerDelegate)
-                }
-            })
+            self.setHost()
         }
+    }
+    
+    func setHost() {
+        print("Setting host")
+        
+        self.match?.chooseBestHostingPlayer(completionHandler: { (player) in
+            if let host = player {
+                if host.alias == GKLocalPlayer.localPlayer().alias {
+                    print("Server em: \(host.alias ?? "Erro ao pegar alias do host")")
+
+                    Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { (timer) in
+                        GameServer.shared.setup()
+                        
+                        self.startViewController?.matchStarted()
+                    })
+                } else if host.alias != nil {
+                    print("Cliente em: \(host.alias ?? "Erro no alias do cliente")")
+                } else {
+                    print("Error setting host")
+                }
+            } else {
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (timer) in
+                    self.setHost()
+                })
+            }
+
+            for player in self.match!.players {
+                print(player.alias)
+            }
+        })
     }
 }
 

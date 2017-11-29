@@ -276,9 +276,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var everyoneDestroyed: Bool = true
         for player in GameManager.shared.players {
             if player.alias != localPlayer.alias {
-                player.update(direction: .NONE)
+//                player.update(direction: .NONE)
             }
-            
+
             if !player.destroyed {
                 everyoneDestroyed = false
             }

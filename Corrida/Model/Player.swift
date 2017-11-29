@@ -421,7 +421,7 @@ extension Player {
 
                     self.animationPoints.append(node)
                     self.scene?.addChild(node)
-                    let wait = SKAction.wait(forDuration: 5)
+                    let wait = SKAction.wait(forDuration: 3)
                     let fadeOut = SKAction.fadeOut(withDuration: 1)
                     let remove = SKAction.removeFromParent()
                     
@@ -447,7 +447,7 @@ extension Player {
             
         })
 
-        self.run(SKAction.repeatForever(SKAction.sequence([smoothPath, SKAction.wait(forDuration: 0.03)])))
+        self.run(SKAction.repeatForever(SKAction.sequence([smoothPath, SKAction.wait(forDuration: 0.1)])))
     }
     
     @objc func setPhysicsOnPath(sender: Any) {

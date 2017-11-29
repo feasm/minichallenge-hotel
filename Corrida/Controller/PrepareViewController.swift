@@ -280,9 +280,10 @@ class PrepareViewController: UIViewController {
         }
         
         //recebe data do gamecenter
-        MultiplayerNetworking.shared.sendCharacterData(character: selectedCharacter!)
-        
-        setupSelected()
+        if let character = selectedCharacter {
+            MultiplayerNetworking.shared.sendCharacterData(character: character)
+            setupSelected()
+        }
     }
     
     func changePlayerCharacter(player: PlayerEnum, character: CharactersEnum) {
