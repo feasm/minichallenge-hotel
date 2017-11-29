@@ -57,25 +57,21 @@ class Player: SKSpriteNode {
         self.animationLastPoint = nil
         destroyed = false
         
-        setupShadow()
     }
     
     init() {
         super.init(texture: nil, color: UIColor.white, size: CGSize(width: 0, height: 0))
         zPosition = NodesZPosition.PLAYER.rawValue
-        setupShadow()
+        
     }
     
-    init(type: String) {
+    init(type: CharactersEnum) {
         super.init(texture: nil, color: .clear, size: CGSize(width: 300, height: 300))
-        
         self.setupMainNode(type: type)
     }
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -84,7 +80,6 @@ class Player: SKSpriteNode {
     
     func update(direction: PlayerDirection) {
         self.setDirection(direction)
-        self.checkCollision()
         self.updateDirection()
         self.setSpeed()
     }
@@ -104,7 +99,7 @@ class Player: SKSpriteNode {
     var childRadius : CGFloat = 0
     
     
-    func setupMainNode(type: String)
+    func setupMainNode(type: CharactersEnum)
     {
         mainNode = SKSpriteNode(color: .clear, size: self.size)
         mainNode.position = CGPoint(x: 0, y: 0)
@@ -114,12 +109,16 @@ class Player: SKSpriteNode {
         self.addChild(mainNode)
         
         let rotate : CGFloat = CGFloat(5.0).radians
-        
-        let up_down = SKAction.sequence([SKAction.rotate(byAngle: rotate, duration: 1), SKAction.rotate(byAngle: -(rotate*2), duration: 1), SKAction.rotate(byAngle: rotate, duration: 1)])
+        let up_down = SKAction.sequence([SKAction.rotate(byAngle: rotate, duration: 1), SKAction.rotate(byAngle: -(rotate*2), duration: 2), SKAction.rotate(byAngle: rotate, duration: 1)])
+        up_down.timingMode = .linear
         self.mainNode.run(SKAction.repeatForever(up_down), withKey: "updown_animation")
+
+        setupShadow()
         
         self.setType(type: type)
     }
+    
+//    -5 - (-5 x 5) - 5
     
     func setupShadow()
     {
@@ -129,8 +128,10 @@ class Player: SKSpriteNode {
             shadow?.position = CGPoint(x: 0, y: -160)
             shadow?.zPosition = -1
             shadow?.alpha = 0.5
+            shadow?.setScale(0.8)
             
-            let actions = SKAction.sequence([SKAction.scale(to: 1, duration: 1), SKAction.scale(to: 0.8, duration: 1)])
+            let actions = SKAction.sequence([SKAction.scale(to: 0.8, duration: 0.5), SKAction.scale(to: 1, duration: 1), SKAction.scale(to: 0.8, duration: 1), SKAction.scale(to: 1, duration: 0.5)])
+            actions.timingMode = .linear
             shadow?.run(SKAction.repeatForever(actions), withKey: "shadow_animation")
             self.addChild(shadow!)
         }
@@ -164,19 +165,39 @@ class Player: SKSpriteNode {
         }
     }
 
-    func setType(type: String) {
+    func setType(type: CharactersEnum) {
         
-        var textureName = "\(type)_\(SpriteDirection.FRONT.rawValue)"
+        var prefix = ""
+        switch type {
+        case .FIRST: //Dogalien
+            prefix = "dogalien"
+            mainColor = .pColorDog
+        case .SECOND: //Bird
+            prefix = "alienbird"
+            mainColor = .pColorBird
+        case .THIRD: //Gosma
+            prefix = "gooalien"
+            mainColor = .pColorGoo
+        case .FORTH: //Demon
+            prefix = "demonalien"
+            mainColor = .pColorDemon
+//        default:
+//            prefix = "dogalien"
+        }
+        
+        var textureName = "\(prefix)_\(SpriteDirection.FRONT.rawValue)"
         animations[.FRONT] = [SKTexture(imageNamed: textureName)]
         shadows[.FRONT] = SKTexture(imageNamed: "shadow_\(SpriteDirection.FRONT.rawValue)")
         
-        textureName = "\(type)_\(SpriteDirection.SIDE.rawValue)"
+        textureName = "\(prefix)_\(SpriteDirection.SIDE.rawValue)"
         animations[.SIDE] = [SKTexture(imageNamed: textureName)]
         shadows[.SIDE] = SKTexture(imageNamed: "shadow_\(SpriteDirection.SIDE.rawValue)")
         
-        textureName = "\(type)_\(SpriteDirection.BACK.rawValue)"
+        textureName = "\(prefix)_\(SpriteDirection.BACK.rawValue)"
         animations[.BACK] = [SKTexture(imageNamed: textureName)]
         shadows[.BACK] = SKTexture(imageNamed: "shadow_\(SpriteDirection.BACK.rawValue)")
+        
+        mainNode.texture = animations[.FRONT]?.first
     }
 }
 
@@ -261,10 +282,6 @@ extension Player {
         self.rotation = angle
         
         setSpeed()*/
-    }
-    
-    func checkCollision() {
-        
     }
 }
 
