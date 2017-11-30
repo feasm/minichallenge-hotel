@@ -17,6 +17,7 @@ enum MessageType: String, Codable {
     case START_MAP = "start_map"
     case PLAYER_MOVEMENT = "player_movement"
     case PLAYER_DESTROYED = "player_destroyed"
+    case PLAYER_SCORE_READY = "player_score_ready"
 }
 
 struct GameData: Codable {
@@ -91,6 +92,11 @@ extension GameData {
         self.name = name
         self.reason = reason
         self.defeat = defeat
+    }
+    
+    init(messageType: MessageType, playerNumber: Int) {
+        self.messageType = messageType
+        self.playerNumber = playerNumber
     }
 }
 

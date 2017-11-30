@@ -97,6 +97,11 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendScoreReady(playerIndex: Int) {
+        let gameData = GameData(messageType: .PLAYER_SCORE_READY, playerNumber: playerIndex)
+        self.sendData(gameData)
+    }
+    
     func sendData(_ gameData: GameData) {
         do {
             let dataStr = self.encodeData(gameData: gameData)
