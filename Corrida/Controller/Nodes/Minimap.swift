@@ -16,6 +16,9 @@ class Minimap: NSObject
     var background : SKSpriteNode!
     var nodes : [Player : SKSpriteNode?] = [:]
     
+    var prop_x : CGFloat = 0
+    var prop_y : CGFloat = 0
+    
     init(scene: SKScene) {
         self.scene = scene
         
@@ -37,6 +40,13 @@ class Minimap: NSObject
             self.background.color = UIColor.black.withAlphaComponent(0.45)
             self.background.zPosition = NodesZPosition.CONTROLLERS.rawValue
             camera.addChild(background)
+        }
+        
+        if let scene = scene as? GameScene
+        {
+            let background = scene.background!
+            prop_x = (self.background.size.width - 20) / background.size.width
+            prop_y = (self.background.size.height - 20) / background.size.height
         }
     }
     
@@ -73,15 +83,8 @@ class Minimap: NSObject
     
     func nodePosition(at position: CGPoint) -> CGPoint
     {
-        if let scene = scene as? GameScene
-        {
-            let background = scene.background!
-            let prop_x = (self.background.size.width - 20) / background.size.width
-            let prop_y = (self.background.size.height - 20) / background.size.height
-            let nodePosition = CGPoint(x: position.x * prop_x, y: position.y * prop_y)
-            return nodePosition
-        }
-        return CGPoint(x: 0, y: 0)
+        let nodePosition = CGPoint(x: position.x * prop_x, y: position.y * prop_y)
+        return nodePosition
     }
     
     func mapNode(at position: CGPoint, color : UIColor) -> SKSpriteNode?

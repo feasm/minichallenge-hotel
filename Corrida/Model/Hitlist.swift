@@ -32,6 +32,7 @@ class HitCell : UICollectionViewCell
         let imageview = UIImageView()
         imageview.translatesAutoresizingMaskIntoConstraints = false
         imageview.contentMode = .scaleAspectFit
+        imageview.tintColor = UIColor(white: 0.2, alpha: 1)
         return imageview
     }()
     
@@ -96,7 +97,7 @@ class HitCell : UICollectionViewCell
             let strokeTextAttributes: [NSAttributedStringKey : Any] = [
                 NSAttributedStringKey.strokeColor : UIColor.black,
                 NSAttributedStringKey.foregroundColor : self.hitKill.killer?.mainColor ?? UIColor.white,
-                NSAttributedStringKey.strokeWidth : 1.5]
+                NSAttributedStringKey.strokeWidth : -1.5]
             killerLabel.attributedText = NSAttributedString(string: (self.hitKill.killer?.alias)!, attributes: strokeTextAttributes)
         }
         
@@ -185,10 +186,10 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
     static func getReasonIcon(reason: Player.DeathReason) -> UIImage?
     {
         switch reason {
-        case .HIT_MYSELF:
-            return UIImage(named: "Arrow_Prev")
+        case .HIT_WALL:
+            return UIImage(named: "strike")?.withRenderingMode(.alwaysTemplate)
         default:
-            return UIImage(named: "Arrow_Prev")
+            return UIImage(named: "Skull")?.withRenderingMode(.alwaysTemplate)
         }
     }
     
