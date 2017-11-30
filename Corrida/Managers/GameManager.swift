@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameManager {
     static let shared: GameManager = GameManager()
-    static let MULTIPLAYER_ON: Bool = false
+    static let MULTIPLAYER_ON: Bool = true
     
     var teleporters : [Teleporter] = []
     

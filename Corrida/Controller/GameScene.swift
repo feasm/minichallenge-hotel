@@ -302,6 +302,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         localPlayer.update(direction: self.playerDirection)
+        if GameManager.MULTIPLAYER_ON {
+            MultiplayerNetworking.shared.sendPlayerMovement(name: self.localPlayer.alias, position: self.localPlayer.position, rotation: self.localPlayer.rotation)
+        }
         
         updateCamera()
 
@@ -345,18 +348,22 @@ extension GameScene {
         
         if contact.bodyA.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyA.node as? Player {
-                if let type = collisionTypes[contact.bodyB.categoryBitMask] {
-                    let node = contact.bodyB.node
-                    player.performCollision(type: type, node: node)
+                if player.alias == localPlayer.alias {
+                    if let type = collisionTypes[contact.bodyB.categoryBitMask] {
+                        let node = contact.bodyB.node
+                        player.performCollision(type: type, node: node)
+                    }
                 }
             }
         }
         
         if contact.bodyB.categoryBitMask == PhysicsCategory.PLAYER.rawValue {
             if let player = contact.bodyB.node as? Player {
-                if let type = collisionTypes[contact.bodyA.categoryBitMask] {
-                    let node = contact.bodyA.node
-                    player.performCollision(type: type, node: node)
+                if player.alias == localPlayer.alias {
+                    if let type = collisionTypes[contact.bodyA.categoryBitMask] {
+                        let node = contact.bodyA.node
+                        player.performCollision(type: type, node: node)
+                    }
                 }
             }
         }

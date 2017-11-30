@@ -137,7 +137,7 @@ extension GameKitHelper {
                 if host.alias == GKLocalPlayer.localPlayer().alias {
                     print("Server em: \(host.alias ?? "Erro ao pegar alias do host")")
 
-                    Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { (timer) in
+                    Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { (timer) in
                         GameServer.shared.setup()
                         
                         self.startViewController?.matchStarted()

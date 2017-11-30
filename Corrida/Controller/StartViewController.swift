@@ -68,15 +68,20 @@ class StartViewController: UIViewController {
     
     //MARK: Actions
     @IBAction func startAction() {
+//        let modal = EndGameModal(players: players)
+//        modal.show(animated: true)
+        
+//        let modal = AlertModal(message: "teste")
+//        modal.show(animated: true)
+        
+        
         if GameManager.MULTIPLAYER_ON {
             NotificationCenter.default.addObserver(self, selector: #selector(showAuthenticationViewController), name: GameKitHelper.PRESENT_AUTHENTICATION, object: nil)
 
             NotificationCenter.default.addObserver(self, selector: #selector(playerAuthenticated), name: GameKitHelper.LOCAL_PLAYER_AUTHENTICATED, object: nil)
 
             GameKitHelper.shared.authenticateLocalPlayer()
-        }
-        else
-        {
+        } else {
             self.present(GameViewController(), animated: true, completion: nil)
         }
     }
@@ -89,6 +94,6 @@ extension StartViewController {
     }
     
     @objc func playerAuthenticated() {
-        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 4, maxPlayers: 4, viewController: self)
+        GameKitHelper.shared.findMatchWithMinPlayers(minPlayers: 3, maxPlayers: 3, viewController: self)
     }
 }
