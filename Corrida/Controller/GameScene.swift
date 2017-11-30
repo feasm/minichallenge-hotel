@@ -54,7 +54,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
-            self.localPlayer = Player(type: .THIRD)
+            self.localPlayer = Player(type: .FIRST)
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
             GameManager.shared.players.append(localPlayer)
@@ -84,6 +84,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
+        countDown()
+        
         // Carrega botões do controle
         if let camera = self.camera
         {
@@ -94,6 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             camera.zPosition = NodesZPosition.CONTROLLERS.rawValue+1
         }
+        
         // Inicia a física do mundo
         self.physicsWorld.contactDelegate = self
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.background.frame)
@@ -110,9 +113,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         PhysicsCategory.WALL.rawValue : .WALL,
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
         PhysicsCategory.TELEPORT.rawValue : .TELEPORT,
-        PhysicsCategory.TRAIL.rawValue : .TRAIL]
+        PhysicsCategory.TRAIL.rawValue : .TRAIL ]
         
         setupCamera(target: localPlayer)
+    }
+    
+    var countTimer : Int = 5
+    
+    func countDown()
+    {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
+            self.countTimer -= 1
+            print(self.countTimer)
+            if self.countTimer <= 0
+            {
+                for player in GameManager.shared.players
+                {
+                    player.freeze = false
+                }
+                timer.invalidate()
+            }
+        }
     }
     
     func loadChildren()
@@ -165,8 +186,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 {
                     if let camera = self.camera
                     {
-                        camera.run(SKAction.scale(to: 1.2, duration: 0.5))
-                        self.setupCamera(target: self.localPlayer)
+                        if camera.xScale != 1.2
+                        {
+                            camera.run(SKAction.scale(to: 1.2, duration: 0.5))
+                        }
                         return
                     }
                 }
@@ -174,8 +197,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
            
             if let camera = self.camera
             {
-                camera.run(SKAction.scale(to: 0.9, duration: 0.5))
-                self.setupCamera(target: self.localPlayer)
+                if camera.xScale != 0.9
+                {
+                    camera.run(SKAction.scale(to: 0.9, duration: 0.5))
+                }
             }
         }
     }

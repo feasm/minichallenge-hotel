@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,12 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundMap" translatesAutoresizingMaskIntoConstraints="NO" id="iV2-Nc-EBV">
-                                <rect key="frame" x="233.5" y="75" width="200" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="WuP-wl-dqr"/>
-                                    <constraint firstAttribute="width" constant="200" id="vau-Zl-5Lp"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="iV2-Nc-EBV">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUJ-uo-I4n">
                                 <rect key="frame" x="229.5" y="250" width="208" height="50"/>
@@ -46,15 +42,16 @@
                         </subviews>
                         <color key="backgroundColor" red="0.14509803921568626" green="0.10588235294117647" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="75" id="1Ix-7p-R6t"/>
-                            <constraint firstItem="aUJ-uo-I4n" firstAttribute="top" secondItem="iV2-Nc-EBV" secondAttribute="bottom" constant="25" id="E0G-t9-hWQ"/>
+                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="ASM-hb-KyR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="aUJ-uo-I4n" secondAttribute="bottom" constant="75" id="FAi-PE-LFC"/>
                             <constraint firstItem="aUJ-uo-I4n" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IJG-mP-H4T"/>
-                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JxY-4K-acR"/>
+                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="Lhh-mH-USA"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="PaG-3m-7R6"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bi9-TT-Cfr"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nT1-N2-TkA"/>
+                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="q4b-Bg-OtX"/>
                             <constraint firstItem="HtZ-Nw-Feg" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="tud-YZ-pm9"/>
+                            <constraint firstItem="iV2-Nc-EBV" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="yGW-ef-ow7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -491,12 +488,12 @@
     <resources>
         <image name="Arrow_Next" width="258" height="258"/>
         <image name="Arrow_Prev" width="258" height="258"/>
-        <image name="BackgroundMap" width="350" height="225"/>
         <image name="Button_Layout" width="208" height="58"/>
         <image name="birdalien_icon" width="150" height="200"/>
         <image name="demonalien_icon" width="150" height="200"/>
         <image name="dogalien_icon" width="150" height="200"/>
         <image name="gooalien_icon" width="150" height="200"/>
+        <image name="logo" width="1471" height="1130"/>
         <image name="plataforma " width="381" height="105"/>
     </resources>
 </document>

@@ -96,7 +96,7 @@ class HitCell : UICollectionViewCell
             let strokeTextAttributes: [NSAttributedStringKey : Any] = [
                 NSAttributedStringKey.strokeColor : UIColor.black,
                 NSAttributedStringKey.foregroundColor : self.hitKill.killer?.mainColor ?? UIColor.white,
-                NSAttributedStringKey.strokeWidth : 1.5]
+                NSAttributedStringKey.strokeWidth : -1.5]
             killerLabel.attributedText = NSAttributedString(string: (self.hitKill.killer?.alias)!, attributes: strokeTextAttributes)
         }
         

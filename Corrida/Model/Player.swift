@@ -13,6 +13,7 @@ enum SpriteDirection : String
     case SIDE = "side"
     case BACK = "back"
     case FRONT = "front"
+    case NONE = "none"
 }
 
 public class Stopwatch {
@@ -45,7 +46,10 @@ class Player: SKSpriteNode {
     var collide : Bool = false
     var lastTeleporter : Teleporter? = nil
     var lastPosition : CGPoint = .zero
+    
     var destroyed : Bool = false
+    var freeze : Bool = true
+    
     var mainColor : UIColor = .white
     
     var animationLastPoint: CGPoint?
@@ -55,6 +59,7 @@ class Player: SKSpriteNode {
     var shadow : SKSpriteNode?
     var mainNode : SKSpriteNode!
     
+    var lastDirection : SpriteDirection = .NONE
     var animations : [SpriteDirection : [SKTexture]] = [:]
     var shadows : [SpriteDirection : SKTexture] = [:]
     
@@ -80,16 +85,15 @@ class Player: SKSpriteNode {
         
         lastPosition = self.position
         self.animationLastPoint = nil
+        
         destroyed = false
         
         restartGame()
-        
     }
     
     init() {
         super.init(texture: nil, color: UIColor.white, size: CGSize(width: 0, height: 0))
         zPosition = NodesZPosition.PLAYER.rawValue
-        
     }
     
     init(type: CharactersEnum) {
@@ -121,9 +125,6 @@ class Player: SKSpriteNode {
             self.addChild(playerNameLabel!)
         }
     }
-    
-    var childAngle : CGFloat = 0
-    var childRadius : CGFloat = 0
     
     func setupMainNode(type: CharactersEnum)
     {
@@ -193,9 +194,6 @@ class Player: SKSpriteNode {
                 }
                 scene.hitlist?.addHit(hit: hit)
                 self.removeFromParent()
-                
-                print(times)
-                print(deaths)
             }
         }
     }
@@ -207,6 +205,7 @@ class Player: SKSpriteNode {
     
     func restartGame()
     {
+        freeze = true
         watch.start()
         deaths.removeAll()
         kills.removeAll()
@@ -226,7 +225,6 @@ class Player: SKSpriteNode {
         case .THIRD: //Gosma
             prefix = "gooalien"
             mainColor = .pColorGoo
-            
         case .FORTH: //Demon
             prefix = "demonalien"
             mainColor = .pColorDemon
@@ -292,7 +290,7 @@ extension Player {
     }
     
     func setSpeed() {
-        self.physicsBody?.velocity = playerSpeed
+        self.physicsBody?.velocity = freeze ? CGVector(dx: 0, dy: 0) : playerSpeed
     }
     
     func invertSpeed()
@@ -310,7 +308,10 @@ extension Player {
     
     func setRotation(to angle: CGFloat)
     {
-        self.rotation = angle
+        let angle360 = angle.degrees360
+    
+        let new_angle : CGFloat = angle360 > 360 ? angle360.truncatingRemainder(dividingBy: 360.0) : angle360
+        self.rotation = new_angle.radians
         
         let vector = CGPoint.vectorDirection(length: Player.CONSTANT_SPEED, direction: self.rotation.degrees360)
         
@@ -347,79 +348,147 @@ extension Player
     {
         if animations.count > 0
         {
-            var angle = self.rotation.degrees
-            angle = angle > 0 ? angle : (360.0 + angle)
+            let angle = self.rotation.degrees360
             let angle_range : CGFloat = 40.0
+            
+            var direction : SpriteDirection = .NONE
+            var flipped = 1
             
             if angle.inBetween(0, angle_range) || angle.inBetween(360-angle_range, 360)
             {
-                if let animate = self.animations[.SIDE]
-                {
-//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
-                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.mainNode.xScale = abs(self.mainNode.xScale)
-                }
-                
-                if let shadow = self.shadows[.SIDE]
-                {
-                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
-//                    self.shadow?.texture = shadow
-                }
+                direction = .SIDE
+                flipped = 1
             }
             else if angle.inBetween(angle_range, 180-angle_range)
             {
-                if let animate = self.animations[.BACK]
+                direction = .BACK
+                if angle.inBetween(angle_range, (180-angle_range)/2.0)
                 {
-//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
-                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    if angle.inBetween(angle_range, (180-angle_range)/2.0)
-                    {
-                        self.mainNode.xScale = abs(self.mainNode.xScale)
-                    }
-                    else
-                    {
-                        self.mainNode.xScale = -abs(self.mainNode.xScale)
-                    }
+                    flipped = 1
                 }
-                
-                if let shadow = self.shadows[.BACK]
+                else
                 {
-//                    self.shadow?.texture = shadow
-                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+                    flipped = -1
                 }
             }
             else if angle.inBetween(180-angle_range, 180+(2.0 * angle_range))
             {
-                if let animate = self.animations[.SIDE]
-                {
-//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
-                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
-                    self.mainNode.xScale = -abs(self.mainNode.xScale)
-                }
-                
-                if let shadow = self.shadows[.SIDE]
-                {
-//                    self.shadow?.texture = shadow
-                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
-                }
+                direction = .SIDE
+                flipped = -1
             }
             else if angle.inBetween(180+(2.0 * angle_range), 360-angle_range)
             {
-                if let animate = self.animations[.FRONT]
+                direction = .FRONT
+                flipped = 1
+            }
+            
+            
+            if lastDirection != direction && direction != .NONE
+            {
+                if let animate = self.animations[direction]
                 {
-//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
                     self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
                 }
                 
-                if let shadow = self.shadows[.FRONT]
+                if let shadow = self.shadows[direction]
                 {
                     self.shadow?.run(SKAction.setTexture(shadow, resize: true))
                 }
+                lastDirection = direction
+            }
+            
+            let scaleSign = Int(self.mainNode.xScale).signum()
+            if flipped != scaleSign
+            {
+                self.mainNode.xScale = CGFloat(flipped)*abs(self.mainNode.xScale)
             }
             
             self.playerNameLabel?.xScale = xScale
         }
     }
+    
+//    func updateDirection()
+//    {
+//        if animations.count > 0
+//        {
+//            var angle = self.rotation.degrees360
+//            let angle_range : CGFloat = 40.0
+//
+//            var direction : SpriteDirection =
+//            var flipped = -1
+//
+//            if sign(mainNode.xScale)
+//
+//            if angle.inBetween(0, angle_range) || angle.inBetween(360-angle_range, 360)
+//            {
+//                direction =
+//                if let animate = self.animations[.SIDE]
+//                {
+//                    //                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+//                    self.mainNode.xScale = abs(self.mainNode.xScale)
+//                }
+//
+//                if let shadow = self.shadows[.SIDE]
+//                {
+//                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+//                    //                    self.shadow?.texture = shadow
+//                }
+//            }
+//            else if angle.inBetween(angle_range, 180-angle_range)
+//            {
+//                if let animate = self.animations[.BACK]
+//                {
+//                    //                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+//                    if angle.inBetween(angle_range, (180-angle_range)/2.0)
+//                    {
+//                        self.mainNode.xScale = abs(self.mainNode.xScale)
+//                    }
+//                    else
+//                    {
+//                        self.mainNode.xScale = -abs(self.mainNode.xScale)
+//                    }
+//                }
+//
+//                if let shadow = self.shadows[.BACK]
+//                {
+//                    //                    self.shadow?.texture = shadow
+//                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+//                }
+//            }
+//            else if angle.inBetween(180-angle_range, 180+(2.0 * angle_range))
+//            {
+//                if let animate = self.animations[.SIDE]
+//                {
+//                    //                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+//                    self.mainNode.xScale = -abs(self.mainNode.xScale)
+//                }
+//
+//                if let shadow = self.shadows[.SIDE]
+//                {
+//                    //                    self.shadow?.texture = shadow
+//                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+//                }
+//            }
+//            else if angle.inBetween(180+(2.0 * angle_range), 360-angle_range)
+//            {
+//                if let animate = self.animations[.FRONT]
+//                {
+//                    //                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4, resize: true, restore: false), withKey: "animation")
+//                    self.mainNode.run(SKAction.animate(with: animate, timePerFrame: 0.4), withKey: "animation")
+//                }
+//
+//                if let shadow = self.shadows[.FRONT]
+//                {
+//                    self.shadow?.run(SKAction.setTexture(shadow, resize: true))
+//                }
+//            }
+//
+//            self.playerNameLabel?.xScale = xScale
+//        }
+//    }
 }
 
 enum CollisionType
@@ -438,6 +507,8 @@ extension Player {
     
     func releaseCollision(type : CollisionType, node: SKNode? = nil)
     {
+        guard !freeze else { return }
+        
         switch type {
         case .TELEPORT:
             Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { (_) in
@@ -450,6 +521,8 @@ extension Player {
     
     func performCollision(type : CollisionType, node: SKNode? = nil)
     {
+        guard !freeze else { return }
+        
         //print(type)
         switch type {
         case .TRAIL:
@@ -551,7 +624,7 @@ extension Player {
     
     func showPath() {
         let smoothPath = SKAction.run({
-            if self.lastTeleporter == nil
+            if self.lastTeleporter == nil && !self.freeze
             {
                 if self.lastPosition.distance(to: self.position) > 10
                 {
