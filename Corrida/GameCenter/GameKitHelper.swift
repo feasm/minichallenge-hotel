@@ -194,6 +194,10 @@ extension GameKitHelper {
             
             case .PLAYER_DESTROYED:
                 GameManager.shared.destroyPlayer(name: gameData.name!, reason: gameData.reason!, defeat: gameData.defeat)
+                
+            case .PLAYER_SCORE_READY:
+                GameManager.shared.gameView?.endGameModal.setPlayerReady(playerIndex: gameData.playerNumber!)
+                
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)

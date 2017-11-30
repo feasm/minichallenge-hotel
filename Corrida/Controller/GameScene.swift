@@ -381,7 +381,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.endGameModal?.setup(players: players)
             }
         }
-        
     }
 }
 
