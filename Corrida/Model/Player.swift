@@ -208,10 +208,7 @@ class Player: SKSpriteNode {
                 
                 removeAllActions()
                 
-                Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { (_) in
-                    self.showPath()
-                    self.respawn = false
-                })
+                
             }
         }
     }
@@ -552,16 +549,12 @@ extension Player {
         //print(type)
         switch type {
         case .TRAIL:
-            
-            
             if !destroyed && lastTeleporter == nil
             {
                 if let node = node
                 {
                     if node.name == self.alias
                     {
-                        print(type, node.name)
-                        return
                         destroyPlayer(reason: .HIT_MYSELF)
                         MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias, reason: .HIT_MYSELF, defeat: nil)
                     }
@@ -619,6 +612,7 @@ extension Player {
     {
         for node in tailNodes
         {
+            node.physicsBody = nil
             node.removeFromParent()
         }
         tailNodes.removeAll()

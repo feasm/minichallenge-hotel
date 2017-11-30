@@ -151,7 +151,7 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.frame.width, height: 50)
+        return CGSize(width: self.frame.width, height: 30)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
