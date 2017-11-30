@@ -128,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateLives()
     }
     
-    var countTimer : Int = 5
+    var countTimer : Int = 1
     
     func respawnPlayer(player: Player)
     {
@@ -136,11 +136,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         {
             if player.lives() > 0
             {
+                player.respawn = true
                 player.destroyed = false
                 player.freeze = false
+                player.animationLastPoint = nil
                 let spawner = Array(spawners.keys).chooseOne
                 setSpawn(to: player, id: spawner)
                 addChild(player)
+                player.removeAllActions()
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+                    player.showPath()
+                    player.respawn = false
+                })
             }
         }
     }
