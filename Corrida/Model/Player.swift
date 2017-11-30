@@ -54,6 +54,7 @@ class Player: SKSpriteNode {
     var collide : Bool = false
     var lastTeleporter : Teleporter? = nil
     var lastPosition : CGPoint = .zero
+    var tailNodes : [SKShapeNode] = []
     
     var destroyed : Bool = false
     var freeze : Bool = true
@@ -75,6 +76,7 @@ class Player: SKSpriteNode {
     var times : [TimeInterval] = []
     
     var watch : Stopwatch = Stopwatch()
+    var respawn : Bool = false
     
     func setup(id: String, alias: String) {
         self.id = id
@@ -184,6 +186,7 @@ class Player: SKSpriteNode {
             destroyed = true
             if let scene = scene as? GameScene
             {
+                respawn = true
                 watch.stop()
                 self.times.append(watch.durationSeconds())
                 let hit = Hitkill(victim: self, reason: reason, killer: defeat)
@@ -193,7 +196,20 @@ class Player: SKSpriteNode {
                     defeat?.kills.append(hit)
                 }
                 scene.hitlist?.addHit(hit: hit)
+                scene.updateLives()
                 self.removeFromParent()
+                removeAllActions()
+                
+                self.destroyPath()
+                scene.respawnPlayer(player: self)
+                self.destroyPath()
+                
+                removeAllActions()
+                
+                Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { (_) in
+                    self.showPath()
+                    self.respawn = false
+                })
             }
         }
     }
@@ -526,12 +542,16 @@ extension Player {
         //print(type)
         switch type {
         case .TRAIL:
+            
+            
             if !destroyed && lastTeleporter == nil
             {
                 if let node = node
                 {
                     if node.name == self.alias
                     {
+                        print(type, node.name)
+                        return
                         destroyPlayer(reason: .HIT_MYSELF)
                         MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias, reason: .HIT_MYSELF, defeat: nil)
                     }
@@ -585,9 +605,18 @@ extension Player {
 // MARK: Player Path
 extension Player {
     
+    func destroyPath()
+    {
+        for node in tailNodes
+        {
+            node.removeFromParent()
+        }
+        tailNodes.removeAll()
+    }
+    
     func showPath() {
         let smoothPath = SKAction.run({
-            if self.lastTeleporter == nil && !self.freeze
+            if self.lastTeleporter == nil && !self.freeze && !self.destroyed && !self.respawn
             {
                 if self.lastPosition.distance(to: self.position) > 10
                 {
@@ -604,10 +633,14 @@ extension Player {
                     node.lineWidth = 40
                     node.zPosition = self.zPosition - 1
                     
+                    self.tailNodes.append(node)
+                    
                     self.scene?.addChild(node)
                     let wait = SKAction.wait(forDuration: 3)
                     let fadeOut = SKAction.fadeOut(withDuration: 1)
-                    let remove = SKAction.removeFromParent()
+                    let remove = SKAction.group([SKAction.removeFromParent(), SKAction.run {
+                        self.tailNodes.removeFirst()
+                    }])
                     
                     let waitPhysics = SKAction.wait(forDuration: 0.5)
                     let trailPhysics = SKAction.run {

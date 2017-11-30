@@ -41,7 +41,7 @@ class HitCell : UICollectionViewCell
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = UIFont.boldSystemFont(ofSize: 19)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
@@ -49,7 +49,7 @@ class HitCell : UICollectionViewCell
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
@@ -61,20 +61,22 @@ class HitCell : UICollectionViewCell
         addSubview(victimLabel)
         victimLabel.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         victimLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        victimLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.42).isActive = true
+        victimLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.45).isActive = true
         victimLabel.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
         addSubview(killerLabel)
         killerLabel.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         killerLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        killerLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.42).isActive = true
+        killerLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.45).isActive = true
         killerLabel.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         
-        
         addSubview(reasonIcon)
-        reasonIcon.leftAnchor.constraint(equalTo: killerLabel.rightAnchor, constant: 5).isActive = true
-        reasonIcon.rightAnchor.constraint(equalTo: victimLabel.leftAnchor, constant: -5).isActive = true
-        reasonIcon.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+//        reasonIcon.leftAnchor.constraint(equalTo: killerLabel.rightAnchor, constant: 7).isActive = true
+//        reasonIcon.rightAnchor.constraint(equalTo: victimLabel.leftAnchor, constant: -7).isActive = true
+        reasonIcon.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.08).isActive = true
+        reasonIcon.heightAnchor.constraint(equalTo: reasonIcon.widthAnchor).isActive = true
+        reasonIcon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        reasonIcon.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

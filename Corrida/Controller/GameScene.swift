@@ -46,6 +46,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var countdownLabel : UILabel?
     
     var spawners : [Int: Spawner?] = [:]
+    
+    var livesNodes : [SKSpriteNode] = []
     //var teleporters : [Teleporter] = []
     
     var background : SKSpriteNode!
@@ -122,6 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameEnded = false
         
         setupCamera(target: localPlayer)
+        
+        updateLives()
     }
     
     var countTimer : Int = 5
@@ -158,6 +162,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func updateLives()
+    {
+        for node in livesNodes
+        {
+            if let index = livesNodes.index(of: node)
+            {
+                if index <= (localPlayer.lives()-1)
+                {
+                    node.alpha = 1
+                }
+                else
+                {
+                    node.alpha = 0
+                }
+            }
+        }
+    }
+    
     func setCountdown(_ pos : Int)
     {
         if let label = self.countdownLabel
@@ -187,6 +209,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.background.zPosition = NodesZPosition.BACKGROUND.rawValue
         
         GameManager.shared.teleporters.removeAll()
+        
+        for i in 1...3
+        {
+            if let camera = camera
+            {
+                if let node = camera.childNode(withName: "skull_\(i)") as? SKSpriteNode
+                {
+                    self.livesNodes.append(node)
+                }
+            }
+        }
         
         for child in children
         {
@@ -327,24 +360,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.playerDirection = .NONE
         }
         
-        var everyoneDestroyed: Bool = true
-        for player in GameManager.shared.players {
-            if player.alias != localPlayer.alias {
-                player.update(direction: .NONE)
-            }
+        if GameManager.MULTIPLAYER_ON
+        {
+            var everyoneDestroyed: Bool = true
+            for player in GameManager.shared.players {
+                if player.alias != localPlayer.alias {
+                    player.update(direction: .NONE)
+                }
 
-            if !player.destroyed {
-                everyoneDestroyed = false
+                if !player.destroyed {
+                    everyoneDestroyed = false
+                }
+            }
+            
+            if !gameEnded && everyoneDestroyed {
+                gameEnded = true
+        //            GameManager.shared.destroyGameView()
+                let players = GameManager.shared.getPlayersScore()
+                self.endGameModal?.isHidden = false
+                self.endGameModal?.setup(players: players)
             }
         }
         
-        if !gameEnded && everyoneDestroyed {
-            gameEnded = true
-//            GameManager.shared.destroyGameView()
-            let players = GameManager.shared.getPlayersScore()
-            self.endGameModal?.isHidden = false
-            self.endGameModal?.setup(players: players)
-        }
     }
 }
 

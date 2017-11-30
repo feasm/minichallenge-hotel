@@ -111,13 +111,20 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     
     @objc func readyAction(){
         print("READY ACTION CLICKED")
-        
-        //TODO: PEGAR INDEX DENTRO DE PLAYERS
-        let indexPath = IndexPath(row: 1, section: 0)
-        let cell = tableView.cellForRow(at: indexPath) as! PlayerEndGameTableViewCell
-        cell.setReady()
-        
-        //TODO: Send data do gamecenter
+        if GameManager.MULTIPLAYER_ON
+        {
+            //TODO: PEGAR INDEX DENTRO DE PLAYERS
+            let indexPath = IndexPath(row: 1, section: 0)
+            let cell = tableView.cellForRow(at: indexPath) as! PlayerEndGameTableViewCell
+            cell.setReady()
+            
+            //TODO: Send data do gamecenter
+
+        }
+        else
+        {
+            dismissSAMERDA()
+        }
     }
     
     func dismissSAMERDA(){
