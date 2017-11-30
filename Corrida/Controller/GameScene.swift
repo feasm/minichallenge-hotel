@@ -8,7 +8,7 @@
 
 import SpriteKit
 import GameplayKit
-
+import UIKit
 
 enum NodesZPosition : CGFloat
 {
@@ -42,6 +42,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var hitlist : Hitlist?
     
     var miniMap : Minimap!
+    var countdownLabel : UILabel?
     
     var spawners : [Int: Spawner?] = [:]
     //var teleporters : [Teleporter] = []
@@ -123,15 +124,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func countDown()
     {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-            self.countTimer -= 1
             print(self.countTimer)
-            if self.countTimer <= 0
+            self.setCountdown(self.countTimer)
+            self.countTimer -= 1
+            if self.countTimer < 0
             {
                 for player in GameManager.shared.players
                 {
                     player.freeze = false
                 }
                 timer.invalidate()
+            }
+        }
+    }
+    
+    func setCountdown(_ pos : Int)
+    {
+        if let label = self.countdownLabel
+        {
+            
+            let strokeTextAttributes: [NSAttributedStringKey : Any] = [
+                NSAttributedStringKey.strokeColor : UIColor.darkGray,
+                NSAttributedStringKey.foregroundColor: self.localPlayer.mainColor,
+                NSAttributedStringKey.strokeWidth : -1.5]
+            label.alpha = 0
+            let text = pos != 0 ? String(pos) : "Go!"
+            label.attributedText = NSAttributedString(string: text, attributes: strokeTextAttributes)
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                label.alpha = 1
+            }) { (_) in
+                UIView.animateKeyframes(withDuration: 0.2, delay: 0.5, options: .calculationModeLinear, animations: {
+                   label.alpha = 0
+                }, completion: nil)
             }
         }
     }

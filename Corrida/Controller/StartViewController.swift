@@ -13,6 +13,7 @@ class StartViewController: UIViewController {
     //MARK: Outlets
     @IBOutlet var logo : UIImageView!
     @IBOutlet var startButton : UIButton!
+    @IBOutlet weak var logoFront: UIImageView!
     
     @IBOutlet weak var overlayer: UIView!
     //MARK: Variables
@@ -29,7 +30,29 @@ class StartViewController: UIViewController {
     
     //MARK: Setup Methods
     func setup() {
+        UIView.animateKeyframes(withDuration: 2, delay: 0.5, options: [.repeat], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
+                self.logoFront.transform = CGAffineTransform(translationX: 0, y: 22)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5, animations: {
+                self.logoFront.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+        }, completion: nil)
 
+//        UIView.animateKeyframes(withDuration: 3, delay: 0.5, options: [.repeat], animations: {
+//            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+//                self.logoFront.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+//            })
+//            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.25, animations: {
+//                self.logoFront.transform = CGAffineTransform(translationX: 0, y: 30)
+//            })
+//            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.25, animations: {
+//                self.logoFront.transform = CGAffineTransform(translationX: 0, y: 0)
+//            })
+//            UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25, animations: {
+//                self.logoFront.transform = CGAffineTransform(scaleX: 1, y: 1)
+//            })
+//        }, completion: nil)
     }
     
     //MARK: Helper Methods
