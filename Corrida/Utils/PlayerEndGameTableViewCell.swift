@@ -33,11 +33,11 @@ class PlayerEndGameTableViewCell: UITableViewCell {
 
     }
     
-    func setup(player: Player){
+    func setup(player: Player, position: Int){
         self.player = player
         //TODO: SET AVATAR, ALIAS, KILLS, TIMER, AND BACKGROUND IF IS LOCALPLAYER
         
-        positionLabel.text = "2"
+        positionLabel.text = String(position + 1)
         
         mainView.layer.cornerRadius = 5
         mainView.layer.borderWidth = 5
@@ -62,8 +62,8 @@ class PlayerEndGameTableViewCell: UITableViewCell {
         
         nameLabel.text = player.alias
         
-        killsLabel.text = "99 mortes"
-        timerLabel.text = "12:57"
+        killsLabel.text = "\(player.kills.count) kills / \(player.deaths.count) deaths"
+        timerLabel.text = "\(player.times.max())"
     }
     
     func setReady(){

@@ -92,8 +92,8 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
-    func sendPlayerDestroyed(name: String) {
-        let gameData = GameData(messageType: .PLAYER_DESTROYED, name: name)
+    func sendPlayerDestroyed(name: String, reason: DeathReason, defeat: String?) {
+        let gameData = GameData(messageType: .PLAYER_DESTROYED, name: name, reason: reason, defeat: defeat)
         self.sendData(gameData)
     }
     

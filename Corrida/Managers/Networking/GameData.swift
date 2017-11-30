@@ -33,6 +33,8 @@ struct GameData: Codable {
     var name: String?
     var position: CGPoint?
     var rotation: CGFloat?
+    var reason: DeathReason?
+    var defeat: String?
     
     init(messageType: MessageType) {
         self.messageType = messageType
@@ -82,6 +84,13 @@ extension GameData {
     init(messageType: MessageType, name: String) {
         self.messageType = messageType
         self.name = name
+    }
+    
+    init(messageType: MessageType, name: String, reason: DeathReason, defeat: String?) {
+        self.messageType = messageType
+        self.name = name
+        self.reason = reason
+        self.defeat = defeat
     }
 }
 

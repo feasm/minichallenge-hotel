@@ -14,6 +14,8 @@ class GameViewController: UIViewController {
     
     var hitList : Hitlist = Hitlist()
     
+    var endGameModal : EndGameModal = EndGameModal()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,16 +31,25 @@ class GameViewController: UIViewController {
             
             if let sceneNode = scene.rootNode as! GameScene? {
                 sceneNode.hitlist = self.hitList
+                sceneNode.endGameModal = self.endGameModal
                 sceneNode.scaleMode = .aspectFill
                 gameView.presentScene(sceneNode)
             }
         }
         
         self.view.addSubview(hitList)
-        hitList.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        hitList.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         hitList.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        hitList.widthAnchor.constraint(equalToConstant: 230).isActive = true
+        hitList.widthAnchor.constraint(equalToConstant: 300).isActive = true
         hitList.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        
+        self.view.addSubview(endGameModal)
+        endGameModal.translatesAutoresizingMaskIntoConstraints = false
+        endGameModal.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        endGameModal.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        endGameModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0).isActive = true
+        endGameModal.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0).isActive = true
+        endGameModal.isHidden = true
         
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))

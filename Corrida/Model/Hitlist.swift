@@ -16,7 +16,7 @@ struct Hitkill : Equatable
     }
     
     var victim : Player
-    var reason : Player.DeathReason
+    var reason : DeathReason
     var killer : Player?
     
 }
@@ -96,7 +96,7 @@ class HitCell : UICollectionViewCell
             let strokeTextAttributes: [NSAttributedStringKey : Any] = [
                 NSAttributedStringKey.strokeColor : UIColor.black,
                 NSAttributedStringKey.foregroundColor : self.hitKill.killer?.mainColor ?? UIColor.white,
-                NSAttributedStringKey.strokeWidth : 1.5]
+                NSAttributedStringKey.strokeWidth : -1.5]
             killerLabel.attributedText = NSAttributedString(string: (self.hitKill.killer?.alias)!, attributes: strokeTextAttributes)
         }
         
@@ -182,7 +182,7 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
         //        print(hits.count, self.collectionView(self, numberOfItemsInSection: 0))
     }
     
-    static func getReasonIcon(reason: Player.DeathReason) -> UIImage?
+    static func getReasonIcon(reason: DeathReason) -> UIImage?
     {
         switch reason {
         case .HIT_MYSELF:

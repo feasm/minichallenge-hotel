@@ -20,8 +20,7 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     
     convenience init(players: [Player]){
         self.init(frame: UIScreen.main.bounds)
-        self.players = players
-        setup()
+        setup(players: players)
     }
     
     private override init(frame: CGRect){
@@ -34,7 +33,9 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     
     //MARK: Setup
     
-    func setup(){
+    func setup(players: [Player]){
+        self.players = players
+        
         backgroundView.frame = frame
         backgroundView.backgroundColor = UIColor.black
         backgroundView.alpha = 0.6
@@ -48,12 +49,12 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
         let dialogViewHeight = frame.height
         let dialogViewWidth = frame.width-64
         
-        dialogView.frame.origin = CGPoint(x: 32, y: frame.height)
+        dialogView.frame.origin = CGPoint(x: 32, y: 0)
         dialogView.frame.size = CGSize(width: dialogViewWidth, height: dialogViewHeight)
         dialogView.backgroundColor = UIColor.clear
         addSubview(dialogView)
         
-        tableView = UITableView(frame: CGRect(x: 8, y: 32, width: dialogViewWidth, height: 264))
+        tableView = UITableView(frame: CGRect(x: 0, y: 32, width: dialogViewWidth, height: 264))
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UINib(nibName: "PlayerEndGameTableViewCell", bundle: nil), forCellReuseIdentifier: "PlayerEndGameTableViewCell")
@@ -91,7 +92,7 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerEndGameTableViewCell", for: indexPath) as! PlayerEndGameTableViewCell
         
-        cell.setup(player: players[indexPath.row])
+        cell.setup(player: players[indexPath.row], position: indexPath.row)
         return cell
     }
     
@@ -120,6 +121,7 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     }
     
     func dismissSAMERDA(){
+        isHidden = true
         dismiss(animated: true)
     }
     

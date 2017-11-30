@@ -102,9 +102,7 @@ class ChooseMapViewController: UIViewController {
     
     func presentGameView() {
         let gameView = GameManager.shared.createGameView(view: self.view)
-        self.view.addSubview(gameView)
-        
-        GameManager.shared.loadScene(sceneName: "GameScene")
+        self.present(gameView, animated: true, completion: nil)
         
         //        let pad = GameManager.shared.directionalPad
         //        view.addSubview(pad)
