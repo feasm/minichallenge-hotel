@@ -573,7 +573,6 @@ class PrepareViewController: UIViewController {
         if readyClicked {
             readyClicked = false
             readyButton.alpha = 1.0
-            GameManager.shared.localPlayer.setType(type: self.selectedCharacter!)
             
             switch selectedCharacter {
             case .FIRST?:
@@ -594,6 +593,7 @@ class PrepareViewController: UIViewController {
         } else {
             readyClicked = true
             readyButton.alpha = 0.2
+            GameManager.shared.localPlayer.setType(type: self.selectedCharacter!)
             
             switch selectedCharacter {
             case .FIRST?:
