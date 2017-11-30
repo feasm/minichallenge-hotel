@@ -294,6 +294,8 @@ class PrepareViewController: UIViewController {
             playerNum = PlayerEnum(rawValue: player.rawValue - 1)!
         }
         
+        GameManager.shared.players[player.rawValue - 1].setType(type: character)
+        
         switch playerNum {
         case .FIRST:
             firstPlayerSelectedCharacter = character
@@ -591,6 +593,7 @@ class PrepareViewController: UIViewController {
         } else {
             readyClicked = true
             readyButton.alpha = 0.2
+            GameManager.shared.localPlayer.setType(type: self.selectedCharacter!)
             
             switch selectedCharacter {
             case .FIRST?:
