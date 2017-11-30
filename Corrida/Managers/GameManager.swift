@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameManager {
     static let shared: GameManager = GameManager()
-    static let MULTIPLAYER_ON: Bool = true
+    static let MULTIPLAYER_ON: Bool = false
     
     var teleporters : [Teleporter] = []
     
@@ -22,7 +22,7 @@ class GameManager {
     var players = [Player]()
     var isHost: Bool = false
     
-    var gameView: SKView?
+    var gameView: GameViewController?
     
     private init() {
         
@@ -38,12 +38,20 @@ class GameManager {
         }
     }
     
-    func destroyPlayer(name: String) {
+    func destroyPlayer(name: String, reason: DeathReason, defeat: String?) {
+        var playerDestroyed: Player?
+        var defeatedBy: Player?
+        
         for player in self.players {
             if player.alias == name {
-                player.destroyPlayer(reason: .HIT_OTHER_PLAYER)
-                break
+                playerDestroyed = player
+            } else if defeat != nil && defeat == player.alias {
+                defeatedBy = player
             }
+        }
+        
+        if let player = playerDestroyed {
+            player.destroyPlayer(reason: reason, defeat: defeatedBy)
         }
     }
     
@@ -89,29 +97,13 @@ class GameManager {
 
 // MARK: GameView
 extension GameManager {
-    func createGameView(view: UIView) -> SKView {
+    func createGameView(view: UIView) -> GameViewController {
         guard gameView == nil else {
             return gameView!
         }
         
-        gameView = SKView(frame: view.frame)
-        gameView!.ignoresSiblingOrder = false
-        gameView!.showsFPS = true
-        gameView!.showsNodeCount = true
-        gameView!.showsPhysics = false
-        
+        gameView = GameViewController()
         return gameView!
-    }
-    
-    func loadScene(sceneName: String) {
-        guard gameView != nil else {
-            print("gameView não instanciada, impossível carregar uma cena")
-            return
-        }
-        
-        let scene = GameScene(fileNamed: "GameScene")!
-        scene.scaleMode = .aspectFill
-        gameView!.presentScene(scene)
     }
     
     func destroyGameView() {
@@ -120,7 +112,22 @@ extension GameManager {
             return
         }
         
-        gameView!.removeFromSuperview()
+        gameView!.dismiss(animated: true, completion: nil)
+        gameView = nil
+    }
+    
+    func getPlayersScore() -> [Player] {
+        return GameManager.shared.players.sorted(by: { (player1, player2) -> Bool in
+            let timePlayer1 = player1.times.reduce(0, { (result, value) -> Double in
+                return result + value
+            })
+            
+            let timePlayer2 = player2.times.reduce(0, { (result, value) -> Double in
+                return result + value
+            })
+            
+            return timePlayer1 > timePlayer2
+        })
     }
 }
 

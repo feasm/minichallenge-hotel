@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import UIKit
 
 enum SpriteDirection : String
 {
@@ -34,6 +35,13 @@ public class Stopwatch {
     }
 }
 
+enum DeathReason: Int, Codable
+{
+    case HIT_MYSELF = 1
+    case HIT_OTHER_PLAYER = 2
+    case HIT_WALL = 3
+}
+
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 500.0
     static let ROTATION_SPEED: Float = 0.05
@@ -53,7 +61,6 @@ class Player: SKSpriteNode {
     var mainColor : UIColor = .white
     
     var animationLastPoint: CGPoint?
-    var animationPoints = [SKShapeNode]()
     
     var playerNameLabel: SKLabelNode?
     var shadow : SKSpriteNode?
@@ -68,13 +75,6 @@ class Player: SKSpriteNode {
     var times : [TimeInterval] = []
     
     var watch : Stopwatch = Stopwatch()
-    
-    enum DeathReason
-    {
-        case HIT_MYSELF
-        case HIT_OTHER_PLAYER
-        case HIT_WALL
-    }
     
     func setup(id: String, alias: String) {
         self.id = id
@@ -533,13 +533,13 @@ extension Player {
                     if node.name == self.alias
                     {
                         destroyPlayer(reason: .HIT_MYSELF)
-                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
+                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias, reason: .HIT_MYSELF, defeat: nil)
                     }
                     else
                     {
                         let killer = GameManager.shared.findPlayerBy(alias: node.name ?? "nonalias")
                         destroyPlayer(reason: .HIT_OTHER_PLAYER, defeat: killer)
-                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
+                        MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias, reason: .HIT_OTHER_PLAYER, defeat: killer?.alias)
                     }
                 }
             }
@@ -559,7 +559,7 @@ extension Player {
         case .WALL_DESTROY:
 //            print("Destroy:", alias)
             destroyPlayer(reason: .HIT_WALL)
-            MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias)
+            MultiplayerNetworking.shared.sendPlayerDestroyed(name: self.alias, reason: .HIT_WALL, defeat: nil)
         case .WALL:
             if !collide {
                 collide = true
@@ -584,43 +584,6 @@ extension Player {
 
 // MARK: Player Path
 extension Player {
-//    func getLastPathPoint(scale: CGFloat = 0) -> CGPoint{
-//        let normalizedSpeed = self.playerSpeed.normalized()
-//        let width = scale != 0 ? scale : 1
-//
-//        let offset = normalizedSpeed * (self.size.height + 20) / 2 * width
-//
-//        return CGPoint(x: self.position.x - offset.dx, y: self.position.y - offset.dy)
-//    }
-//
-//    func showPath() {
-//        let smoothPath = SKAction.run({
-//            let path = CGMutablePath()
-//            //            if self.animationLastPoint == nil {
-//            //                self.animationLastPoint = self.getLastPathPoint()
-//            //            }
-//            self.animationLastPoint = self.getLastPathPoint()
-//
-//            path.move(to: self.animationLastPoint!)
-//            path.addLine(to: self.getLastPathPoint(scale: 2))
-//
-//            let node = SKShapeNode(path: path)
-//            node.strokeColor = #colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
-//            node.lineWidth = 20
-//            self.animationPoints.append(node)
-//            self.scene?.addChild(node)
-//            let fadeOut = SKAction.fadeOut(withDuration: 4)
-//            let remove = SKAction.removeFromParent()
-//            node.run(SKAction.sequence([fadeOut, remove]))
-//            //            self.animationLastPoint = self.getLastPathPoint()
-//
-//            node.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 10))
-//            node.physicsBody?.isDynamic = false
-//            node.name = "Path"
-//        })
-//
-//        self.run(SKAction.repeatForever(SKAction.sequence([smoothPath, SKAction.wait(forDuration: 0.1)])))
-//    }
     
     func showPath() {
         let smoothPath = SKAction.run({
@@ -641,14 +604,12 @@ extension Player {
                     node.lineWidth = 40
                     node.zPosition = self.zPosition - 1
                     
-
-                    self.animationPoints.append(node)
                     self.scene?.addChild(node)
                     let wait = SKAction.wait(forDuration: 3)
                     let fadeOut = SKAction.fadeOut(withDuration: 1)
                     let remove = SKAction.removeFromParent()
                     
-                    let waitPhysics = SKAction.wait(forDuration: 1)
+                    let waitPhysics = SKAction.wait(forDuration: 0.5)
                     let trailPhysics = SKAction.run {
                         node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
                         //node.physicsBody = SKPhysicsBody(polygonFrom: path) //SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 20))

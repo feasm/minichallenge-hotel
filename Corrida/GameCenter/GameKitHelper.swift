@@ -193,7 +193,7 @@ extension GameKitHelper {
                 GameManager.shared.movePlayer(name: gameData.name!, position: gameData.position!, rotation: gameData.rotation!)
             
             case .PLAYER_DESTROYED:
-                GameManager.shared.destroyPlayer(name: gameData.name!)
+                GameManager.shared.destroyPlayer(name: gameData.name!, reason: gameData.reason!, defeat: gameData.defeat)
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)

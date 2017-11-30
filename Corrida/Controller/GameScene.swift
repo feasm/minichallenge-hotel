@@ -40,6 +40,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var rightButton: SKSpriteNode!
     var buttonPressed: Bool = false
     var hitlist : Hitlist?
+    var endGameModal : EndGameModal?
     
     var miniMap : Minimap!
     var countdownLabel : UILabel?
@@ -48,6 +49,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //var teleporters : [Teleporter] = []
     
     var background : SKSpriteNode!
+    
+    var gameEnded: Bool = false
     
     override func sceneDidLoad() {
         // Carrega todos os elementos do mapa para poderem ser utilizados no código
@@ -62,12 +65,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             addChild(self.localPlayer)
             self.setSpawn(to: self.localPlayer, id: 0)
             
-            let player = Player(type: .THIRD)
-            player.zPosition = 80
-            //player.setup(id: "1", alias: "batata")
-            GameManager.shared.players.append(player)
-            setSpawn(to: player, id: 1)
-            addChild(player)
+//            let player = Player(type: .THIRD)
+//            player.zPosition = 80
+//            //player.setup(id: "1", alias: "batata")
+//            GameManager.shared.players.append(player)
+//            setSpawn(to: player, id: 1)
+//            addChild(player)
             
         } else {
             self.localPlayer = GameManager.shared.localPlayer
@@ -115,6 +118,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
         PhysicsCategory.TELEPORT.rawValue : .TELEPORT,
         PhysicsCategory.TRAIL.rawValue : .TRAIL ]
+        
+        gameEnded = false
         
         setupCamera(target: localPlayer)
     }
@@ -333,8 +338,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        if everyoneDestroyed {
-            GameManager.shared.destroyGameView()
+        if !gameEnded && everyoneDestroyed {
+            gameEnded = true
+//            GameManager.shared.destroyGameView()
+            let players = GameManager.shared.getPlayersScore()
+            self.endGameModal?.isHidden = false
+            self.endGameModal?.setup(players: players)
         }
     }
 }

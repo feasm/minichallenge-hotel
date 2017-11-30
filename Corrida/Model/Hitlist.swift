@@ -16,7 +16,7 @@ struct Hitkill : Equatable
     }
     
     var victim : Player
-    var reason : Player.DeathReason
+    var reason : DeathReason
     var killer : Player?
     
 }
@@ -183,7 +183,7 @@ class Hitlist: UICollectionView, UICollectionViewDelegate, UICollectionViewDataS
         //        print(hits.count, self.collectionView(self, numberOfItemsInSection: 0))
     }
     
-    static func getReasonIcon(reason: Player.DeathReason) -> UIImage?
+    static func getReasonIcon(reason: DeathReason) -> UIImage?
     {
         switch reason {
         case .HIT_WALL:
