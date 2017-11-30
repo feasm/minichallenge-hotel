@@ -121,10 +121,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var countTimer : Int = 5
     
+    func respawnPlayer(player: Player)
+    {
+        if spawners.count > 0
+        {
+            if player.lives() > 0
+            {
+                player.destroyed = false
+                player.freeze = false
+                let spawner = Array(spawners.keys).chooseOne
+                setSpawn(to: player, id: spawner)
+                addChild(player)
+            }
+        }
+    }
+    
     func countDown()
     {
+        countTimer = 5
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-            print(self.countTimer)
             self.setCountdown(self.countTimer)
             self.countTimer -= 1
             if self.countTimer < 0
