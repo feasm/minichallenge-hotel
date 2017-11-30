@@ -15,6 +15,13 @@ class GameViewController: UIViewController {
     var hitList : Hitlist = Hitlist()
     
     var endGameModal : EndGameModal = EndGameModal()
+    let countDownLabel : UILabel =
+    {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 80)
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +39,7 @@ class GameViewController: UIViewController {
             if let sceneNode = scene.rootNode as! GameScene? {
                 sceneNode.hitlist = self.hitList
                 sceneNode.endGameModal = self.endGameModal
+                sceneNode.countdownLabel = self.countDownLabel
                 sceneNode.scaleMode = .aspectFill
                 gameView.presentScene(sceneNode)
             }
@@ -50,12 +58,16 @@ class GameViewController: UIViewController {
         endGameModal.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0).isActive = true
         endGameModal.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0).isActive = true
         endGameModal.isHidden = true
+      
+        self.view.addSubview(countDownLabel)
+        countDownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        countDownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
 //        hitList.addHit(hit: Hitkill(victim: Player(), reason: .HIT_MYSELF, killer: nil))
     }
-
+    
     override var shouldAutorotate: Bool {
         return true
     }
