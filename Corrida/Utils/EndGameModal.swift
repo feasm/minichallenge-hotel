@@ -18,6 +18,8 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     
     var players : [Player]!
     
+    var playersReady: [Bool]!
+    
     convenience init(players: [Player]){
         self.init(frame: UIScreen.main.bounds)
         setup(players: players)
@@ -35,6 +37,10 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     
     func setup(players: [Player]){
         self.players = players
+        self.playersReady = []
+        for _ in self.players {
+            self.playersReady.append(false)
+        }
         
         backgroundView.frame = frame
         backgroundView.backgroundColor = UIColor.black
@@ -113,11 +119,36 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
         print("READY ACTION CLICKED")
         
         //TODO: PEGAR INDEX DENTRO DE PLAYERS
-        let indexPath = IndexPath(row: 1, section: 0)
-        let cell = tableView.cellForRow(at: indexPath) as! PlayerEndGameTableViewCell
-        cell.setReady()
+        self.setPlayerReady(playerIndex: GameManager.shared.localNumber - 1)
         
         //TODO: Send data do gamecenter
+        MultiplayerNetworking.shared.sendScoreReady(playerIndex: GameManager.shared.localNumber - 1)
+    }
+    
+    func setPlayerReady(playerIndex: Int) {
+        let indexPath = IndexPath(row: playerIndex, section: 0)
+        let cell = tableView.cellForRow(at: indexPath) as! PlayerEndGameTableViewCell
+        cell.setReady()
+        setReadyVariable(playerIndex)
+        checkAllReady()
+    }
+    
+    func setReadyVariable(_ playerIndex: Int) {
+        self.playersReady[playerIndex] = self.playersReady[playerIndex] ? false : true
+    }
+    
+    func checkAllReady() {
+        var endGame = true
+        
+        for ready in playersReady {
+            if !ready {
+                endGame = false
+            }
+        }
+        
+        if endGame {
+            GameManager.shared.destroyGameView()
+        }
     }
     
     func dismissSAMERDA(){

@@ -340,7 +340,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if !gameEnded && everyoneDestroyed {
             gameEnded = true
-//            GameManager.shared.destroyGameView()
             let players = GameManager.shared.getPlayersScore()
             self.endGameModal?.isHidden = false
             self.endGameModal?.setup(players: players)

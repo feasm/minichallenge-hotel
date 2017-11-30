@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameManager {
     static let shared: GameManager = GameManager()
-    static let MULTIPLAYER_ON: Bool = false
+    static let MULTIPLAYER_ON: Bool = true
     
     var teleporters : [Teleporter] = []
     
@@ -118,13 +118,9 @@ extension GameManager {
     
     func getPlayersScore() -> [Player] {
         return GameManager.shared.players.sorted(by: { (player1, player2) -> Bool in
-            let timePlayer1 = player1.times.reduce(0, { (result, value) -> Double in
-                return result + value
-            })
+            let timePlayer1 = player1.getFullTime()
             
-            let timePlayer2 = player2.times.reduce(0, { (result, value) -> Double in
-                return result + value
-            })
+            let timePlayer2 = player2.getFullTime()
             
             return timePlayer1 > timePlayer2
         })

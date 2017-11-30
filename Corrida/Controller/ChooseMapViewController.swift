@@ -47,7 +47,8 @@ class ChooseMapViewController: UIViewController {
     
     func setupMap(){
         mapImage.layer.cornerRadius = 112
-        mapImage.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        mapImage.image = UIImage(named: "background")
+        mapImage.layer.masksToBounds = true
     }
     
     func setupButtons() {
@@ -87,13 +88,16 @@ class ChooseMapViewController: UIViewController {
         
         switch currentPosition {
         case 0:
-            mapImage.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+//            mapImage.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+            mapImage.image = UIImage(named: "background")
             break
         case 1:
             mapImage.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+            mapImage.image = nil
             break
         case 2:
             mapImage.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+            mapImage.image = nil
             break
         default:
             break

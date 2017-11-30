@@ -76,6 +76,8 @@ class Player: SKSpriteNode {
     
     var watch : Stopwatch = Stopwatch()
     
+    var characterEnum: CharactersEnum?
+    
     func setup(id: String, alias: String) {
         self.id = id
         self.alias = alias
@@ -215,6 +217,8 @@ class Player: SKSpriteNode {
     func setType(type: CharactersEnum) {
         
         var prefix = ""
+        
+        self.characterEnum = type
         switch type {
         case .FIRST: //Dogalien
             prefix = "dogalien"
@@ -251,6 +255,12 @@ class Player: SKSpriteNode {
         mainNode.run(SKAction.setTexture(texture, resize: true))
         
         self.mainNode.setScale(0.8)
+    }
+    
+    func getFullTime() -> Int {
+        return Int(self.times.reduce(0, { (result, value) -> Double in
+            return result + value
+        }))
     }
 }
 
