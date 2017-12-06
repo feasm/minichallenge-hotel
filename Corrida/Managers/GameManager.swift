@@ -122,7 +122,11 @@ extension GameManager {
             
             let timePlayer2 = player2.getFullTime()
             
-            return timePlayer1 > timePlayer2
+            if timePlayer1 == timePlayer2 {
+                return player1.lives() > player2.lives()
+            } else {
+                return timePlayer1 > timePlayer2
+            }
         })
     }
 }

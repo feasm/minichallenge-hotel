@@ -41,8 +41,6 @@ class ChooseMapViewController: UIViewController {
         
         setupMap()
         setupButtons()
-        
-        background.image = nil
     }
     
     func setupMap(){

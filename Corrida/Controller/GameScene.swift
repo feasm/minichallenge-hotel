@@ -143,11 +143,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let spawner = Array(spawners.keys).chooseOne
                 setSpawn(to: player, id: spawner)
                 addChild(player)
+                
                 player.removeAllActions()
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+                
+                player.run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run({
                     player.showPath()
                     player.respawn = false
-                })
+                })]))
             }
         }
     }
@@ -369,18 +371,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if GameManager.MULTIPLAYER_ON
         {
-            var everyoneDestroyed: Bool = true
+            var playersDestroyed = GameManager.shared.players.count
+            var lastPlayer: Player?
             for player in GameManager.shared.players {
                 if player.alias != localPlayer.alias {
                     player.update(direction: .NONE)
                 }
 
-                if !player.destroyed {
-                    everyoneDestroyed = false
+                if player.lives() == 0 {
+                    playersDestroyed -= 1
+                } else {
+                    lastPlayer = player
                 }
             }
             
-            if !gameEnded && everyoneDestroyed {
+            if !gameEnded && playersDestroyed <= 1 {
+                lastPlayer?.watch.stop()
+                lastPlayer?.times.append((lastPlayer?.watch.durationSeconds())!)
                 gameEnded = true
         //            GameManager.shared.destroyGameView()
                 let players = GameManager.shared.getPlayersScore()

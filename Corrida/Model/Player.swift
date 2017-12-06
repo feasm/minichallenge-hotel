@@ -45,7 +45,7 @@ enum DeathReason: Int, Codable
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 500.0
     static let ROTATION_SPEED: Float = 0.05
-    static let MAX_LIVES : Int = 3
+    static let MAX_LIVES : Int = 1
     
     var id: String!
     var alias: String!
@@ -91,6 +91,7 @@ class Player: SKSpriteNode {
         self.animationLastPoint = nil
         
         destroyed = false
+        respawn = false
         
         restartGame()
     }
@@ -204,8 +205,7 @@ class Player: SKSpriteNode {
                 
                 self.destroyPath()
                 scene.respawnPlayer(player: self)
-                self.destroyPath()
-                
+
                 removeAllActions()
                 
                 
