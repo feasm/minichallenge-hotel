@@ -1,1 +1,0 @@
-# minichallenge-hotel
