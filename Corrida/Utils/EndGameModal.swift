@@ -126,7 +126,26 @@ class EndGameModal: UIView, Modal, UITableViewDelegate, UITableViewDataSource {
     }
     
     func setPlayerReady(playerIndex: Int) {
-        let indexPath = IndexPath(row: playerIndex, section: 0)
+        var playerInGame: Player?
+        var index = 0
+        for player in GameManager.shared.players {
+            if index == playerIndex {
+                playerInGame = player
+                break
+            }
+            
+            index += 1
+        }
+        
+        var indexInScore = 0
+        for player in self.players {
+            if player.alias == playerInGame?.alias {
+                break
+            }
+            indexInScore += 1
+        }
+        
+        let indexPath = IndexPath(row: indexInScore, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! PlayerEndGameTableViewCell
         cell.setReady()
         setReadyVariable(playerIndex)

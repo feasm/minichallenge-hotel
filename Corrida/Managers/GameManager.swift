@@ -11,7 +11,7 @@ import SpriteKit
 
 class GameManager {
     static let shared: GameManager = GameManager()
-    static let MULTIPLAYER_ON: Bool = true
+    static let MULTIPLAYER_ON: Bool = false
     
     var teleporters : [Teleporter] = []
     
@@ -122,7 +122,11 @@ extension GameManager {
             
             let timePlayer2 = player2.getFullTime()
             
-            return timePlayer1 > timePlayer2
+            if timePlayer1 == timePlayer2 {
+                return player1.lives() > player2.lives()
+            } else {
+                return timePlayer1 > timePlayer2
+            }
         })
     }
 }

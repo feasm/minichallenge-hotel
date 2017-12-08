@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var livesNodes : [SKSpriteNode] = []
     //var teleporters : [Teleporter] = []
+    var effects : [Effect] = []
     
     var background : SKSpriteNode!
     
@@ -57,6 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func sceneDidLoad() {
         // Carrega todos os elementos do mapa para poderem ser utilizados no código
         loadChildren()
+        loadEffects()
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
@@ -119,7 +121,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         PhysicsCategory.WALL.rawValue : .WALL,
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
         PhysicsCategory.TELEPORT.rawValue : .TELEPORT,
-        PhysicsCategory.TRAIL.rawValue : .TRAIL ]
+        PhysicsCategory.TRAIL.rawValue : .TRAIL,
+        PhysicsCategory.BOOST.rawValue : .BOOST]
         
         gameEnded = false
         
@@ -143,11 +146,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let spawner = Array(spawners.keys).chooseOne
                 setSpawn(to: player, id: spawner)
                 addChild(player)
+                
                 player.removeAllActions()
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { (_) in
+                
+                player.run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run({
                     player.showPath()
                     player.respawn = false
-                })
+                })]))
             }
         }
     }
@@ -207,6 +212,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    label.alpha = 0
                 }, completion: nil)
             }
+        }
+    }
+    
+    func loadEffects()
+    {
+        //let type : [EffectType] = [.EXTRA_LIFE, .SPEED, .JUMP, .INVULNERABILITY]
+        let type : [EffectType] = [.JUMP]
+        for _ in 0...2
+        {
+            let effect = Effect(type: type.chooseOne, scene: self)
+            effects.append(effect)
         }
     }
     
@@ -369,18 +385,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if GameManager.MULTIPLAYER_ON
         {
-            var everyoneDestroyed: Bool = true
+            var playersDestroyed = GameManager.shared.players.count
+            var lastPlayer: Player?
             for player in GameManager.shared.players {
                 if player.alias != localPlayer.alias {
                     player.update(direction: .NONE)
                 }
 
-                if !player.destroyed {
-                    everyoneDestroyed = false
+                if player.lives() == 0 {
+                    playersDestroyed -= 1
+                } else {
+                    lastPlayer = player
                 }
             }
             
-            if !gameEnded && everyoneDestroyed {
+            if !gameEnded && playersDestroyed <= 1 {
+                lastPlayer?.watch.stop()
+                lastPlayer?.times.append((lastPlayer?.watch.durationSeconds())!)
                 gameEnded = true
         //            GameManager.shared.destroyGameView()
                 let players = GameManager.shared.getPlayersScore()
