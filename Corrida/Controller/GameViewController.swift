@@ -30,12 +30,11 @@ class GameViewController: UIViewController {
         gameView.ignoresSiblingOrder = false
         gameView.showsFPS = true
         gameView.showsNodeCount = true
-        gameView.showsPhysics = false
+        gameView.showsPhysics = true
         
         self.view.addSubview(gameView)
         
         if let scene = GKScene(fileNamed: "GameScene") {
-            
             if let sceneNode = scene.rootNode as! GameScene? {
                 sceneNode.hitlist = self.hitList
                 sceneNode.endGameModal = self.endGameModal
