@@ -302,7 +302,7 @@ extension Player {
         self.physicsBody?.isDynamic = true
         self.physicsBody?.categoryBitMask = PhysicsCategory.PLAYER.rawValue
         self.physicsBody?.collisionBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue
-        self.physicsBody!.contactTestBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue | PhysicsCategory.TELEPORT.rawValue | PhysicsCategory.TRAIL.rawValue
+        self.physicsBody!.contactTestBitMask = PhysicsCategory.WALL.rawValue | PhysicsCategory.BARRIER.rawValue | PhysicsCategory.TELEPORT.rawValue | PhysicsCategory.TRAIL.rawValue | PhysicsCategory.BOOST.rawValue
         
         self.setSpeed()
     }
@@ -520,6 +520,7 @@ enum CollisionType
     case WALL_DESTROY
     case TELEPORT
     case TRAIL
+    case BOOST
     case NONE
 }
 
@@ -548,6 +549,12 @@ extension Player {
         
         //print(type)
         switch type {
+        case .BOOST:
+            if let node = node as? Effect
+            {
+                let type = node.get()
+                print(type)
+            }
         case .TRAIL:
             if !destroyed && lastTeleporter == nil
             {
