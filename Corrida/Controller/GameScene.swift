@@ -140,7 +140,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if player.lives() > 0
             {
                 player.respawn = true
-                player.destroyed = false
                 player.freeze = false
                 player.animationLastPoint = nil
                 let spawner = Array(spawners.keys).chooseOne
@@ -152,6 +151,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player.run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run({
                     player.showPath()
                     player.respawn = false
+                    player.destroyed = false
                 })]))
             }
         }

@@ -35,7 +35,6 @@ class GameViewController: UIViewController {
         self.view.addSubview(gameView)
         
         if let scene = GKScene(fileNamed: "GameScene") {
-            
             if let sceneNode = scene.rootNode as! GameScene? {
                 sceneNode.hitlist = self.hitList
                 sceneNode.endGameModal = self.endGameModal

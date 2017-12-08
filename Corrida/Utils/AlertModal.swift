@@ -17,13 +17,14 @@ class AlertModal: UIView, Modal {
     var message : String!
     
     //MARK: Inits
-    convenience init(message: String){
+    convenience init(message: String) {
         self.init(frame: UIScreen.main.bounds)
         self.message = message
+        
         setup()
     }
     
-    private override init(frame: CGRect){
+    private override init(frame: CGRect) {
         super.init(frame: frame)
     }
     

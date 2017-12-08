@@ -45,7 +45,7 @@ enum DeathReason: Int, Codable
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 500.0
     static let ROTATION_SPEED: Float = 0.05
-    static let MAX_LIVES : Int = 1
+    static let MAX_LIVES : Int = 3
     
     var id: String!
     var alias: String!
@@ -206,7 +206,7 @@ class Player: SKSpriteNode {
                 self.destroyPath()
                 scene.respawnPlayer(player: self)
 
-                removeAllActions()
+//                removeAllActions()
                 
                 
             }
@@ -632,30 +632,35 @@ extension Player {
                 if self.lastPosition.distance(to: self.position) > 10
                 {
                     self.lastPosition = self.position
-                    let path = CGMutablePath()
+//                    let path = CGMutablePath()
                     if self.animationLastPoint == nil {
                         self.animationLastPoint = CGPoint(x: self.position.x, y: self.position.y)
                     }
-                    path.move(to: self.animationLastPoint!)
-                    path.addLine(to: self.position)
-
-                    let node = SKShapeNode(path: path)
-                    node.strokeColor = self.mainColor //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
-                    node.lineWidth = 40
-                    node.zPosition = self.zPosition - 1
+//                    path.move(to: self.animationLastPoint!)
+//                    path.addLine(to: self.position)
+//
+//                    let node = SKShapeNode(path: path)
+//                    node.strokeColor = self.mainColor //#colorLiteral(red: 0.6987038255, green: 0.9717952609, blue: 0.4537590742, alpha: 1)
+//                    node.lineWidth = 40
+//                    node.zPosition = self.zPosition - 1
                     
-                    self.tailNodes.append(node)
+                    let node = SKSpriteNode(imageNamed: "fire")
+                    node.zPosition = self.zPosition - 1
+                    node.position = self.position
+                    node.setScale(2)
+                    
+//                    self.tailNodes.append(node)
                     
                     self.scene?.addChild(node)
                     let wait = SKAction.wait(forDuration: 3)
                     let fadeOut = SKAction.fadeOut(withDuration: 1)
                     let remove = SKAction.group([SKAction.removeFromParent(), SKAction.run {
-                        self.tailNodes.removeFirst()
+//                        self.tailNodes.removeFirst()
                     }])
                     
                     let waitPhysics = SKAction.wait(forDuration: 0.5)
                     let trailPhysics = SKAction.run {
-                        node.physicsBody = SKPhysicsBody(edgeLoopFrom: path)
+                        node.physicsBody = SKPhysicsBody(circleOfRadius: 50)
                         //node.physicsBody = SKPhysicsBody(polygonFrom: path) //SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 20))
                         node.physicsBody?.isDynamic = true
                         node.physicsBody?.friction = 0
@@ -675,7 +680,7 @@ extension Player {
             
         })
 
-        self.run(SKAction.repeatForever(SKAction.sequence([smoothPath, SKAction.wait(forDuration: 0.1)])))
+        self.run(SKAction.repeatForever(SKAction.sequence([smoothPath, SKAction.wait(forDuration: 0.25)])))
     }
     
     @objc func setPhysicsOnPath(sender: Any) {
