@@ -19,6 +19,7 @@
 		1B1B0C361FCA08AE000D407A /* Teleporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1B0C351FCA08AE000D407A /* Teleporter.swift */; };
 		1B1B0C381FCA0C9B000D407A /* Barrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1B0C371FCA0C9B000D407A /* Barrier.swift */; };
 		1B1B0C3A1FCA24E4000D407A /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1B0C391FCA24E4000D407A /* PhysicsCategory.swift */; };
+		1B77F68D1FD875EA00B44365 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B77F68C1FD875EA00B44365 /* Effect.swift */; };
 		1BA5115B1FCDDF3E000C8900 /* Minimap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA5115A1FCDDF3E000C8900 /* Minimap.swift */; };
 		1BA5115D1FCE1072000C8900 /* Hitlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA5115C1FCE1072000C8900 /* Hitlist.swift */; };
 		BCFABCE71FC5BB16007B94FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABCE61FC5BB16007B94FF /* AppDelegate.swift */; };
@@ -63,6 +64,7 @@
 		1B1B0C351FCA08AE000D407A /* Teleporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teleporter.swift; sourceTree = "<group>"; };
 		1B1B0C371FCA0C9B000D407A /* Barrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barrier.swift; sourceTree = "<group>"; };
 		1B1B0C391FCA24E4000D407A /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
+		1B77F68C1FD875EA00B44365 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
 		1BA5115A1FCDDF3E000C8900 /* Minimap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minimap.swift; sourceTree = "<group>"; };
 		1BA5115C1FCE1072000C8900 /* Hitlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitlist.swift; sourceTree = "<group>"; };
 		BCFABCE31FC5BB16007B94FF /* Corrida.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Corrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,6 +134,7 @@
 				1B1B0C371FCA0C9B000D407A /* Barrier.swift */,
 				1B1B0C391FCA24E4000D407A /* PhysicsCategory.swift */,
 				1BA5115A1FCDDF3E000C8900 /* Minimap.swift */,
+				1B77F68C1FD875EA00B44365 /* Effect.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				BCFABD351FC81831007B94FF /* GameData.swift in Sources */,
 				F7C843D61FCDEC0B00B5DBB1 /* PlayerEndGameTableViewCell.swift in Sources */,
 				BCFABD111FC7584C007B94FF /* StartViewController.swift in Sources */,
+				1B77F68D1FD875EA00B44365 /* Effect.swift in Sources */,
 				F7C843D01FCDE91600B5DBB1 /* AlertModal.swift in Sources */,
 				BCFABCEF1FC5BB16007B94FF /* GameViewController.swift in Sources */,
 				1B1B0C2E1FC9F16C000D407A /* SKAction+Extensions.swift in Sources */,

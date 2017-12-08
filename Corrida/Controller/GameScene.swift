@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var livesNodes : [SKSpriteNode] = []
     //var teleporters : [Teleporter] = []
+    var effects : [Effect] = []
     
     var background : SKSpriteNode!
     
@@ -57,6 +58,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func sceneDidLoad() {
         // Carrega todos os elementos do mapa para poderem ser utilizados no código
         loadChildren()
+        loadEffects()
         
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
@@ -119,7 +121,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         PhysicsCategory.WALL.rawValue : .WALL,
         PhysicsCategory.BARRIER.rawValue : .WALL_DESTROY,
         PhysicsCategory.TELEPORT.rawValue : .TELEPORT,
-        PhysicsCategory.TRAIL.rawValue : .TRAIL ]
+        PhysicsCategory.TRAIL.rawValue : .TRAIL,
+        PhysicsCategory.BOOST.rawValue : .BOOST]
         
         gameEnded = false
         
@@ -209,6 +212,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                    label.alpha = 0
                 }, completion: nil)
             }
+        }
+    }
+    
+    func loadEffects()
+    {
+        //let type : [EffectType] = [.EXTRA_LIFE, .SPEED, .JUMP, .INVULNERABILITY]
+        let type : [EffectType] = [.JUMP]
+        for _ in 0...2
+        {
+            let effect = Effect(type: type.chooseOne, scene: self)
+            effects.append(effect)
         }
     }
     
