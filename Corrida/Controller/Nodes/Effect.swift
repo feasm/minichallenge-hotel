@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-enum EffectType: String
+enum EffectType: String, Codable
 {
     case SPEED = "e_speed"
     case INVULNERABILITY = "e_invul"

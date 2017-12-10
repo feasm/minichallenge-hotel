@@ -18,6 +18,7 @@ enum MessageType: String, Codable {
     case PLAYER_MOVEMENT = "player_movement"
     case PLAYER_DESTROYED = "player_destroyed"
     case PLAYER_SCORE_READY = "player_score_ready"
+    case NEW_EFFECT = "new_effect"
 }
 
 struct GameData: Codable {
@@ -36,6 +37,7 @@ struct GameData: Codable {
     var rotation: CGFloat?
     var reason: DeathReason?
     var defeat: String?
+    var type: EffectType?
     
     init(messageType: MessageType) {
         self.messageType = messageType
@@ -100,3 +102,10 @@ extension GameData {
     }
 }
 
+extension GameData {
+    init(messageType: MessageType, type: EffectType, position: CGPoint) {
+        self.messageType = messageType
+        self.type = type
+        self.position = position
+    }
+}

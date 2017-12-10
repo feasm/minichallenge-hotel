@@ -49,7 +49,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var livesNodes : [SKSpriteNode] = []
     //var teleporters : [Teleporter] = []
-    var effects : [Effect] = []
     
     var background : SKSpriteNode!
     
@@ -148,11 +147,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 player.removeAllActions()
                 
-                player.run(SKAction.sequence([SKAction.wait(forDuration: 2), SKAction.run({
-                    player.showPath()
-                    player.respawn = false
-                    player.destroyed = false
-                })]))
+                player.showPath()
+                player.respawn = false
+                player.destroyed = false
             }
         }
     }
@@ -217,13 +214,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func loadEffects()
     {
+        guard GameManager.shared.isHost else {
+            return
+        }
+        
         //let type : [EffectType] = [.EXTRA_LIFE, .SPEED, .JUMP, .INVULNERABILITY]
         let type : [EffectType] = [.JUMP]
         for _ in 0...2
         {
-            let effect = Effect(type: type.chooseOne, scene: self)
-            effects.append(effect)
+            addEffect(type: type)
         }
+    }
+    
+    func addEffect(type : [EffectType]) {
+        let effect = Effect(type: type.chooseOne, scene: self)
+        GameManager.shared.effects.append(effect)
+        
+        if GameManager.MULTIPLAYER_ON {
+            MultiplayerNetworking.shared.sendNewEffect(type: effect.type, position: effect.position)
+        }
+    }
+    
+    func addEffect(type : EffectType, position: CGPoint) {
+        let effect = Effect(type: type, position: position, scene: self)
+        GameManager.shared.effects.append(effect)
     }
     
     func loadChildren()

@@ -204,7 +204,10 @@ class Player: SKSpriteNode {
                 removeAllActions()
                 
                 self.destroyPath()
-                scene.respawnPlayer(player: self)
+                
+                Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: { (timer) in
+                    scene.respawnPlayer(player: self)
+                })
 
 //                removeAllActions()
                 

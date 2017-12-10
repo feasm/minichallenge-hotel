@@ -102,6 +102,11 @@ extension MultiplayerNetworking {
         self.sendData(gameData)
     }
     
+    func sendNewEffect(type: EffectType, position: CGPoint) {
+        let gameData = GameData(messageType: .NEW_EFFECT, type: type, position: position)
+        self.sendData(gameData)
+    }
+    
     func sendData(_ gameData: GameData) {
         do {
             let dataStr = self.encodeData(gameData: gameData)

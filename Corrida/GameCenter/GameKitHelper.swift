@@ -11,6 +11,7 @@ import GameKit
 protocol GameKitHelperDelegate {
     func matchStarted()
     func matchEnded()
+    func addEffect(type : EffectType, position: CGPoint)
 //    func performAction(playerName: String, state: PlayerState, target: Target)
 }
 
@@ -201,6 +202,9 @@ extension GameKitHelper {
             case .PLAYER_MESSAGE:
                 print("player message")
 //                GameManager.shared.movePlayer(name: gameData.name!, target: gameData.target, position: gameData.position!)
+                
+            case .NEW_EFFECT:
+                gameScene?.addEffect(type: gameData.type!, position: gameData.position!)
                 
             default:
                 print("default message")
