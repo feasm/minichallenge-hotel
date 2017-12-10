@@ -44,6 +44,7 @@ enum DeathReason: Int, Codable
 
 class Player: SKSpriteNode {
     static let CONSTANT_SPEED: CGFloat = 500.0
+    static let HIGH_SPEED: CGFloat = 900.0
     static let ROTATION_SPEED: Float = 0.05
     static let MAX_LIVES : Int = 3
     
@@ -79,6 +80,25 @@ class Player: SKSpriteNode {
     var respawn : Bool = false
     
     var characterEnum: CharactersEnum?
+    
+    var extraLives : Int = 0
+    
+    var availableEffect : EffectType = .NONE
+    {
+        didSet
+        {
+            if let scene = self.scene as? GameScene
+            {
+                if self == scene.localPlayer
+                {
+                    scene.updateAction(type: availableEffect)
+                }
+            }
+        }
+    }
+    
+    var currentEffect : EffectType = .NONE
+    var timerEffect : Timer? = nil
     
     func setup(id: String, alias: String) {
         self.id = id
@@ -192,14 +212,22 @@ class Player: SKSpriteNode {
                 respawn = true
                 watch.stop()
                 self.times.append(watch.durationSeconds())
-                let hit = Hitkill(victim: self, reason: reason, killer: defeat)
-                self.deaths.append(hit)
-                if defeat != nil
-                {
-                    defeat?.kills.append(hit)
+                
+                if extraLives > 0 {
+                    extraLives -= 1
                 }
-                scene.hitlist?.addHit(hit: hit)
-                scene.updateLives()
+                else {
+                    let hit = Hitkill(victim: self, reason: reason, killer: defeat)
+                    self.deaths.append(hit)
+                    
+                    if defeat != nil {
+                        defeat?.kills.append(hit)
+                    }
+                    
+                    scene.hitlist?.addHit(hit: hit)
+                    scene.updateLives()
+                }
+                
                 self.removeFromParent()
                 removeAllActions()
                 
@@ -270,6 +298,41 @@ class Player: SKSpriteNode {
         self.mainNode.setScale(0.8)
     }
     
+    func performEffect()
+    {
+        if currentEffect == .NONE
+        {
+            switch availableEffect {
+            case .SPEED:
+                self.availableEffect = .NONE
+                self.currentEffect = .SPEED
+                self.setRotation(to: self.rotation)
+                timerEffect = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { (_) in
+                    self.currentEffect = .NONE
+                })
+            case .NONE:
+                return
+            default:
+                return
+            }
+            
+        }
+    }
+    
+    func addEffect(type: EffectType)
+    {
+        if type != .NONE
+        {
+            switch(type)
+            {
+            case .EXTRA_LIFE:
+                extraLives += 1
+            default:
+                availableEffect = type
+            }
+        }
+    }
+    
     func getFullTime() -> Int {
         return Int(self.times.reduce(0, { (result, value) -> Double in
             return result + value
@@ -336,7 +399,8 @@ extension Player {
         let new_angle : CGFloat = angle360 > 360 ? angle360.truncatingRemainder(dividingBy: 360.0) : angle360
         self.rotation = new_angle.radians
         
-        let vector = CGPoint.vectorDirection(length: Player.CONSTANT_SPEED, direction: self.rotation.degrees360)
+        let length = currentEffect != .SPEED ? Player.CONSTANT_SPEED : Player.HIGH_SPEED
+        let vector = CGPoint.vectorDirection(length: length, direction: self.rotation.degrees360)
         
         self.playerSpeed = CGVector(dx: vector.x, dy: vector.y)
         
@@ -552,8 +616,7 @@ extension Player {
         case .BOOST:
             if let node = node as? Effect
             {
-                let type = node.get()
-                print(type)
+                self.addEffect(type: node.get())
             }
         case .TRAIL:
             if !destroyed && lastTeleporter == nil

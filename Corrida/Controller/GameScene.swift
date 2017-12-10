@@ -38,6 +38,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var leftButton: SKSpriteNode!
     var rightButton: SKSpriteNode!
+    var actionButton: SKSpriteNode!
+    
     var buttonPressed: Bool = false
     var hitlist : Hitlist?
     var endGameModal : EndGameModal?
@@ -102,7 +104,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.leftButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
             self.rightButton = camera.childNode(withName: "RightButton") as! SKSpriteNode
             self.rightButton.zPosition = NodesZPosition.CONTROLLERS.rawValue
+            self.actionButton = camera.childNode(withName: "ActionButton") as! SKSpriteNode
+//            self.actionButton =     childNode(withName: "ActionButton") as! SKSpriteNode
+            
+            self.actionButton.zPosition = NodesZPosition.CONTROLLERS.rawValue+2
+            self.actionButton.isUserInteractionEnabled = true
             camera.zPosition = NodesZPosition.CONTROLLERS.rawValue+1
+            
+            print(camera.children)
         }
         
         // Inicia a física do mundo
@@ -129,9 +138,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupCamera(target: localPlayer)
         
         updateLives()
+        
+        updateAction(type: .JUMP)
+        updateAction(type: localPlayer.availableEffect)
     }
     
     var countTimer : Int = 1
+    
+    func updateAction(type: EffectType)
+    {
+        actionButton.isHidden = false
+        if type == .NONE
+        {
+            actionButton.run(SKAction.fadeAlpha(to: 0, duration: 0.3))
+            actionButton.alpha = 0
+        }
+        else
+        {
+            let texture = SKTexture(imageNamed: "\(type.rawValue)_icon")
+            actionButton.texture = texture
+            actionButton.run(SKAction.fadeAlpha(to: 1, duration: 0.3))
+            {
+                self.actionButton.alpha = 1
+            }
+        }
+        self.actionButton.isUserInteractionEnabled = true
+    }
     
     func respawnPlayer(player: Player)
     {
@@ -163,10 +195,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
             self.setCountdown(self.countTimer)
             self.countTimer -= 1
-            if self.countTimer < 0
-            {
-                for player in GameManager.shared.players
-                {
+            if self.countTimer < 0 {
+                for player in GameManager.shared.players {
                     player.freeze = false
                 }
                 timer.invalidate()
@@ -194,9 +224,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setCountdown(_ pos : Int)
     {
-        if let label = self.countdownLabel
-        {
-            
+        if let label = self.countdownLabel {
             let strokeTextAttributes: [NSAttributedStringKey : Any] = [
                 NSAttributedStringKey.strokeColor : UIColor.darkGray,
                 NSAttributedStringKey.foregroundColor: self.localPlayer.mainColor,
@@ -218,9 +246,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func loadEffects()
     {
         //let type : [EffectType] = [.EXTRA_LIFE, .SPEED, .JUMP, .INVULNERABILITY]
-        let type : [EffectType] = [.JUMP]
-        for _ in 0...2
-        {
+        let type : [EffectType] = [.SPEED]
+        for _ in 0...2 {
             let effect = Effect(type: type.chooseOne, scene: self)
             effects.append(effect)
         }
@@ -233,10 +260,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         GameManager.shared.teleporters.removeAll()
         
-        for i in 1...3
-        {
-            if let camera = camera
-            {
+        for i in 1...3 {
+            if let camera = camera {
                 if let node = camera.childNode(withName: "skull_\(i)") as? SKSpriteNode
                 {
                     self.livesNodes.append(node)
@@ -324,14 +349,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         for t in touches {
             let location = t.location(in: self.camera!)
+            
+            if self.actionButton.contains(location)
+            {
+                localPlayer.performEffect()
+                print("Perform")
+            }
             
             if self.leftButton.contains(location) {
                 self.leftButton.color = UIColor.black
                 self.playerDirection = .LEFT
                 self.buttonPressed = true
-                
+
                 if localPlayer.destroyed {
                     playerToWatch = GameManager.shared.findPlayerToWatch(offset: -1)
                 }
@@ -346,18 +378,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     playerToWatch = GameManager.shared.findPlayerToWatch(offset: +1)
                 }
             }
+            
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        for t in touches {
 //            let location = t.location(in: self)
+//            print(location)
 //        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.leftButton.color = #colorLiteral(red: 0.4251180291, green: 0.5195503831, blue: 1, alpha: 1)
         self.rightButton.color = #colorLiteral(red: 0.4251180291, green: 0.5195503831, blue: 1, alpha: 1)
+        self.actionButton.color = #colorLiteral(red: 0.4251180291, green: 0.5195503831, blue: 1, alpha: 1)
         self.buttonPressed = false
     }
     

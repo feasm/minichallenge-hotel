@@ -28,29 +28,16 @@ class Effect : SKSpriteNode
     
     var animationTextures : [SKTexture] = []
     
-    convenience init(type : EffectType, scene : SKScene)
-    {
-        var randomPosition : CGPoint = .zero
-        let proportion : CGFloat = 0.8
-        if let scene = scene as? GameScene
-        {
-            let size = scene.background.size
-            let randomX = arc4random_uniform(UInt32(size.width * proportion))
-            let randomY = arc4random_uniform(UInt32(size.height * proportion))
-            randomPosition = CGPoint(x: CGFloat(randomX)-(proportion*(size.width/2.0)), y: CGFloat(randomY)-(proportion*(size.height/2.0)))
-        }
-        print(randomPosition)
-        self.init(type: type, position: randomPosition, scene: scene)
-    }
     
-    init(type : EffectType, position : CGPoint, scene: SKScene) {
+    
+    init(type : EffectType, scene: SKScene) {
         let texture = SKTexture(imageNamed: type.rawValue)
         super.init(texture: texture, color: .white, size: texture.size())
+        
         self.type = type
         loadAnimations()
-        self.position = position
-        self.add(to: scene)
         
+        self.add(to: scene)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,18 +60,19 @@ class Effect : SKSpriteNode
         self.lastScene = scene
         scene.addChild(self)
         
+        self.position = randomPosition()
         self.zPosition = NodesZPosition.ASSETS.rawValue
         self.alpha = 1
         self.setScale(1)
         
         let actions = SKAction.sequence([SKAction.scale(to: 0.85, duration: 1), SKAction.scale(to: 1, duration: 1)])
-        let animate = SKAction.animate(with: animationTextures, timePerFrame: 0.2)
+        let animate = SKAction.animate(with: animationTextures, timePerFrame: 0.25)
         
 //        let actions = SKAction.sequence([SKAction.moveBy(x: 0, y: 100, duration: 0.5), SKAction.moveBy(x: 0, y: -50, duration: 0.5)])
         self.run(SKAction.repeatForever(actions))
         self.run(SKAction.repeatForever(animate), withKey: "animate")
-        setupPhysics()
         
+        setupPhysics()
     }
     
     func get() -> EffectType
@@ -110,6 +98,20 @@ class Effect : SKSpriteNode
             return type
         }
         return .NONE
+    }
+    
+    func randomPosition() -> CGPoint
+    {
+        var randomPosition : CGPoint = .zero
+        let proportion : CGFloat = 0.9
+        if let scene = scene as? GameScene
+        {
+            let size = scene.background.size
+            let randomX = arc4random_uniform(UInt32(size.width * proportion))
+            let randomY = arc4random_uniform(UInt32(size.height * proportion))
+            randomPosition = CGPoint(x: CGFloat(randomX)-(proportion*(size.width/2.0)), y: CGFloat(randomY)-(proportion*(size.height/2.0)))
+        }
+        return randomPosition
     }
     
     func setupPhysics()
