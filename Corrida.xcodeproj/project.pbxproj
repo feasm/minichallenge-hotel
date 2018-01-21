@@ -20,6 +20,10 @@
 		1B1B0C381FCA0C9B000D407A /* Barrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1B0C371FCA0C9B000D407A /* Barrier.swift */; };
 		1B1B0C3A1FCA24E4000D407A /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1B0C391FCA24E4000D407A /* PhysicsCategory.swift */; };
 		1B77F68D1FD875EA00B44365 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B77F68C1FD875EA00B44365 /* Effect.swift */; };
+		1B9CEEDF20140945005AC38F /* snd_menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B9CEEDE20140945005AC38F /* snd_menu.wav */; };
+		1B9CEEE120140B3D005AC38F /* snd_bip_countdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B9CEEE020140B3C005AC38F /* snd_bip_countdown.wav */; };
+		1B9CEEE320140D22005AC38F /* snd_bip_countdown_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B9CEEE220140D22005AC38F /* snd_bip_countdown_end.wav */; };
+		1B9CEEE520140F83005AC38F /* snd_engine.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1B9CEEE420140F83005AC38F /* snd_engine.wav */; };
 		1BA5115B1FCDDF3E000C8900 /* Minimap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA5115A1FCDDF3E000C8900 /* Minimap.swift */; };
 		1BA5115D1FCE1072000C8900 /* Hitlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BA5115C1FCE1072000C8900 /* Hitlist.swift */; };
 		BCFABCE71FC5BB16007B94FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCFABCE61FC5BB16007B94FF /* AppDelegate.swift */; };
@@ -65,6 +69,10 @@
 		1B1B0C371FCA0C9B000D407A /* Barrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Barrier.swift; sourceTree = "<group>"; };
 		1B1B0C391FCA24E4000D407A /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		1B77F68C1FD875EA00B44365 /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
+		1B9CEEDE20140945005AC38F /* snd_menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_menu.wav; sourceTree = "<group>"; };
+		1B9CEEE020140B3C005AC38F /* snd_bip_countdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_bip_countdown.wav; sourceTree = "<group>"; };
+		1B9CEEE220140D22005AC38F /* snd_bip_countdown_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_bip_countdown_end.wav; sourceTree = "<group>"; };
+		1B9CEEE420140F83005AC38F /* snd_engine.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snd_engine.wav; sourceTree = "<group>"; };
 		1BA5115A1FCDDF3E000C8900 /* Minimap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minimap.swift; sourceTree = "<group>"; };
 		1BA5115C1FCE1072000C8900 /* Hitlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitlist.swift; sourceTree = "<group>"; };
 		BCFABCE31FC5BB16007B94FF /* Corrida.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Corrida.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +147,17 @@
 			path = Nodes;
 			sourceTree = "<group>";
 		};
+		1B9CEEDD201408F8005AC38F /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				1B9CEEE420140F83005AC38F /* snd_engine.wav */,
+				1B9CEEE220140D22005AC38F /* snd_bip_countdown_end.wav */,
+				1B9CEEE020140B3C005AC38F /* snd_bip_countdown.wav */,
+				1B9CEEDE20140945005AC38F /* snd_menu.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		BCFABCDA1FC5BB16007B94FF = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +178,7 @@
 		BCFABCE51FC5BB16007B94FF /* Corrida */ = {
 			isa = PBXGroup;
 			children = (
+				1B9CEEDD201408F8005AC38F /* Sounds */,
 				BCFABD3B1FC84AC7007B94FF /* Corrida.entitlements */,
 				1B1B0C211FC9F16B000D407A /* Extensions */,
 				F757F6ED1FC88210009D0B82 /* Utils */,
@@ -366,9 +386,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFABCF21FC5BB16007B94FF /* Main.storyboard in Resources */,
+				1B9CEEE120140B3D005AC38F /* snd_bip_countdown.wav in Resources */,
+				1B9CEEDF20140945005AC38F /* snd_menu.wav in Resources */,
 				BCFABCE91FC5BB16007B94FF /* GameScene.sks in Resources */,
 				BCFABCF41FC5BB17007B94FF /* Assets.xcassets in Resources */,
 				BCFABD0F1FC7584C007B94FF /* Menu.storyboard in Resources */,
+				1B9CEEE320140D22005AC38F /* snd_bip_countdown_end.wav in Resources */,
+				1B9CEEE520140F83005AC38F /* snd_engine.wav in Resources */,
 				BCFABCF71FC5BB17007B94FF /* LaunchScreen.storyboard in Resources */,
 				BCFABCEB1FC5BB16007B94FF /* Actions.sks in Resources */,
 				F7C843D71FCDEC0B00B5DBB1 /* PlayerEndGameTableViewCell.xib in Resources */,

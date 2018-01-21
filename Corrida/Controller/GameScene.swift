@@ -160,13 +160,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
             self.setCountdown(self.countTimer)
             self.countTimer -= 1
+            
+//            if self.countTimer == 0
+//            {
+//                GameManager.shared.playSoundEffect(sound: .COUNTDOWN_END, scene: self)
+//            }
+//            else
+//            {
+//                GameManager.shared.playSoundEffect(sound: .COUNTDOWN, scene: self)
+//            }
+            
             if self.countTimer < 0
             {
+                GameManager.shared.playSoundEffect(sound: .COUNTDOWN_END, scene: self)
                 for player in GameManager.shared.players
                 {
                     player.freeze = false
                 }
                 timer.invalidate()
+            }
+            else
+            {
+                GameManager.shared.playSoundEffect(sound: .COUNTDOWN, scene: self)
             }
         }
     }

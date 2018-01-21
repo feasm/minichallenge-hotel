@@ -23,6 +23,11 @@ class StartViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GameManager.shared.playSound(sound: .MENU)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -26,6 +26,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        GameManager.shared.stopSound(sound: .MENU)
+        
         let gameView = SKView(frame: self.view.frame)
         gameView.ignoresSiblingOrder = false
         gameView.showsFPS = true

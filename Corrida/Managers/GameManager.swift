@@ -8,10 +8,11 @@
 
 import UIKit
 import SpriteKit
+import AVFoundation
 
 class GameManager {
     static let shared: GameManager = GameManager()
-    static let MULTIPLAYER_ON: Bool = true
+    static let MULTIPLAYER_ON: Bool = false
     
     var teleporters : [Teleporter] = []
     
@@ -25,9 +26,11 @@ class GameManager {
     var gameView: GameViewController?
     
     var effects : [Effect] = []
+    var loadedSounds : [String : AVAudioPlayer?] = [:]
     
     private init() {
-        
+        loadedSounds[Sounds.MENU.rawValue] = loadSound(soundName: Sounds.MENU.rawValue, repeating: true)
+        loadedSounds[Sounds.ENGINE.rawValue] = loadSound(soundName: Sounds.ENGINE.rawValue, repeating: true)
     }
     
     func movePlayer(name: String, position: CGPoint, rotation: CGFloat) {
@@ -131,6 +134,84 @@ extension GameManager {
             }
         })
     }
+}
+
+// MARK: Audio
+
+enum Sounds : String
+{
+    case COUNTDOWN = "snd_bip_countdown"
+    case COUNTDOWN_END = "snd_bip_countdown_end"
+    case MENU = "snd_menu"
+    case ENGINE = "snd_engine"
+    case DESTROY = "snd_destroy"
+}
+
+extension GameManager
+{
+    
+    func loadSound(soundName: String, repeating: Bool) -> AVAudioPlayer?
+    {
+        var avSound : AVAudioPlayer?
+
+        if let musicURL = Bundle.main.url(forResource: soundName, withExtension: "wav") {
+            do {
+                avSound = try AVAudioPlayer(contentsOf: musicURL)
+                avSound?.prepareToPlay()
+            }
+            catch {
+                
+            }
+            avSound?.volume = 0.4
+            avSound?.numberOfLoops = repeating ? -1 : 1
+            return avSound
+        }
+        return nil
+    }
+    
+    func playSound(sound : Sounds) -> Void {
+        playSound(soundname: sound.rawValue)
+    }
+    
+    func playSound(soundname : String)
+    {
+        if let sound = loadedSounds[soundname] as? AVAudioPlayer {
+            if !sound.isPlaying {
+                sound.play()
+            }
+        }
+        else {
+            let load = loadSound(soundName: soundname, repeating: false)
+            if load != nil
+            {
+                loadedSounds[soundname] = load
+                playSound(soundname: soundname)
+            }
+        }
+    }
+    
+    func stopSound(sound : Sounds)
+    {
+        stopSound(soundname: sound.rawValue)
+    }
+    
+    func stopSound(soundname : String)
+    {
+        if let sound = loadedSounds[soundname] as? AVAudioPlayer
+        {
+            if sound.isPlaying
+            {
+                sound.stop()
+            }
+        }
+    }
+    
+    func playSoundEffect(sound: Sounds, scene: SKScene) -> Void
+    {
+        let action = SKAction.playSoundFileNamed(sound.rawValue + ".wav", waitForCompletion: false)
+        scene.run(action)
+    }
+    
 }
 
 // MARK: Teleporters

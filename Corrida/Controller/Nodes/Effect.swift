@@ -50,7 +50,6 @@ class Effect : SKSpriteNode
         loadAnimations()
         self.position = position
         self.add(to: scene)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
