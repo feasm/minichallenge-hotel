@@ -23,6 +23,17 @@ class GameViewController: UIViewController {
         return label
     }()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GameManager.shared.playSound(sound: .GAMEPLAY)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        GameManager.shared.stopSound(sound: .GAMEPLAY)
+        GameManager.shared.stopSound(sound: .ENGINE)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -186,9 +186,15 @@ class Player: SKSpriteNode {
     {
         if !destroyed
         {
+            if GameManager.shared.localPlayer == self
+            {
+                GameManager.shared.stopSound(sound: .ENGINE)
+            }
+            
             destroyed = true
             if let scene = scene as? GameScene
             {
+                GameManager.shared.playSoundEffect(sound: .EXPLOSION, scene: scene)
                 respawn = true
                 watch.stop()
                 self.times.append(watch.durationSeconds())
@@ -228,6 +234,8 @@ class Player: SKSpriteNode {
         deaths.removeAll()
         kills.removeAll()
         times.removeAll()
+        // MARK : SOUND
+        
     }
 
     func setType(type: CharactersEnum) {

@@ -31,6 +31,17 @@ class GameManager {
     private init() {
         loadedSounds[Sounds.MENU.rawValue] = loadSound(soundName: Sounds.MENU.rawValue, repeating: true)
         loadedSounds[Sounds.ENGINE.rawValue] = loadSound(soundName: Sounds.ENGINE.rawValue, repeating: true)
+        loadedSounds[Sounds.GAMEPLAY.rawValue] = loadSound(soundName: Sounds.GAMEPLAY.rawValue, repeating: true)
+        
+        if let audio = loadedSounds[Sounds.ENGINE.rawValue]
+        {
+            audio?.volume = 0.45
+        }
+        
+        if let audio = loadedSounds[Sounds.GAMEPLAY.rawValue]
+        {
+            audio?.volume = 0.1
+        }
     }
     
     func movePlayer(name: String, position: CGPoint, rotation: CGFloat) {
@@ -144,7 +155,10 @@ enum Sounds : String
     case COUNTDOWN_END = "snd_bip_countdown_end"
     case MENU = "snd_menu"
     case ENGINE = "snd_engine"
+    case GAMEPLAY = "snd_gameplay"
     case DESTROY = "snd_destroy"
+    case RESPAWN = "snd_respawn"
+    case EXPLOSION = "snd_explosion"
 }
 
 extension GameManager
@@ -212,6 +226,14 @@ extension GameManager
         scene.run(action)
     }
     
+    func playSoundEffect(sound: Sounds, scene: SKScene, completion : @escaping () -> Void) -> Void
+    {
+        let action = SKAction.playSoundFileNamed(sound.rawValue + ".wav", waitForCompletion: true)
+        scene.run(action)
+        {
+            completion()
+        }
+    }
 }
 
 // MARK: Teleporters

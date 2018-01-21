@@ -62,6 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Carrega Personagens
         if !GameManager.MULTIPLAYER_ON {
             self.localPlayer = Player(type: .FIRST)
+            GameManager.shared.localPlayer = self.localPlayer
             self.localPlayer.setup(id: "0", alias: "Eu")
             self.localPlayer.name = self.localPlayer.alias
             GameManager.shared.players.append(localPlayer)
@@ -150,12 +151,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player.showPath()
                 player.respawn = false
                 player.destroyed = false
+                
+                if GameManager.shared.localPlayer == player
+                {
+                    GameManager.shared.playSoundEffect(sound: .RESPAWN, scene: self)
+                    GameManager.shared.playSound(sound: .ENGINE)
+//                    GameManager.shared.playSoundEffect(sound: .RESPAWN, scene: self, completion: {
+//                        GameManager.shared.playSound(sound: .ENGINE)
+//                    })
+                }
             }
         }
     }
     
     func countDown()
     {
+        GameManager.shared.playSoundEffect(sound: .RESPAWN, scene: self)
         countTimer = 5
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
             self.setCountdown(self.countTimer)
@@ -173,6 +184,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if self.countTimer < 0
             {
                 GameManager.shared.playSoundEffect(sound: .COUNTDOWN_END, scene: self)
+                GameManager.shared.playSound(sound: .ENGINE)
                 for player in GameManager.shared.players
                 {
                     player.freeze = false
